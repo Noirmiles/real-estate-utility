@@ -8,17 +8,17 @@ export default function Home() {
       <Navbar/>
       <Background/>
       <section className= "py-24 flex flex-col items-center text-center gap-8">
-        <h1 className="text-4xl font-bold"> Project Z</h1>
+        <h1 className="text-4xl font-bold"> Z Real Estate</h1>
 
         <div className="rounded-med bg-gray-200 px-4 py-2 text-black">
-            <p className="text-2xl">  Testing some styling options</p>
+            <p className="text-2xl"> Real Estate Made Easy</p>
         </div>
         
         <div className="flex gap-6 py-6"/>
       </section>
       <div className="flex gap-6 py-6 items-center justify-center">
-        <Button> Button 1</Button>
-        <Button> Button 2</Button>
+        <Button> Client</Button>
+        <Button> Real Estate Agent</Button>
       </div>
     </main>
   );
