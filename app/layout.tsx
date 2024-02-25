@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: "Real Estate Utility",
@@ -16,10 +17,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="">
+
+      <div>
+        <Navbar/>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           
           {children}
         </ThemeProvider>
+        </div>
       </body>
     </html>
   );
