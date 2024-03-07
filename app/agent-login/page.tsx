@@ -9,7 +9,7 @@ const SignInForm: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const handleSignIn = () => {
-    // Where the sign in logic needs to be handled, 
+    // Where the sign in logic needs to be handled, will come back to after presentation
     console.log('Email:', email, 'Password:', password);
   };
 
@@ -27,8 +27,12 @@ const SignInForm: React.FC = () => {
   // Displays text to the SignIn form
   return (
     <div style={formStyle}>
-      <h2 style= {{ fontSize: '24px',textAlign: 'center', margin: '20px 0'}}><b style={{color: 'black', fontWeight: 'bold'}}>Welcome to the Z Project</b></h2>
-      <div style={{ marginBottom: '20px' }}>
+      <h2 style= {{ fontSize: '24px',textAlign: 'center', margin: '20px 0'}}><b style={{color: 'black', fontWeight: 'bold'}}>Agent Login</b></h2>
+      <div style={{ marginBottom: '10px' }}> <div style={{textAlign: 'center', padding: '0px'}}>
+        </div>
+        <div style= {{ borderTop: '1px solid #000', paddingTop: '20px'}}>
+            </div>
+        
         <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>Email</label>
         <input
           id="email"
@@ -51,16 +55,8 @@ const SignInForm: React.FC = () => {
         />
       </div>
       <Button onClick={handleSignIn}>Sign in</Button>
-      <a href="#" style={{ display: 'block', marginTop: '10px' }}><b style= {{color: 'blue', fontWeight:'bold'}}>Forgot your password?</b></a>
-      <a href="/create-account" style={{ display: 'block', marginTop: '15x' }}>Don't have an account? <b style={{ color: 'blue', fontWeight: 'bold'}}>Create One</b></a>
-    
-    <div style={{textAlign: 'center', padding: '10px'}}>
-      <div style= {{ borderTop: '1px solid #000', paddingTop: '10px'}}>
-          < a href='houses' style= {{display: 'block', textDecoration: 'none'}}>
-          <b style={{color: 'black', fontWeight: 'bold'}}>Continue as guest</b>
-          </a>
-      </div>
-    </div>
+      <a href="register" style={{ display: 'block', marginTop: '10px' }}><b style= {{color: 'blue', fontWeight:'bold'}}>Register Account </b></a>
+      <a href=" " style={{ display: 'block', marginTop: '15x' }}><b style= {{color: 'blue', fontWeight:'bold'}}>Forgot your credintals? </b></a>
     
     </div>
     
@@ -73,7 +69,8 @@ export default function SignIn() {
   return (
     <div>
       <Background />
-       <div style={{ 
+
+      <div style={{ 
         display: 'flex', 
         justifyContent: 'center', 
         alignItems: 'center', 

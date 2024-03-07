@@ -17,10 +17,16 @@ import SearchBar from "@/components/searchBar"
 
 export default function Nav(){
     const [isClick, setisClick] = useState(false);
+    const [isSignInDropdownVisible, setIsSignInDropdownVisibile] = useState(false);
+
 
     const toggleNavbar = () =>{
         setisClick(!isClick)
-    }
+    };
+    
+    const toogleSignInDropdown = () => {
+        setIsSignInDropdownVisibile( (prev) => !prev);
+    };
 
 return (
     
@@ -48,12 +54,25 @@ return (
                         <a href="/" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
                             Help
                         </a>
-                        <a href="/sign-in" className="text-white hover:bg-white hover:text-black rounded-lg p-2">
+                        <button onClick={toogleSignInDropdown} className="relative text-white hover:bg-white hover:text-black rounded-lg p-2">
                             Sign in
-                        </a>
-                        <ModeToggle/>
 
-                    </div>
+            {isSignInDropdownVisible && (
+             <div className="aboslute left-0 right-0 z-0 w-25 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div className="py-1" role="menu" aria-orientation="horizontal" aria-labelledby="options-menu">
+                  <a href="/sign-in" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                    Client Login
+                  </a>   
+                  <a href="/agent-login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                    Agent Login
+                    </a>
+                  </div>
+              </div>
+            )}   
+                </button>
+                <ModeToggle/>
+                
+                </div>
                 </div>
                 
                 <div className="md:hidden flex items-center">
@@ -105,10 +124,8 @@ return (
                         <a href="/sign-in" className="text-center text-white block hover:bg-white hover:text-black rounded-lg p-2">
                             Sign-in
                         </a>
+                                   
         </div>)}
     </nav>
- 
-
- 
 )
 }
