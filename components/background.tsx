@@ -12,8 +12,10 @@ export default function Background(){
                 quality={100}
                 fill
                 sizes="100vw"
+                
 
                 style={{
+                aspectRatio: "16/9",
                 objectFit: 'cover',
                 zIndex: -1,
                 }}
