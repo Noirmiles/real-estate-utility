@@ -1,0 +1,25 @@
+.rounded-image {
+    border-top-left-radius: 10px; /* Adjust the value for desired roundness */
+    border-top-right-radius: 10px; /* Adjust the value for desired roundness */
+
+    z-index: 0;
+  }
+
+  .card-css {
+    z-index: -1;
+    /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0); /* Adjust shadow properties as needed */
+  }
+
+  .price-css{
+    margin-left: -25px;
+    margin-bottom: -25px;
+  }
+
+  .bdr-css{
+    margin-left: -25px;
+  }
+
+  .sqrft-css{
+    margin-left: -25px;
+
+  }
