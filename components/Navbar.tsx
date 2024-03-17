@@ -76,7 +76,7 @@ return (
                 </div>
                 
                 <div className="md:hidden flex items-center">
-                    <button className="infinite-flex items-center justify-center p-2 rounded-md text-whiteS hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    <button className="shadow-lg drop-shadow-lg infinite-flex items-center justify-center p-2 rounded-md text-whiteS hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                        onClick={toggleNavbar} >
                         {isClick ? (
                             <svg className="h-6 w-6"
