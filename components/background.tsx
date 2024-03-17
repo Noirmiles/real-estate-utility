@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import cityscape from '../public/cityscape.jpg'
+import cityscape from '../public/38bc76ac7c5dc2bb57554ea2899814d8.jpg'
 
 export default function Background(){
     return (
