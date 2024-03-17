@@ -24,7 +24,7 @@ export default function Houses() {
         </div>
         
       
-        <div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(12,198,43,0.3),rgba(0,10,0,60))]">
+        <div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(12,198,43,0.3),rgba(255,245,230,60))]">
         </div>
       
       <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3"></div>
