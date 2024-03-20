@@ -10,13 +10,51 @@ import SearchMenu from '@/components/SearchMenu';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 export default function Houses() {
+  //State Variables
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
   const [listings, setListings] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    const menuRect = menuRef.current?.getBoundingClientRect();
+    if (menuRect) {
+      setDragOffset({
+        x: event.clientX - menuRect.left,
+        y: event.clientY - menuRect.top,
+      });
+    }
+  };
+
+  const handleMouseMove = (event: MouseEvent) => {
+    if (isDragging && menuRef.current) {
+      menuRef.current.style.left = `${event.clientX - dragOffset.x}px`;
+      menuRef.current.style.top = `${event.clientY - dragOffset.y}px`;
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragOffset]);
   
+  // Reference to the notification div element
   const notificationRef = useRef<HTMLDivElement>(null);
   
+  // Effect hook to handle clicking outside the notification menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
@@ -26,28 +64,35 @@ export default function Houses() {
   
     document.addEventListener('mousedown', handleClickOutside);
   
+    // Cleanup function to remove the event listener
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  
+   
+  // Function to toggle the popup state
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
     setShowNotifications(false);
   };
 
+  // Function to toggle the notification menu state
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
     setIsPopupOpen(false);
   };
 
+  // Function to mark notifications as read and reset the count
   const markAsRead = () => {
     setNotificationCount(0);
   };
 
+  // Create a new instance of PrismaClient
   const prisma = new PrismaClient();
 
+  // Component for the popup form
   const Popup = () => {
+     // State variables for form fields
     const [selectedPropertyType, setSelectedPropertyType] = useState('');
     const [listPrice, setListPrice] = useState('');
     const [state, setState] = useState('');
@@ -58,12 +103,21 @@ export default function Houses() {
     const [numberOfBathrooms, setNumberOfBathrooms] = useState('');
     const [images, setImages] = useState<FileList | null>(null);
 
+    // Function to handle property type selection change
     const handlePropertyTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
       setSelectedPropertyType(event.target.value);
     };
 
+    // Function to handle image upload
+    const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+      const files = event.target.files;
+      setImages(files);
+    };
+
+     // Function to handle form submission
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      
       // Handle form submission
     };
 
@@ -158,6 +212,21 @@ export default function Houses() {
                 </select>
               </div>
   
+              <div>
+              <label htmlFor="image-upload" className="block font-medium mb-1">Upload Images</label>
+              <div className="flex items-center">
+                <input
+                  type="file"
+                  id="image-upload"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageUpload}
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                {images && <span className="ml-2">{images.length} file(s) selected</span>}
+              </div>
+            </div>
+
               <div className="text-right">
                 <Button
                   type="submit"
@@ -214,21 +283,57 @@ export default function Houses() {
       </div>
 
       {showNotifications && (
-        <div ref={notificationRef} className="absolute top-16 right-6 bg-white text-gray-800 p-4 rounded-md shadow-lg w-64">
-          <h4 className="mb-2 font-semibold">Notifications</h4>
-          <ul>
-            <li>Notification 1</li>
-            <li>Notification 2</li>
-            <li>Notification 3</li>
-          </ul>
-          <Button
-            className="mt-4 bg-primary text-primary-foreground px-4 py-2 rounded-md"
-            onClick={markAsRead}
-          >
-            Mark as Read
-          </Button>
-        </div>
-      )}
+  <div
+    ref={menuRef}
+    className="fixed bg-white text-gray-800 rounded-md shadow-lg w-80 overflow-hidden"
+    style={{ left: '82%', top: '20.5%', transform: 'translate(-50%, -50%)' }}
+  >
+    <div
+      className="px-4 py-2 bg-gray-100 cursor-move"
+      onMouseDown={handleMouseDown}
+    >
+      <h4 className="text-lg font-semibold">Notifications</h4>
+    </div>
+    <div className="px-4 py-2 max-h-60 overflow-y-auto">
+      <ul className="divide-y divide-gray-200">
+        <li className="py-2">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg className="h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-gray-900">You have a new Showing Request!</p>
+              <p className="mt-1 text-sm text-gray-500">Jun 10, 2023</p>
+            </div>
+          </div>
+        </li>
+        <li className="py-2">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg className="h-6 w-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-gray-900">New Listing Added.</p>
+              <p className="mt-1 text-sm text-gray-500">Jun 9, 2023</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div className="px-4 py-2 bg-gray-100 text-right">
+      <Button
+        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        onClick={markAsRead}
+      >
+        Mark as Read
+      </Button>
+    </div>
+  </div>
+)}
 
       {isPopupOpen && <Popup />}
     </div>

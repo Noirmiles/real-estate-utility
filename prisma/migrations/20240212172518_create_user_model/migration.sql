@@ -8,3 +8,18 @@ CREATE TABLE `User` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE `Property` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `listPrice` DECIMAL(10, 2) NOT NULL,
+  `state` VARCHAR(255) NOT NULL,
+  `city` VARCHAR(255) NOT NULL,
+  `address` VARCHAR(255) NOT NULL,
+  `squareFootage` DECIMAL(10, 2) NOT NULL,
+  `numberOfRooms` INT NOT NULL,
+  `numberOfBathrooms` INT NOT NULL,
+  `propertyType` VARCHAR(255) NOT NULL,
+  `images` JSON,
+  `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
