@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  align-items: center; /* Vertically center align */
+}
+
+.image {
+  width: 100px; /* Set width as needed */
+  height: 100px; /* Set height as needed */
+  margin-right: 10px; /* Add some spacing between image and text */
+}
+
+.text {
+  /* Additional styles for your text */
+}
