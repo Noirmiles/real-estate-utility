@@ -7,7 +7,7 @@ import Cardsv2 from '@/components/Cardsv2';
 import SearchBar from '@/components/searchBar';
 import Background from '@/components/background';
 import SearchMenu from '@/components/SearchMenu';
-import '@fortawesome/fontawesome-free/css/all.css';
+//import '@fortawesome/fontawesome-free/css/all.css';
 
 export default function Houses() {
   //State Variables
