@@ -41,26 +41,26 @@ return (
             <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
                     <div className="flex-shrink-0">
-                        <a href="/" className="text-black text-xl font-bold text-center ">
-                            Project Z: Real Estate
+                        <a href="/" className="text-black text-xl font-bold font-serif text-center  ">
+                             Z Real Estate 
                         </a>
                     </div>
                 </div>
                 <div className="hidden md:block">
                     <div className="ml-4 flex items-center space-x-4">
-                        <a href="/houses" className="text-black hover:bg-white rounded-lg p-2">
+                        <a href="/houses" className="text-black hover:bg-white rounded-lg p-2 font-serif">
                             Buy
                         </a>
-                        <a href="/" className="text-black hover:bg-white rounded-lg p-2">
+                        <a href="/" className="text-black hover:bg-white rounded-lg p-2 font-serif">
                             Services
                         </a>
-                        <a href="/about" className="text-black hover:bg-white  rounded-lg p-2">
+                        <a href="/about" className="text-black hover:bg-white  rounded-lg p-2 font-serif">
                             About
                         </a>
-                        <a href="/" className="text-black hover:bg-white  rounded-lg p-2">
+                        <a href="/" className="text-black hover:bg-white  rounded-lg p-2 font-serif">
                             Help
                         </a>
-                        <button onClick={toogleSignInDropdown} className="relative text-black hover:bg-white rounded-lg p-2">
+                        <button onClick={toogleSignInDropdown} className="relative text-black hover:bg-white rounded-lg p-2 font-serif">
                             Sign in
 
             {isSignInDropdownVisible && (

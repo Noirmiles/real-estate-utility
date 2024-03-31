@@ -27,7 +27,7 @@ const SignInForm: React.FC = () => {
   // Displays text to the SignIn form
   return (
     <div style={formStyle}>
-      <h2 style= {{ fontSize: '24px',textAlign: 'center', margin: '20px 0'}}><b style={{color: 'black', fontWeight: 'bold'}}>Welcome to the Z Project</b></h2>
+      <h2 style= {{ fontSize: '24px',textAlign: 'center', margin: '20px 0'}}><b style={{color: 'black', fontWeight: 'bold'}}>Welcome to the Z Real Estate</b></h2>
       <div style={{ marginBottom: '20px' }}>
         <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>Email</label>
         <input

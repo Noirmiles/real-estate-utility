@@ -130,7 +130,7 @@ export default function About() {
     </div> 
 
     {/*Scheduling Section */}
-    <p className="font-heading text-1xl font-bold text-black">
+    <p className="font-heading text-1xl font-bold text-white">
     Already submitted an inquiry? Schedule an appointment below!</p>
 
     <div>
