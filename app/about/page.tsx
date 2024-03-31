@@ -7,13 +7,14 @@ import SearchBar from '@/components/searchBar';
 
 import Background from '@/components/background';
 import { Input } from "@/components/ui/input"
-import { FormEvent } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { Calendar } from 'lucide-react';
 //import { constructor } from 'tailwindcss';
 //import { constructor } from 'react';
 //import PhoneInput from "react-phone-input-2";
 //import "react-phone-input-2/lib/style.css";
 //import "./App.css";
+
 
 
 //import Calendar from 'react-calendar';
@@ -31,7 +32,7 @@ export default function About() {
   function setEmail(value: string): void {
     throw new Error('Function not implemented.');
   }
-
+ 
 
 
 
@@ -43,6 +44,20 @@ export default function About() {
   function setPassword(value: string): void {
     throw new Error('Function not implemented.');
   }
+
+  function deleteAppointment(id: any): void {
+    throw new Error('Function not implemented.');
+  }
+
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>): void {
+    throw new Error('Function not implemented.');
+  }
+
+  function setShowConfirmation(arg0: boolean): void {
+    throw new Error('Function not implemented.');
+  }
+
 
   return (
     <div>
@@ -114,21 +129,34 @@ export default function About() {
       </form>
     </div> 
 
-    {/*Link to Scheduling Page */}
-
-    <a href='scheduling.tsx' target="_blank">Already submitted an inquiry?</a>
+    {/*Scheduling Section */}
+    <p className="font-heading text-1xl font-bold text-black">
+    Already submitted an inquiry? Schedule an appointment below!</p>
 
     <div>
-      <h1>My Calendar</h1>
+    
       <Calendar
         //onChange={onchange}
        // values={Date}
       />
-      <p>Selected date: {Date()}</p>
+
+      <div>
+      <h2>Appointments</h2>
+      
+
+    </div>
+      <p className='"font-subtitle text-1xl font-bold text-black">'>Current Date: {Date()}</p>
     </div>
    
-
-
+   <form onSubmit={handleSubmit}>
+      <input type="text" name="name" placeholder="Name" /*value={FormData.name}*/ onChange={handleChange} />
+      <input type="date" name="date" /*name={FormData}*/ onChange={handleChange} />
+      <input type="time" name="time" /*value={FormData}*/ onChange={handleChange} />
+      <button type="submit">Add Appointment</button>
+    </form>
+    <div>
+    
+    </div>
 
       <br />
 
