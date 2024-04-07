@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="p-10 py-20 text-white text-3xl font-bold text-center ">
+      <div className="p-10 py-20 text-white text-3xl font-bold text-center font-serif ">
             Agents. Tours. Homes.
         </div>
       <Background/>

@@ -69,7 +69,7 @@ export default function About() {
     <div className="mt-2 mb-8">
       
      
-      <p className="font-heading text-3xl font-bold text-white">
+      <p className="font-heading text-3xl font-bold text-white font-serif">
        About
       </p>
     </div>
@@ -85,12 +85,12 @@ export default function About() {
      style={{ borderWidth: 20, borderColor: 'white', padding: 20, width: 700, height: 600, display: 'flex', font:'bold' }}/>
    
   {/* About Page Description  */}
-      <div style={{border: '4px solid white', width:550,height:180, background:'grey', fontFamily: 'Roboto, sans-serif' , position: 'fixed', top: 90, right: 40 }}>Real Estate Utilities is here to offer luxury housing to gorgeous people. We are committed to delivering unparalleled service, leveraging innovative technology, and fostering lasting relationships with our clients and partners. With a focus on integrity, transparency, and sustainability, we strive to exceed expectations and empower individuals and families to find their dream homes. Please enter your name, email, and phone number below to set up an inquiry. </div>
+      <div style={{border: '4px solid white', width:550,height:180, background:'grey', fontFamily: 'font-serif' , position: 'fixed', top: 90, right: 40 }}>Real Estate Utilities is here to offer luxury housing to gorgeous people. We are committed to delivering unparalleled service, leveraging innovative technology, and fostering lasting relationships with our clients and partners. With a focus on integrity, transparency, and sustainability, we strive to exceed expectations and empower individuals and families to find their dream homes. Please enter your name, email, and phone number below to set up an inquiry. </div>
 
       
       
  {/*Email Submission Box */}
-      <div style={{border: '4px solid white', width:400, background:'grey', fontFamily: 'Roboto, sans-serif' , position: 'absolute', bottom: 3, right: 5 }}>
+      <div style={{border: '4px solid white', width:400, background:'grey', fontFamily: 'font-serif' , position: 'absolute', bottom: 3, right: 5 }}>
       <h2><div style={{ position: 'relative', right:0, left: 90 }}>Contact Form</div></h2>
       
       <form onSubmit={handleSubmit}>
