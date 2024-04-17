@@ -13,12 +13,53 @@ export default function Houses() {
   //State Variables
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [notificationCount, setNotificationCount] = useState(3);
+  const [notificationCount, setNotificationCount] = useState(0);
   const [listings, setListings] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
-
+  const [listPriceError, setListPriceError] = useState('');
+  const [squareFootageError, setSquareFootageError] = useState('');
+  const [numberOfRoomsError, setNumberOfRoomsError] = useState('');
+  const [numberOfBathroomsError, setNumberOfBathroomsError] = useState('');
+  
+  // Functions to verify valid inputs
+  const validateListPrice = (value: string) => {
+    const price = parseFloat(value);
+    if (isNaN(price) || price <= 0) {
+      setListPriceError('Please enter a valid positive list price.');
+    } else {
+      setListPriceError('');
+    }
+  };
+  
+  const validateSquareFootage = (value: string) => {
+    const footage = parseFloat(value);
+    if (isNaN(footage) || footage <= 0) {
+      setSquareFootageError('Please enter a valid positive square footage.');
+    } else {
+      setSquareFootageError('');
+    }
+  };
+  
+  const validateNumberOfRooms = (value: string) => {
+    const rooms = parseInt(value);
+    if (isNaN(rooms) || rooms <= 0) {
+      setNumberOfRoomsError('Please enter a valid positive number of rooms.');
+    } else {
+      setNumberOfRoomsError('');
+    }
+  };
+  
+  const validateNumberOfBathrooms = (value: string) => {
+    const bathrooms = parseInt(value);
+    if (isNaN(bathrooms) || bathrooms <= 0) {
+      setNumberOfBathroomsError('Please enter a valid positive number of bathrooms.');
+    } else {
+      setNumberOfBathroomsError('');
+    }
+  };
+  
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     const menuRect = menuRef.current?.getBoundingClientRect();
@@ -111,14 +152,82 @@ export default function Houses() {
     // Function to handle image upload
     const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
       const files = event.target.files;
-      setImages(files);
+      if (files) {
+        const selectedImages = Array.from(files);
+        setImages((prevImages) => {
+          const dataTransfer = new DataTransfer();
+          if (prevImages) {
+            for (let i = 0; i < prevImages.length; i++) {
+              dataTransfer.items.add(prevImages[i]);
+            }
+          }
+          selectedImages.forEach((image) => {
+            dataTransfer.items.add(image);
+          });
+          return dataTransfer.files;
+        });
+      }
     };
 
      // Function to handle form submission
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      
-      // Handle form submission
+    
+      // Validate form fields
+      validateListPrice(listPrice);
+      validateSquareFootage(squareFootage);
+      validateNumberOfRooms(numberOfRooms);
+      validateNumberOfBathrooms(numberOfBathrooms);
+    
+      // Check if there are any errors
+      if (listPriceError || squareFootageError || numberOfRoomsError || numberOfBathroomsError) {
+        return;
+      }
+    
+      try {
+        const formData = new FormData();
+        formData.append('listPrice', listPrice);
+        formData.append('state', state);
+        formData.append('city', city);
+        formData.append('address', address);
+        formData.append('squareFootage', squareFootage);
+        formData.append('numberOfRooms', numberOfRooms);
+        formData.append('numberOfBathrooms', numberOfBathrooms);
+        formData.append('propertyType', selectedPropertyType);
+    
+        if (images) {
+          for (let i = 0; i < images.length; i++) {
+            formData.append('images', images[i]);
+          }
+        }
+    
+        const response = await fetch('/houses/createProperty', {
+          method: 'POST',
+          body: formData,
+        });
+    
+        if (response.ok) {
+          console.log('Property created successfully');
+          // Reset form fields
+          setListPrice('');
+          setState('');
+          setCity('');
+          setAddress('');
+          setSquareFootage('');
+          setNumberOfRooms('');
+          setNumberOfBathrooms('');
+          setSelectedPropertyType('');
+          setImages(null);
+          // Close the popup
+          setIsPopupOpen(false);
+          // Display the alert
+          alert('Property created successfully!');
+        } else {
+          console.error('Error creating property');
+        }
+      } catch (error) {
+        console.error('Error creating property:', error);
+      }
     };
 
     return (
@@ -135,17 +244,75 @@ export default function Houses() {
                     id="list-price"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter list price"
+                    value={listPrice}
+                    onChange={(e) => {
+                      setListPrice(e.target.value);
+                      validateListPrice(e.target.value);
+                    }}
+                    
                   />
                 </div>
                 <div>
-                  <label htmlFor="state" className="block font-medium mb-1">State</label>
-                  <input
-                    type="text"
-                    id="state"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter state"
-                  />
-                </div>
+  <label htmlFor="state" className="block font-medium mb-1">State</label>
+  <select
+    id="state"
+    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    value={state}
+    onChange={(e) => setState(e.target.value)}
+  >
+    <option value="">Select a state</option>
+    <option value="AL">Alabama</option>
+    <option value="AK">Alaska</option>
+    <option value="AZ">Arizona</option>
+    <option value="AR">Arkansas</option>
+    <option value="CA">California</option>
+    <option value="CO">Colorado</option>
+    <option value="CT">Connecticut</option>
+    <option value="DE">Delaware</option>
+    <option value="FL">Florida</option>
+    <option value="GA">Georgia</option>
+    <option value="HI">Hawaii</option>
+    <option value="ID">Idaho</option>
+    <option value="IL">Illinois</option>
+    <option value="IN">Indiana</option>
+    <option value="IA">Iowa</option>
+    <option value="KS">Kansas</option>
+    <option value="KY">Kentucky</option>
+    <option value="LA">Louisiana</option>
+    <option value="ME">Maine</option>
+    <option value="MD">Maryland</option>
+    <option value="MA">Massachusetts</option>
+    <option value="MI">Michigan</option>
+    <option value="MN">Minnesota</option>
+    <option value="MS">Mississippi</option>
+    <option value="MO">Missouri</option>
+    <option value="MT">Montana</option>
+    <option value="NE">Nebraska</option>
+    <option value="NV">Nevada</option>
+    <option value="NH">New Hampshire</option>
+    <option value="NJ">New Jersey</option>
+    <option value="NM">New Mexico</option>
+    <option value="NY">New York</option>
+    <option value="NC">North Carolina</option>
+    <option value="ND">North Dakota</option>
+    <option value="OH">Ohio</option>
+    <option value="OK">Oklahoma</option>
+    <option value="OR">Oregon</option>
+    <option value="PA">Pennsylvania</option>
+    <option value="RI">Rhode Island</option>
+    <option value="SC">South Carolina</option>
+    <option value="SD">South Dakota</option>
+    <option value="TN">Tennessee</option>
+    <option value="TX">Texas</option>
+    <option value="UT">Utah</option>
+    <option value="VT">Vermont</option>
+    <option value="VA">Virginia</option>
+    <option value="WA">Washington</option>
+    <option value="WV">West Virginia</option>
+    <option value="WI">Wisconsin</option>
+    <option value="WY">Wyoming</option>
+  </select>
+</div>
                 <div>
                   <label htmlFor="city" className="block font-medium mb-1">City/County</label>
                   <input
@@ -153,6 +320,8 @@ export default function Houses() {
                     id="city"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter city/county"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
                   />
                 </div>
                 <div>
@@ -162,6 +331,8 @@ export default function Houses() {
                     id="address"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
               </div>
@@ -174,6 +345,11 @@ export default function Houses() {
                     id="square-footage"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter square footage"
+                    value={squareFootage}
+                    onChange={(e) => {
+                      setSquareFootage(e.target.value);
+                      validateSquareFootage(e.target.value);
+                    }}
                   />
                 </div>
                 <div>
@@ -183,6 +359,11 @@ export default function Houses() {
                     id="number-of-rooms"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter number of rooms"
+                    value={numberOfRooms}
+                    onChange={(e) => {
+                      setNumberOfRooms(e.target.value);
+                      validateNumberOfRooms(e.target.value);
+                    }}
                   />
                 </div>
                 <div>
@@ -192,6 +373,11 @@ export default function Houses() {
                     id="number-of-bathrooms"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter number of bathrooms"
+                    value={numberOfBathrooms}
+                    onChange={(e) => {
+                      setNumberOfBathrooms(e.target.value);
+                      validateNumberOfBathrooms(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -223,7 +409,7 @@ export default function Houses() {
                   onChange={handleImageUpload}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                {images && <span className="ml-2">{images.length} file(s) selected</span>}
+                {images && images.length > 0 && <span className="ml-2">{images.length} file(s) selected</span>}
               </div>
             </div>
 
