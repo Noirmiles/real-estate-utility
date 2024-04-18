@@ -169,8 +169,7 @@ export default function Houses() {
       }
     };
 
-     // Function to handle form submission
-     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
     
       // Validate form fields
@@ -185,25 +184,24 @@ export default function Houses() {
       }
     
       try {
-        const formData = new FormData();
-        formData.append('listPrice', listPrice);
-        formData.append('state', state);
-        formData.append('city', city);
-        formData.append('address', address);
-        formData.append('squareFootage', squareFootage);
-        formData.append('numberOfRooms', numberOfRooms);
-        formData.append('numberOfBathrooms', numberOfBathrooms);
-        formData.append('propertyType', selectedPropertyType);
-    
-        if (images) {
-          for (let i = 0; i < images.length; i++) {
-            formData.append('images', images[i]);
-          }
-        }
+        const formData = {
+          listPrice,
+          state,
+          city,
+          address,
+          squareFootage,
+          numberOfRooms,
+          numberOfBathrooms,
+          propertyType: selectedPropertyType,
+          images: images ? Array.from(images).map((image) => image.name) : undefined,
+        };
     
         const response = await fetch('/houses/createProperty', {
           method: 'POST',
-          body: formData,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
         });
     
         if (response.ok) {
@@ -222,11 +220,18 @@ export default function Houses() {
           setIsPopupOpen(false);
           // Display the alert
           alert('Property created successfully!');
+          // Refetch the listings data
+          const listingsResponse = await fetch('/houses');
+          const listingsData = await listingsResponse.json();
+          setListings(listingsData);
         } else {
-          console.error('Error creating property');
+          const errorData = await response.json();
+          console.error('Error creating property:', errorData.error);
+          // Handle the error, show an error message, etc.
         }
       } catch (error) {
         console.error('Error creating property:', error);
+        // Handle the error, show an error message, etc.
       }
     };
 
@@ -464,7 +469,6 @@ export default function Houses() {
       </div>
       <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3"></div>
       <div className="px-5 ">
-        <Cardsv2 />
         <Cardsv2 />
       </div>
 

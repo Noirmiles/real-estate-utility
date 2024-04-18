@@ -1,3 +1,4 @@
+// app/houses/createProperty/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
@@ -22,8 +23,12 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({ property }, { status: 201 });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error creating property:', error);
-    return NextResponse.json({ error: 'An error occurred while creating the property.' }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json({ error: 'An error occurred while creating the property.', details: error.message }, { status: 500 });
+    } else {
+      return NextResponse.json({ error: 'An unknown error occurred while creating the property.' }, { status: 500 });
+    }
   }
 }
