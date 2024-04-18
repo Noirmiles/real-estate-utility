@@ -1,9 +1,6 @@
-import {Button} from "@/components/ui/button"
-import Cards from '@/components/Cards';
-import SearchBar from '@/components/searchBar';
+import Wave from "@/components/Wave";
+import React from "react";
 
-import Background from '@/components/background';
-import Wave from '@/components/Wave';
 
 export default function Home() {
 
