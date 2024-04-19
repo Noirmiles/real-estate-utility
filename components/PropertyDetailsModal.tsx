@@ -34,6 +34,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleRequestShowing = () => {
     setShowingRequestOpen(true);
@@ -76,6 +77,18 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
     }, 2000);
   };
 
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? property.images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === property.images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   return (
     <>
       <Modal
@@ -88,18 +101,59 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-3xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <div className="mb-4">
-                {Array.isArray(property.images) &&
-                  property.images.slice(0, 5).map((image, index) => (
+              <div className="mb-4 relative">
+                {Array.isArray(property.images) && property.images.length > 0 && (
+                  <>
                     <Image
-                      key={`${property.id}-${index}`}
-                      src={typeof image === 'string' ? image : (image as { url: string }).url}
-                      alt={`Property Image ${index + 1}`}
+                      key={property.images[currentImageIndex]}
+                      src={`/images/${property.images[currentImageIndex]}`}
+                      alt={`Property Image ${currentImageIndex + 1}`}
                       width={500}
                       height={300}
-                      className="w-full h-64 object-cover mb-2"
+                      className="w-full h-64 object-cover"
                     />
-                  ))}
+                    <div className="absolute top-1/2 transform -translate-y-1/2 flex justify-between w-full px-4">
+                      <button
+                        className="bg-gray-300 text-gray-800 rounded-full p-2 hover:bg-gray-400"
+                        onClick={handlePrevImage}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 19l-7-7 7-7"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        className="bg-gray-300 text-gray-800 rounded-full p-2 hover:bg-gray-400"
+                        onClick={handleNextImage}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
             <div>
@@ -117,15 +171,23 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
               <p className="mb-2">
                 <span className="font-semibold">Square Footage:</span> {property.squareFootage}
               </p>
+              <p className="mb-2">
+                <span className="font-semibold">Dwelling Type:</span> {property.propertyType}
+              </p>
               {/* Add any additional property details here */}
             </div>
           </div>
-          <div className="flex justify-end mt-6">
+          <div className="flex justify-end mt-6">         
+          <button
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 mr-2"
+            >
+              Delete
+            </button>          
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-4"
               onClick={handleRequestShowing}
             >
-              Request a Showing
+              Schedule a Showing
             </button>
             <button
               className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
@@ -145,7 +207,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 <p className="text-lg font-semibold">Your showing request has been sent to the listing agent.</p>
               </div>
             )}
-            <h2 className="text-2xl font-bold mb-4">Request a Showing</h2>
+            <h2 className="text-2xl font-bold mb-4">Schedule a Showing</h2>
             <div>
               <Calendar
                 onChange={(value) => handleDateChange(value instanceof Date ? value : null)}

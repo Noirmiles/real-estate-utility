@@ -184,24 +184,25 @@ export default function Houses() {
       }
     
       try {
-        const formData = {
-          listPrice,
-          state,
-          city,
-          address,
-          squareFootage,
-          numberOfRooms,
-          numberOfBathrooms,
-          propertyType: selectedPropertyType,
-          images: images ? Array.from(images).map((image) => image.name) : undefined,
-        };
+    const formData = new FormData();
+    formData.append('listPrice', listPrice);
+    formData.append('state', state);
+    formData.append('city', city);
+    formData.append('address', address);
+    formData.append('squareFootage', squareFootage);
+    formData.append('numberOfRooms', numberOfRooms);
+    formData.append('numberOfBathrooms', numberOfBathrooms);
+    formData.append('propertyType', selectedPropertyType);
+
+    if (images) {
+      Array.from(images).forEach((image) => {
+        formData.append('images', image);
+      });
+    }
     
         const response = await fetch('/houses/createProperty', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
+          body: formData,
         });
     
         if (response.ok) {
@@ -396,10 +397,10 @@ export default function Houses() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Property Type</option>
-                  <option value="standalone">Standalone House</option>
-                  <option value="townhouse">Townhouse</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="duplex">Duplex</option>
+                  <option value="Standalone House">Standalone House</option>
+                  <option value="Townhouse">Townhouse</option>
+                  <option value="Apartment">Apartment</option>
+                  <option value="Duplex">Duplex</option>
                 </select>
               </div>
   

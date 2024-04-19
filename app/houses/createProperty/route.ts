@@ -1,12 +1,34 @@
 // app/houses/createProperty/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   try {
-    const { listPrice, state, city, address, squareFootage, numberOfRooms, numberOfBathrooms, propertyType, images } = await request.json();
+    const formData = await request.formData();
+
+    const listPrice = formData.get('listPrice') as string;
+    const state = formData.get('state') as string;
+    const city = formData.get('city') as string;
+    const address = formData.get('address') as string;
+    const squareFootage = formData.get('squareFootage') as string;
+    const numberOfRooms = formData.get('numberOfRooms') as string;
+    const numberOfBathrooms = formData.get('numberOfBathrooms') as string;
+    const propertyType = formData.get('propertyType') as string;
+    const images = formData.getAll('images') as File[];
+
+    const imageNames: string[] = [];
+
+    for (const image of images) {
+      const imageName = image.name;
+      const imagePath = path.join(process.cwd(), 'public', 'images', imageName);
+      const buffer = Buffer.from(await image.arrayBuffer());
+      await fs.writeFile(imagePath, buffer);
+      imageNames.push(imageName);
+    }
 
     const property = await prisma.property.create({
       data: {
@@ -18,7 +40,7 @@ export async function POST(request: NextRequest) {
         numberOfRooms: parseInt(numberOfRooms),
         numberOfBathrooms: parseInt(numberOfBathrooms),
         propertyType,
-        images: images ? { fileNames: images } : undefined,
+        images: imageNames,
       },
     });
 
