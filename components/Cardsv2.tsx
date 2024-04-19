@@ -48,7 +48,27 @@ const Cardsv2 = () => {
     setIsModalOpen(false);
   };
 
-  
+  const handleDeleteProperty = async (propertyId: number) => {
+    try {
+      const response = await fetch(`/api/properties/${propertyId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Remove the deleted property from the listings state
+        setListings((prevListings) =>
+          prevListings.filter((listing) => listing.id !== propertyId)
+        );
+      } else {
+        console.error('Error deleting property:', response.statusText);
+        // Handle the error, show an error message, etc.
+      }
+    } catch (error) {
+      console.error('Error deleting property:', error);
+      // Handle the error, show an error message, etc.
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {listings.map((listing) => (
@@ -83,6 +103,7 @@ const Cardsv2 = () => {
           property={selectedProperty}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
+          onDelete={handleDeleteProperty}
         />
       )}
     </div>
