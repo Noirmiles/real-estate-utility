@@ -1,91 +1,148 @@
-import {Button} from "@/components/ui/button"
-import Cards from '@/components/Cards';
-import SearchBar from '@/components/searchBar';
-
-import Background from '@/components/background';
-import Wave from '@/components/Wave';
+import Wave from "@/components/Wave";
+import React from "react";
+import EmailLink from "./EmailLink";
 
 export default function Home() {
 
-  const formStyle = {
-    margin: 'auto',
-    height: '100vh',
-    backgroundColor: 'rgba(255, 255, 255, 1)', 
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0)', 
-    marginTop: '250px',
-  };  
-
   return (
-    <div>
-      
-      <div className="p-10 py-20 text-white text-3xl font-bold text-center ">
-            Agents. Tours. Homes.
+    <div className="bg-gradient-to-r from-gray-900 to-black py-20">
+      <div className="bg-gradient-to-r from-gray-900 to-black py-20">
+        <div className="text-white text-4xl font-bold text-center font-serif mb-10">
+          Our Agents
         </div>
 
-      <Background/>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
+          {/* Agency 1: Premier Homes */}
+          <div className="text-center bg-white rounded-lg shadow-md p-6 relative">
+            <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-r from-gray-400 to-gray-600 rounded-t-lg"></div>
+            <h2 className="text-2xl font-bold mb-4">Premier Homes</h2>
+            {/* Bio of First Agent (Cady Harris) */}
+            <div className="profile-container mb-8">
+              <div className="relative w-40 h-40 mx-auto mb-4">
+                <img
+                  src="https://i.pinimg.com/originals/5f/fb/7f/5ffb7f89613d60bc194491716c3e3755.jpg"
+                  alt="Cady Harris"
+                  className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Cady Harris</h2>
+              <p className="text-gray-600 mb-1">Hometown: Birmingham, AL</p>
+              <p className="text-gray-600 mb-1">Dedication, expertise, and a passion for finding your perfect home.</p>
+              <p className="text-gray-600 font-bold mb-1">21 Homes Sold</p>
+              <p className="text-gray-600 break-words">
+                Email: <EmailLink email="cadyharrissellls@gmail.com" />
+              </p>
+            </div>
 
-      <main className="m-2 p-8 px-36 items-center flex-grow">
-        <SearchBar/>
-      </main>
+            {/* Bio of Second Agent (Brad Brown) */}
+            <div className="profile-container">
+              <div className="relative w-40 h-40 mx-auto mb-4">
+                <img
+                  src="https://i.pinimg.com/originals/90/c0/51/90c051810494297069df2b6b9a450c15.jpg"
+                  alt="Brad Brown"
+                  className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+                  style={{ objectPosition: '0 -3px' }}
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Brad Brown</h2>
+              <p className="text-gray-600 mb-1">Hometown: Tampa, FL</p>
+              <p className="text-gray-600 mb-1">Exceeding your expectations, one home at a time.</p>
+              <p className="text-gray-600 font-bold mb-1">11 Homes Sold</p>
+              <p className="text-gray-600 break-words">
+                Email: <EmailLink email="bradbrownhomes@gmail.com" />
+              </p>
+            </div>
+          </div>
 
-      
+          {/* Agency 2: Luxury Living */}
+          <div className="text-center bg-white rounded-lg shadow-md p-6 relative">
+            <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-r from-gray-400 to-gray-600 rounded-t-lg"></div>
+            <h2 className="text-2xl font-bold mb-4">Luxury Living</h2>
+            {/* Bio of Third Agent (Susan Bates) */}
+            <div className="profile-container mb-8">
+              <div className="relative w-40 h-40 mx-auto mb-4">
+                <img
+                  src="https://i.pinimg.com/originals/e3/73/6e/e3736ec197e941eda6d63c4a9234ea15.jpg"
+                  alt="Susan Bates"
+                  className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+                  style={{ objectPosition: '0 -3px' }}
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Susan Bates</h2>
+              <p className="text-gray-600 mb-1">Hometown: New York City, NY</p>
+              <p className="text-gray-600 mb-1">Unmatched market knowledge and a commitment to your success.</p>
+              <p className="text-gray-600 font-bold mb-1">51 Homes Sold</p>
+              <p className="text-gray-600 break-words">
+                Email: <EmailLink email="susanbateshomes@gmail.com" />
+              </p>
+            </div>
 
-      <div style={formStyle}>
-      
-      <div className = " flex flex-col  min-h-screen">
-        <section className= " flex flex-col items-left text-left gap-8 p-10">
-          <p className= "font-bold text-xl ">
-            Trending Homes on Project Z
-          <p className = "text-sm font-thin ">
-              Viewed and saved the most in the area over the last 24 hours
-          </p>
-          </p>
+            {/* Bio of Fourth Agent (Lucas Thomas) */}
+            <div className="profile-container">
+              <div className="relative w-40 h-40 mx-auto mb-4">
+                <img
+                  src="https://getgoodhead.com/wp-content/uploads/2018/04/Collin-Wasiak-.jpg"
+                  alt="Lucas Thomas"
+                  className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+                  style={{ objectPosition: '0 -5px' }}
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Lucas Thomas</h2>
+              <p className="text-gray-600 mb-1">Hometown: Huntsville, AL</p>
+              <p className="text-gray-600 mb-1">Guiding you home with integrity and professionalism.</p>
+              <p className="text-gray-600 font-bold mb-1">68 Homes Sold</p>
+              <p className="text-gray-600 break-words">
+                Email: <EmailLink email="lucasthomas@gmail.com" />
+              </p>
+            </div>
+          </div>
 
+          {/* Agency 3: Prestige Properties */}
+          <div className="text-center bg-white rounded-lg shadow-md p-6 relative">
+            <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-r from-gray-400 to-gray-600 rounded-t-lg"></div>
+            <h2 className="text-2xl font-bold mb-4">Prestige Properties</h2>
+            {/* Bio of Fifth Agent (Becca Lisa) */}
+            <div className="profile-container mb-8">
+              <div className="relative w-40 h-40 mx-auto mb-4">
+                <img
+                  src="https://i.pinimg.com/736x/12/90/b0/1290b009c10a37259ad562b0bcf4d4f8.jpg"
+                  alt="Becca Lisa"
+                  className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+                  style={{ objectPosition: '0 -5px' }}
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Becca Lisa</h2>
+              <p className="text-gray-600 mb-1">Hometown: Los Angeles, CA</p>
+              <p className="text-gray-600 mb-1">Turning your real estate dreams into reality.</p>
+              <p className="text-gray-600 font-bold mb-1">38 Homes Sold</p>
+              <p className="text-gray-600 break-words">
+                Email: <EmailLink email="beccalisahomes@gmail.com" />
+              </p>
+            </div>
 
-        </section>
-
-        <Wave/>
-
-
-        <footer className = "text-center p-3">
-        <div className = "text-xs ">
-        Project Z Group is committed to ensuring digital accessibility for individuals with disabilities. 
-        We are continuously working to improve the accessibility of our web experience for everyone, and we welcome feedback and accommodation requests. 
-        If you wish to report an issue or seek an accommodation, please let us know.
+            {/* Bio of Sixth Agent (Kim Thompkins) */}
+            <div className="profile-container">
+              <div className="relative w-40 h-40 mx-auto mb-4">
+                <img
+                  src="https://www.avisonyoung.us/documents/92502/649587/Madison%2C+Lindsey.jpg/f2d3d6b6-5ba8-45a8-9126-65a2a0b2e130?t=-1465624201"
+                  alt="Kim Thompkins"
+                  className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+                  style={{ objectPosition: '0 -7px' }}
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Kim Thompkins</h2>
+              <p className="text-gray-600 mb-1">Hometown: Boston, MA</p>
+              <p className="text-gray-600 mb-1">Experience, trust, and personalized service for all your real estate needs.</p>
+              <p className="text-gray-600 font-bold mb-1">55 Homes Sold</p>
+              <p className="text-gray-600 break-words">
+                Email: <EmailLink email="kimthompkinshomes@gmail.com" />
+              </p>
+            </div>
+          </div>
         </div>
-        <div className ="p-5 text-xs ">Project Z Inc. holds real estate brokerage licenses in multiple states. Project Z (USA), Inc. holds real estate brokerage licenses in multiple provinces.</div>
-        <div className = "text-xs ">§ 442-H New York Standard Operating Procedures<div/>
-        <div className = "text-xs ">§ New York Fair Housing Notice</div>
-        <div className = "text-xs ">TREC: Information about brokerage services, Consumer protection notice</div>
-        <div className = "text-xs ">California DRE #1522444</div>
-        </div>
-
-        <div className = "p-10 text-base">
-        Contact Project Z, Inc. Brokerage
-        </div>
-
-        <div className = "text-xs ">
-        For listings in USA, the trademarks REALTOR®, REALTORS®, and the REALTOR® logo are controlled 
-        by The USA Real Estate Association (CREA) and identify real estate professionals who are members 
-        of CREA. The trademarks MLS®, Multiple Listing Service® and the associated logos are owned by CREA and 
-        identify the quality of services provided by real estate professionals who are members of CREA. 
-        Used under license.
-        </div>
-
-        <div className = "flex justify-center space-x-4 m-10">
-          <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" aria-label="Download on the App Store">
-            <img src="https://s.zillowstatic.com/pfs/static/app-store-badge.svg"  alt="App store logo"  height="32" width="96"  title="Download on the App Store" loading="lazy" />
-          </a>
-
-          <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" aria-label="Download on the App Store">
-          <img src="https://s.zillowstatic.com/pfs/static/google-play-badge.svg"  alt="Google play logo"  height="32" width="108"  title="Get it on Google Play" loading="lazy" decoding="async"></img>
-          </a>
-        </div>
-
-        </footer>
-
       </div>
-      </div>
+
+      {/* Rest of the code remains the same */}
     </div>
   );
 }
