@@ -14,6 +14,8 @@ import {
 
 import logo from '@/public/Logo_Zest.png'
 import Image from 'next/image'
+import * as AuthService from '@/app/services/auth.service';
+import { IUser } from "@/app/types/user-types";
 
 import background from '@/cityscape.jpg'
 
@@ -23,13 +25,24 @@ import background from '@/cityscape.jpg'
 export default function Nav() {
     const [isClick, setisClick] = useState(false);
     const [isSignInDropdownVisible, setIsSignInDropdownVisibile] = useState(false);
-    const [currentUser,setCurrentUser]=useState<IUser | null>(null);
-
+    const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+    
+    
+    useEffect(() => {
+        const user = AuthService.getCurrentUser();
+        setCurrentUser(user);
+    }, []);
 
     const toogleSignInDropdown = () => {
         setIsSignInDropdownVisibile((prev) => !prev);
     };
 
+        const logOut = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.preventDefault();
+        AuthService.logout();
+        setCurrentUser(null);
+        window.location.href ='/';
+    };
     const formStyle = {
         margin: 'auto',
         backgroundColor: 'rgba(255, 255, 255, 1)',
@@ -64,7 +77,15 @@ export default function Nav() {
                             </a>
                             <a href="/" className="text-black text-xl hover:drop-shadow-lg p-4 hover:opacity-75  rounded-lg ">
                                 Help
+                            
                             </a>
+                            
+                        {currentUser ? (
+                            <>
+                                <a href="/portal" className="text-black text-2xl hover:shadow-lg p-4 rounded-lg">Profile</a>
+                                <a href="/" onClick={logOut} className="text-black text-2xl hover:shadow-lg p-4 rounded-lg">Log Out</a>
+                            </>
+                        ) : (
                             <button onClick={toogleSignInDropdown} className=" text-black text-xl hover:drop-shadow-lg p-4 hover:opacity-75 rounded-lg">
                                 Sign in
 
@@ -81,12 +102,16 @@ export default function Nav() {
                                     </div>
                                 )}
                             </button>
+                        )}
                             <div className="flex">
                                 <ModeToggle />
                             </div>
 
                         </div>
                     </div>
-                </div>
+                    </div>
         </nav>
+    )
     }
+
+
