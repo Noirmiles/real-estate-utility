@@ -3,20 +3,14 @@ import React from "react";
 import EmailLink from "./EmailLink";
 
 export default function Home() {
-  const formStyle = {
-    margin: "auto",
-    height: "100vh",
-    backgroundColor: "rgba(255, 255, 255, 1)",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0)",
-    marginTop: "250px",
-  };
 
   return (
-    <div>
+    <div className="bg-gradient-to-r from-gray-900 to-black py-20">
       <div className="bg-gradient-to-r from-gray-900 to-black py-20">
         <div className="text-white text-4xl font-bold text-center font-serif mb-10">
           Our Agents
         </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
           {/* Agency 1: Premier Homes */}
           <div className="text-center bg-white rounded-lg shadow-md p-6 relative">
@@ -34,7 +28,7 @@ export default function Home() {
               <h2 className="text-2xl font-bold mb-2">Cady Harris</h2>
               <p className="text-gray-600 mb-1">Hometown: Birmingham, AL</p>
               <p className="text-gray-600 mb-1">Dedication, expertise, and a passion for finding your perfect home.</p>
-              <p className="text-gray-600 font-bold mb-1">21 Homes Sold!!!</p>
+              <p className="text-gray-600 font-bold mb-1">21 Homes Sold</p>
               <p className="text-gray-600 break-words">
                 Email: <EmailLink email="cadyharrissellls@gmail.com" />
               </p>
@@ -53,7 +47,7 @@ export default function Home() {
               <h2 className="text-2xl font-bold mb-2">Brad Brown</h2>
               <p className="text-gray-600 mb-1">Hometown: Tampa, FL</p>
               <p className="text-gray-600 mb-1">Exceeding your expectations, one home at a time.</p>
-              <p className="text-gray-600 font-bold mb-1">11 Homes Sold!!!</p>
+              <p className="text-gray-600 font-bold mb-1">11 Homes Sold</p>
               <p className="text-gray-600 break-words">
                 Email: <EmailLink email="bradbrownhomes@gmail.com" />
               </p>
@@ -96,7 +90,7 @@ export default function Home() {
               <h2 className="text-2xl font-bold mb-2">Lucas Thomas</h2>
               <p className="text-gray-600 mb-1">Hometown: Huntsville, AL</p>
               <p className="text-gray-600 mb-1">Guiding you home with integrity and professionalism.</p>
-              <p className="text-gray-600 font-bold mb-1">68 Homes Sold!!!</p>
+              <p className="text-gray-600 font-bold mb-1">68 Homes Sold</p>
               <p className="text-gray-600 break-words">
                 Email: <EmailLink email="lucasthomas@gmail.com" />
               </p>
@@ -120,7 +114,7 @@ export default function Home() {
               <h2 className="text-2xl font-bold mb-2">Becca Lisa</h2>
               <p className="text-gray-600 mb-1">Hometown: Los Angeles, CA</p>
               <p className="text-gray-600 mb-1">Turning your real estate dreams into reality.</p>
-              <p className="text-gray-600 font-bold mb-1">38 Homes Sold!!!</p>
+              <p className="text-gray-600 font-bold mb-1">38 Homes Sold</p>
               <p className="text-gray-600 break-words">
                 Email: <EmailLink email="beccalisahomes@gmail.com" />
               </p>
@@ -139,7 +133,7 @@ export default function Home() {
               <h2 className="text-2xl font-bold mb-2">Kim Thompkins</h2>
               <p className="text-gray-600 mb-1">Hometown: Boston, MA</p>
               <p className="text-gray-600 mb-1">Experience, trust, and personalized service for all your real estate needs.</p>
-              <p className="text-gray-600 font-bold mb-1">55 Homes Sold!!!</p>
+              <p className="text-gray-600 font-bold mb-1">55 Homes Sold</p>
               <p className="text-gray-600 break-words">
                 Email: <EmailLink email="kimthompkinshomes@gmail.com" />
               </p>

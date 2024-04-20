@@ -1,6 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import Cards from '@/components/Cards';
+import Card from '@/components/Card';
 import SearchBar from '@/components/searchBar';
 
 import Background from '@/components/background';
@@ -12,7 +12,7 @@ export default function Home() {
 
   const formStyle = {
     margin: 'auto',
-    backgroundColor: 'rgba(255, 255, 255, 1)',
+    backgroundColor: 'rgba(255, 255, 255, 1)', 
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0)',
     marginTop: '650px',
   };
@@ -22,7 +22,7 @@ export default function Home() {
 
 
   return (
-    <div className= "">
+    <div className="">
 
       <Background />
 
@@ -52,7 +52,7 @@ export default function Home() {
 
 
         <ParallaxLayer>
-          <div style={formStyle}>
+          <div style={formStyle} className="bg-gradient-to-r f text-black">
 
             <div className=" flex flex-col  min-h-screen">
               <section className=" flex flex-col items-left text-left gap-8 p-10">
@@ -66,9 +66,12 @@ export default function Home() {
 
               </section>
 
-              <Wave />
-
-
+              <div className="flex flex-wrap justify-between m-4 mb-24">
+                <Card/>
+                <Card/>
+                <Card/>
+                <Card/>   
+              </div>
 
               <footer className="text-center p-3">
                 <div className="text-xs ">

@@ -1,30 +1,87 @@
 "use client"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/cardv2"
-
 import home1 from "@/public/home1.jpg"
 
 import "./card.css"
 
 import Link from 'next/link';
-import Image from 'next/image'
 
 import star1 from "@/public/utility-imgs/star.svg"
 import star2 from "@/public/utility-imgs/star-half-fill.svg"
 import star3 from "@/public/utility-imgs/star-no-fill.svg"
 
+import React, { useEffect, useState } from 'react';
+import PropertyDetailsModal from './PropertyDetailsModal';
+import Image from 'next/image';
+import { PrismaClient } from '@prisma/client';
+
+interface Listing {
+  id: number;
+  listPrice: number;
+  state: string;
+  city: string;
+  address: string;
+  squareFootage: number;
+  numberOfRooms: number;
+  numberOfBathrooms: number;
+  propertyType: string;
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+const prisma = new PrismaClient();
+
+const Card = () => {
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [selectedProperty, setSelectedProperty] = useState<Listing | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const response = await fetch('/houses/listings');
+        const data: Listing[] = await response.json();
+        setListings(data);
+      } catch (error) {
+        console.error('Error fetching listings:', error);
+      }
+    };
+    fetchListings();
+  }, []);
+
+  const handleOpenModal = (property: Listing) => {
+    setSelectedProperty(property);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProperty(null);
+    setIsModalOpen(false);
+  };
+
+  const handleDeleteProperty = async (propertyId: number) => {
+    try {
+      const response = await fetch(`/api/properties/${propertyId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Remove the deleted property from the listings state
+        setListings((prevListings) =>
+          prevListings.filter((listing) => listing.id !== propertyId)
+        );
+      } else {
+        console.error('Error deleting property:', response.statusText);
+        // Handle the error, show an error message, etc.
+      }
+    } catch (error) {
+      console.error('Error deleting property:', error);
+      // Handle the error, show an error message, etc.
+    }
+  };
 
 
-
-
-export default function Cards() {
   return (
 
     <div className="card">
@@ -87,41 +144,6 @@ export default function Cards() {
     </div>
 
   )
-}
+};
 
-{/*<div className=" gap-4 flex px-3 py-3">
-  <Link href= "/app/pages/page2.tsx">
-  <Image className = "rounded-image"
-                alt="home1"
-                src={home1}
-                placeholder="blur"
-                quality={100}
-                width={300}
-                height={150}
-                style={{ marginBottom: "-5px",
-                      zIndex: "-1"}}
-    />
-  <div className= "card-css">
-  <Card className= "col-3 col-md-6">
-  <CardFooter>
-    <div className="flex p-2">
-      <b className="price-css" >
-        $400,000 
-      </b>
-      
-  
-    
-    </div>
-  </CardFooter>
-  </Card>
-  </div>
-  </Link>
-
- 
-
-  
-
-</div>
-    
-    )
-}*/}
+export default Card;

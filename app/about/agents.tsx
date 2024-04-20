@@ -2,7 +2,6 @@
 //import React, { constructor } from 'react'
 import './styles.css';
 import {Button} from "@/components/ui/button"
-import Cards from '@/components/Cards';
 import SearchBar from '@/components/searchBar';
 
 import Background from '@/components/background';

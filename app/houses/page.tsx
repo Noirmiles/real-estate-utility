@@ -22,7 +22,7 @@ export default function Houses() {
   const [squareFootageError, setSquareFootageError] = useState('');
   const [numberOfRoomsError, setNumberOfRoomsError] = useState('');
   const [numberOfBathroomsError, setNumberOfBathroomsError] = useState('');
-  
+
   // Functions to verify valid inputs
   const validateListPrice = (value: string) => {
     const price = parseFloat(value);
@@ -32,7 +32,7 @@ export default function Houses() {
       setListPriceError('');
     }
   };
-  
+
   const validateSquareFootage = (value: string) => {
     const footage = parseFloat(value);
     if (isNaN(footage) || footage <= 0) {
@@ -41,7 +41,7 @@ export default function Houses() {
       setSquareFootageError('');
     }
   };
-  
+
   const validateNumberOfRooms = (value: string) => {
     const rooms = parseInt(value);
     if (isNaN(rooms) || rooms <= 0) {
@@ -50,7 +50,7 @@ export default function Houses() {
       setNumberOfRoomsError('');
     }
   };
-  
+
   const validateNumberOfBathrooms = (value: string) => {
     const bathrooms = parseInt(value);
     if (isNaN(bathrooms) || bathrooms <= 0) {
@@ -59,7 +59,7 @@ export default function Houses() {
       setNumberOfBathroomsError('');
     }
   };
-  
+
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     const menuRect = menuRef.current?.getBoundingClientRect();
@@ -91,10 +91,10 @@ export default function Houses() {
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isDragging, dragOffset]);
-  
+
   // Reference to the notification div element
   const notificationRef = useRef<HTMLDivElement>(null);
-  
+
   // Effect hook to handle clicking outside the notification menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -102,15 +102,15 @@ export default function Houses() {
         setShowNotifications(false);
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
-  
+
     // Cleanup function to remove the event listener
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-   
+
   // Function to toggle the popup state
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -133,7 +133,7 @@ export default function Houses() {
 
   // Component for the popup form
   const Popup = () => {
-     // State variables for form fields
+    // State variables for form fields
     const [selectedPropertyType, setSelectedPropertyType] = useState('');
     const [listPrice, setListPrice] = useState('');
     const [state, setState] = useState('');
@@ -171,40 +171,40 @@ export default function Houses() {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-    
+
       // Validate form fields
       validateListPrice(listPrice);
       validateSquareFootage(squareFootage);
       validateNumberOfRooms(numberOfRooms);
       validateNumberOfBathrooms(numberOfBathrooms);
-    
+
       // Check if there are any errors
       if (listPriceError || squareFootageError || numberOfRoomsError || numberOfBathroomsError) {
         return;
       }
-    
-      try {
-    const formData = new FormData();
-    formData.append('listPrice', listPrice);
-    formData.append('state', state);
-    formData.append('city', city);
-    formData.append('address', address);
-    formData.append('squareFootage', squareFootage);
-    formData.append('numberOfRooms', numberOfRooms);
-    formData.append('numberOfBathrooms', numberOfBathrooms);
-    formData.append('propertyType', selectedPropertyType);
 
-    if (images) {
-      Array.from(images).forEach((image) => {
-        formData.append('images', image);
-      });
-    }
-    
+      try {
+        const formData = new FormData();
+        formData.append('listPrice', listPrice);
+        formData.append('state', state);
+        formData.append('city', city);
+        formData.append('address', address);
+        formData.append('squareFootage', squareFootage);
+        formData.append('numberOfRooms', numberOfRooms);
+        formData.append('numberOfBathrooms', numberOfBathrooms);
+        formData.append('propertyType', selectedPropertyType);
+
+        if (images) {
+          Array.from(images).forEach((image) => {
+            formData.append('images', image);
+          });
+        }
+
         const response = await fetch('/houses/createProperty', {
           method: 'POST',
           body: formData,
         });
-    
+
         if (response.ok) {
           console.log('Property created successfully');
           // Reset form fields
@@ -255,70 +255,70 @@ export default function Houses() {
                       setListPrice(e.target.value);
                       validateListPrice(e.target.value);
                     }}
-                    
+
                   />
                 </div>
                 <div>
-  <label htmlFor="state" className="block font-medium mb-1">State</label>
-  <select
-    id="state"
-    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-    value={state}
-    onChange={(e) => setState(e.target.value)}
-  >
-    <option value="">Select a state</option>
-    <option value="AL">Alabama</option>
-    <option value="AK">Alaska</option>
-    <option value="AZ">Arizona</option>
-    <option value="AR">Arkansas</option>
-    <option value="CA">California</option>
-    <option value="CO">Colorado</option>
-    <option value="CT">Connecticut</option>
-    <option value="DE">Delaware</option>
-    <option value="FL">Florida</option>
-    <option value="GA">Georgia</option>
-    <option value="HI">Hawaii</option>
-    <option value="ID">Idaho</option>
-    <option value="IL">Illinois</option>
-    <option value="IN">Indiana</option>
-    <option value="IA">Iowa</option>
-    <option value="KS">Kansas</option>
-    <option value="KY">Kentucky</option>
-    <option value="LA">Louisiana</option>
-    <option value="ME">Maine</option>
-    <option value="MD">Maryland</option>
-    <option value="MA">Massachusetts</option>
-    <option value="MI">Michigan</option>
-    <option value="MN">Minnesota</option>
-    <option value="MS">Mississippi</option>
-    <option value="MO">Missouri</option>
-    <option value="MT">Montana</option>
-    <option value="NE">Nebraska</option>
-    <option value="NV">Nevada</option>
-    <option value="NH">New Hampshire</option>
-    <option value="NJ">New Jersey</option>
-    <option value="NM">New Mexico</option>
-    <option value="NY">New York</option>
-    <option value="NC">North Carolina</option>
-    <option value="ND">North Dakota</option>
-    <option value="OH">Ohio</option>
-    <option value="OK">Oklahoma</option>
-    <option value="OR">Oregon</option>
-    <option value="PA">Pennsylvania</option>
-    <option value="RI">Rhode Island</option>
-    <option value="SC">South Carolina</option>
-    <option value="SD">South Dakota</option>
-    <option value="TN">Tennessee</option>
-    <option value="TX">Texas</option>
-    <option value="UT">Utah</option>
-    <option value="VT">Vermont</option>
-    <option value="VA">Virginia</option>
-    <option value="WA">Washington</option>
-    <option value="WV">West Virginia</option>
-    <option value="WI">Wisconsin</option>
-    <option value="WY">Wyoming</option>
-  </select>
-</div>
+                  <label htmlFor="state" className="block font-medium mb-1">State</label>
+                  <select
+                    id="state"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                  >
+                    <option value="">Select a state</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                  </select>
+                </div>
                 <div>
                   <label htmlFor="city" className="block font-medium mb-1">City/County</label>
                   <input
@@ -342,7 +342,7 @@ export default function Houses() {
                   />
                 </div>
               </div>
-  
+
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label htmlFor="square-footage" className="block font-medium mb-1">Square Footage</label>
@@ -387,7 +387,7 @@ export default function Houses() {
                   />
                 </div>
               </div>
-  
+
               <div>
                 <label htmlFor="property-type" className="block font-medium mb-1">Property Type</label>
                 <select
@@ -403,21 +403,21 @@ export default function Houses() {
                   <option value="Duplex">Duplex</option>
                 </select>
               </div>
-  
+
               <div>
-              <label htmlFor="image-upload" className="block font-medium mb-1">Upload Images</label>
-              <div className="flex items-center">
-                <input
-                  type="file"
-                  id="image-upload"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {images && images.length > 0 && <span className="ml-2">{images.length} file(s) selected</span>}
+                <label htmlFor="image-upload" className="block font-medium mb-1">Upload Images</label>
+                <div className="flex items-center">
+                  <input
+                    type="file"
+                    id="image-upload"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  {images && images.length > 0 && <span className="ml-2">{images.length} file(s) selected</span>}
+                </div>
               </div>
-            </div>
 
               <div className="text-right">
                 <Button
@@ -437,6 +437,8 @@ export default function Houses() {
   return (
     <div>
       {/*<Background/> */}
+      <div className="absolute top-0 z-[-2] h-screen w-screen bg-gradient-to-r from-gray-900 to-black"></div>
+
       <div className="flex items-center h-16 p-6">
         <div className="flex-shrink-0">
           <a className="text-white text-xl font-bold text-center drop-shadow-lg">
@@ -466,65 +468,64 @@ export default function Houses() {
         <SearchBar />
         <SearchMenu />
       </div>
-      <div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(12,198,43,0.3),rgba(255,245,230,60))]">
-      </div>
+
       <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3"></div>
       <div className="px-5 ">
         <Card></Card>
       </div>
 
       {showNotifications && (
-  <div
-    ref={menuRef}
-    className="fixed bg-white text-gray-800 rounded-md shadow-lg w-80 overflow-hidden"
-    style={{ left: '82%', top: '20.5%', transform: 'translate(-50%, -50%)' }}
-  >
-    <div
-      className="px-4 py-2 bg-gray-100 cursor-move"
-      onMouseDown={handleMouseDown}
-    >
-      <h4 className="text-lg font-semibold">Notifications</h4>
-    </div>
-    <div className="px-4 py-2 max-h-60 overflow-y-auto">
-      <ul className="divide-y divide-gray-200">
-        <li className="py-2">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <svg className="h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-900">You have a new Showing Request!</p>
-              <p className="mt-1 text-sm text-gray-500">Jun 10, 2023</p>
-            </div>
+        <div
+          ref={menuRef}
+          className="fixed bg-white text-gray-800 rounded-md shadow-lg w-80 overflow-hidden"
+          style={{ left: '82%', top: '20.5%', transform: 'translate(-50%, -50%)' }}
+        >
+          <div
+            className="px-4 py-2 bg-gray-100 cursor-move"
+            onMouseDown={handleMouseDown}
+          >
+            <h4 className="text-lg font-semibold">Notifications</h4>
           </div>
-        </li>
-        <li className="py-2">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <svg className="h-6 w-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-900">New Listing Added.</p>
-              <p className="mt-1 text-sm text-gray-500">Jun 9, 2023</p>
-            </div>
+          <div className="px-4 py-2 max-h-60 overflow-y-auto">
+            <ul className="divide-y divide-gray-200">
+              <li className="py-2">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <svg className="h-6 w-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-medium text-gray-900">You have a new Showing Request!</p>
+                    <p className="mt-1 text-sm text-gray-500">Jun 10, 2023</p>
+                  </div>
+                </div>
+              </li>
+              <li className="py-2">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <svg className="h-6 w-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-medium text-gray-900">New Listing Added.</p>
+                    <p className="mt-1 text-sm text-gray-500">Jun 9, 2023</p>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
-        </li>
-      </ul>
-    </div>
-    <div className="px-4 py-2 bg-gray-100 text-right">
-      <Button
-        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        onClick={markAsRead}
-      >
-        Mark as Read
-      </Button>
-    </div>
-  </div>
-)}
+          <div className="px-4 py-2 bg-gray-100 text-right">
+            <Button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={markAsRead}
+            >
+              Mark as Read
+            </Button>
+          </div>
+        </div>
+      )}
 
       {isPopupOpen && <Popup />}
     </div>

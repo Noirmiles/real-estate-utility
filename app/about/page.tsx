@@ -1,7 +1,6 @@
 "use client"
 import './styles.css';
 import { Button } from "@/components/ui/button"
-import Cards from '@/components/Cards';
 import SearchBar from '@/components/searchBar';
 import Background from '@/components/background';
 import { Input } from "@/components/ui/input"
@@ -39,11 +38,11 @@ export default function About() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black">
-      <Background />
+    <div className= "bg-gradient-to-r from-gray-900 to-black">
+    <div className="min-h-screen p-24">
 
       {/* About Title */}
-      <div className="mt-2 mb-8 text-center">
+      <div className="mb-8 text-center">
         <p className="font-heading text-3xl font-bold text-white font-serif">
           About
         </p>
@@ -53,7 +52,7 @@ export default function About() {
       <div className="flex justify-center">
         <img
           src="https://barbaraiweins.com/wp-content/uploads/2021/05/Real-Estate-Agents.jpg"
-          className="max-w-3xl border-8 border-white p-4"
+          className="max-w-3xl border-8 border-white p-4 rounded-sm"
           alt="Real Estate Agents"
         />
       </div>
@@ -153,6 +152,7 @@ export default function About() {
           </button>
         </form>
       </div>
+    </div>
     </div>
   );
 }
