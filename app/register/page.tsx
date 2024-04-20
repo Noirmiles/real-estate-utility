@@ -1,51 +1,92 @@
-'use client'
-
+'use client';
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import Background from '@/components/background';
 
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  password: string;
+  manager: boolean;
+}
 
-
-// Agent Form 
-const RegisterForm: React.FC<{ toggleForm: () => void }> = ({ toggleForm }) => {
-  const [formData, setFormData] = useState({ 
+const RegisterForm: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
     email: '',
     username: '',
-    password: '', 
-    manager: true, //Setting up intial boolean value
-    agency: ''
-});
+    password: '',
+    manager: false,
+  });
 
-const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData( (prevFormData) => ({
-        ...prevFormData,
-        [name]:name === 'manager' ? value === 'true' : value, 
-    }));
-};
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // This submits form to the backend server
-    console.log(formData);
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value === 'true' }));
+  };
+
+  const validateForm = (): boolean => {
+    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+      setErrorMessage("Please enter a valid email.");
+      return false;
+    }
+    if (!formData.password || formData.password.length < 6) {
+      setErrorMessage("Password must be at least 6 characters.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    setIsSubmitted(false);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/auth/registration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setIsSubmitted(true);
+      } else {
+        setErrorMessage(data.message || 'Failed to register account');
+      }
+    } catch (error) {
+      setErrorMessage('Failed to connect to the server');
+    }
+  };
+
+  const inputStyle = { margin: '5px 0', padding: '8px', width: '100%' };
 
   const formStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '20px',
+    padding: '15px',
     margin: 'auto',
     maxWidth: '500px', 
     backgroundColor: 'rgba(255, 255, 255, 0.8)', // White background color for the form
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Adds a subtle shadow to the form
-    borderRadius: '10px', // Slightly rounded corners for the form
-    height: '42vh'
+    borderRadius: '8px', // Slightly rounded corners for the form
+    height: '50vh'
   };
-
 
   const headingStyle:React.CSSProperties = {
     fontSize: '30px',
@@ -57,77 +98,85 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     border: '1px solid #000',
     padding: '10px',
     borderRadius: '10px',
-    backgroundColor: 'fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // or 'white'
     width: 'fit-content',
     alignSelf: 'center'
   };
 
   return (
-    <form onSubmit={handleSubmit} style={formStyle}>
-        <h2 style={headingStyle}>Register</h2>
-      <input 
-        type="text"
-        name="firstName"
-        placeholder="Enter First Name"
 
-      />
-      <input 
-        type="text"
-        name="lastName"
-        placeholder="Enter Last Name"
-
-      />
-      <input 
-        type="email"
-        name="email"
-        placeholder="Enter Email"
-
-      />
-      <input 
-        type="text"
-        name="username"
-        placeholder="Create Username"
-
-      />
-      <input 
-        type="password"
-        name="password"
-        placeholder="Create Password"
-
-      />
-        <select
-        name="manager"
-        value= {String(formData.manager)}
-        onChange={handleSelectChange}
-        >
-            <option value= "true" >Manager</option>
-            <option value= "false"> Not a Manager</option>
+    <div style={formStyle}>
+    <h2 style={headingStyle}>Register</h2>
+    <form onSubmit={handleSubmit}>
+        <input type="text" 
+        name="firstName" 
+        value={formData.firstName} 
+        onChange={handleChange} 
+        placeholder="First Name" 
+        required style={inputStyle} 
+        />
+        <input type="text" 
+        name="lastName" 
+        value={formData.lastName} 
+        onChange={handleChange} 
+        placeholder="Last Name" 
+        required style={inputStyle} 
+        />
+        <input type="email"
+         name="email" 
+         value={formData.email} 
+         onChange={handleChange} 
+         placeholder="Email" 
+         required style={inputStyle} 
+         />
+        <input type="text" 
+        name="username" 
+        value={formData.username} 
+        onChange={handleChange} 
+        placeholder="Username" 
+        required style={inputStyle} 
+        />
+        <input type="password" 
+        name="password" 
+        value={formData.password} 
+        onChange={handleChange} 
+        placeholder="Password" 
+        required style={inputStyle} 
+        />
+        <select name="manager" 
+        value={String(formData.manager)} 
+        onChange={handleSelectChange} 
+        style={inputStyle}>
+          <option value="true">Manager</option>
+          <option value="false">Not a Manager
+          </option>
         </select>
-
-        <select
-            name="Agency"
-            value={formData.agency}
-            onChange={handleSelectChange}
-          >  
-            <option value= ""> Select an Agency</option>
-            <option value= "z Test Agency">Z Test Agency</option>
-        </select>
-
-
-      <div style={{marginTop: '20px'}}></div>
-      <button type="submit">Submit</button>
-      <div style= {{ borderTop: '1px solid #000', paddingTop: '10px', width: '100%', marginTop: '10px'}}>
-      <div style={{textAlign: 'center', padding: '10px'}}>
-       <Button onClick={toggleForm} style={{marginTop: '25px'}}>
-       Agent 
-        </Button>
-          </div>
+        <Button type="submit" disabled={isSubmitted} style={{ marginTop: '20px', width: '100%' }}>Register</Button>
+        {isSubmitted && <p style={{ color: 'green' }}>Account registered successfully! <Link href="/agent-login">Go to Sign In</Link></p>}
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      </form>
     </div>
-    </form>    
-  
-
   );
 };
+
+export default function Register() {
+  return (
+    <div>
+      <Background />
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        transform: 'transformY(-10%)',
+      }}>
+        <RegisterForm />
+      </div>
+    </div>
+  );
+}
+
+/* This is omitted at the moment - 4/15/2024
 
 
 //Agency Form 
@@ -229,3 +278,4 @@ export default function Regsiter() {
     );
 
 }
+*/

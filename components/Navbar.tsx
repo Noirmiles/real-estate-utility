@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { ModeToggle } from "./ui/toggle-mode"
 import {
     NavigationMenu,
@@ -15,6 +15,9 @@ import {
 import SearchBar from "@/components/searchBar"
 import logo from '@/public/Logo_Zest.png'
 import Image from 'next/image'
+import * as AuthService from '@/app/services/auth.service';
+import { IUser } from "@/app/types/user-types";
+import Link from 'next/link';
 
 
 
@@ -22,7 +25,12 @@ import Image from 'next/image'
 export default function Nav() {
     const [isClick, setisClick] = useState(false);
     const [isSignInDropdownVisible, setIsSignInDropdownVisibile] = useState(false);
+    const [currentUser,setCurrentUser]=useState<IUser | null>(null);
 
+    useEffect(() => {
+        const user = AuthService.getCurrentUser();
+        setCurrentUser(user);
+    }, []);
 
     const toggleNavbar = () => {
         setisClick(!isClick)
@@ -31,6 +39,15 @@ export default function Nav() {
     const toogleSignInDropdown = () => {
         setIsSignInDropdownVisibile((prev) => !prev);
     };
+
+        const logOut = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.preventDefault();
+        AuthService.logout();
+        setCurrentUser(null);
+        window.location.href ='/';
+    };
+
+    
     const formStyle = {
         margin: 'auto',
         backgroundColor: 'rgba(255, 255, 255, 1)',
@@ -71,6 +88,12 @@ export default function Nav() {
                         <a href="/" className="text-black text-2xl hover:shadow-lg p-4 hover:opacity-75  rounded-lg ">
                             Help
                         </a>
+                        {currentUser ? (
+                            <>
+                                <a href="/portal" className="text-black text-2xl hover:shadow-lg p-4 rounded-lg">Profile</a>
+                                <a href="/" onClick={logOut} className="text-black text-2xl hover:shadow-lg p-4 rounded-lg">Log Out</a>
+                            </>
+                        ) : (
                         <button onClick={toogleSignInDropdown} className=" text-black text-2xl hover:shadow-lg p-4 hover:opacity-75 rounded-lg">
                             Sign in
 
@@ -87,6 +110,7 @@ export default function Nav() {
                                 </div>
                             )}
                         </button>
+                        )}
                         <ModeToggle />
 
                     </div>
@@ -150,6 +174,14 @@ export default function Nav() {
                     <a href="/sign-login" className="text-center text-black block  hover:text-black rounded-lg p-2">
                         Agent Login
                     </a>
+                    {currentUser ? (
+                        <>
+                        <a href="/" className="text-center text-black block hover:text-black rounded-lg p-2">{currentUser.username}</a>
+                        <a href="/" onClick={logOut} className="text-center text-black block hover:text-black rounded-lg p-2">Log Out</a>
+                 </>
+                    ):(
+                        <a href="/sign-in" className="text-center text-black block hover:text-black rounded-lg p-2">Login</a> 
+                    )}
 
                 </div>
             </div>)}
