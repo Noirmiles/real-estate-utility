@@ -1,21 +1,16 @@
 "use client"
 
-import slide_image_1 from './images/img_1.jpg';
-import slide_image_2 from './images/img_2.jpg';
-import slide_image_3 from './images/img_3.jpg';
-import slide_image_4 from './images/img_4.jpg';
-import slide_image_5 from './images/img_5.jpg';
-import slide_image_6 from './images/img_6.jpg';
-import slide_image_7 from './images/img_7.jpg';
+import slide_image_1 from '@/public/Zest-Banner_1-2560-1440.png';
+import slide_image_2 from '@/public/Zest-Banner_2-2560-1440.png';
+import slide_image_3 from '@/public/Zest-Banner_3-2560-1440.png';
 
-import "./wave.css"
+
 import Link from 'next/link';
 import Image from 'next/image'
 
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { IonIcon } from '@ionic/react';
-import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
 
 
 import 'swiper/css';
@@ -28,66 +23,50 @@ import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 
 
 
-export default function Wave(){
-return (
+export default function Wave() {
+  const imageStyle = {
+    width: '100%', 
+    height: 'auto',
 
-    <div className="">
-    <Swiper
-      effect={'coverflow'}
-      grabCursor={true}
-      centeredSlides={true}
-      loop={true}
-      slidesPerView={'auto'}
-      coverflowEffect={{
-        rotate: 0,
-        stretch: 0,
-        depth: 100,
-        modifier: 2.5,
-      }}
-      pagination={{ el: '.swiper-pagination', clickable: true }}
-      navigation={{
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      }}
-      modules={[EffectCoverflow, Pagination, Navigation]}
-      className="swiper_container"
-    >
+  };
+  return (
+    <div className="flex mx-auto max-w-4xl">
+      <Swiper
+        effect={'coverflow'}
+        grabCursor={true}
+        centeredSlides={true}
+        loop={true}
+        slidesPerView={'auto'}
+        spaceBetween={0}
+        coverflowEffect={{
 
+        }}
+        pagination={{ el: '.swiper-pagination', clickable: true }}
+        navigation={{
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        }}
+        modules={[Pagination, Navigation]} className="swiper_container"
+        autoplay={{
+          delay: 200, // Set autoplay delay (in milliseconds)
+          disableOnInteraction: false, // Allow autoplay to resume on interaction
+        }}
+      >
+        <SwiperSlide>
+          <Image src={slide_image_1} alt="slide_image" style={imageStyle} loading="lazy" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <Image src={slide_image_2} alt="slide_image" style={imageStyle} loading="lazy"/>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Image src={slide_image_3} alt="slide_image" style={imageStyle} loading="lazy"/>
+        </SwiperSlide>
 
+      </Swiper>
 
-      <SwiperSlide>
-        <Image src={slide_image_1} alt="slide_image" /> 
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image src={slide_image_2} alt="slide_image" /> 
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image src={slide_image_3} alt="slide_image"  /> 
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image src={slide_image_4} alt="slide_image"/> 
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image src={slide_image_5} alt="slide_image"  /> 
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image src={slide_image_6} alt="slide_image"  /> 
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image src={slide_image_7} alt="slide_image" /> 
-      </SwiperSlide>
-
-      <div className="slider-controler">
-        <div className="swiper-button-prev slider-arrow">
-          <IonIcon name="arrow-back-outline"></IonIcon>
-        </div>
-        <div className="swiper-button-next slider-arrow">
-          <IonIcon name="arrow-forward-outline"></IonIcon>
-        </div>
-        <div className="swiper-pagination"></div>
-      </div>
-    </Swiper>
-  </div>
     
-    )
+
+      </div>
+
+      )
 }

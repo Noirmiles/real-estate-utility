@@ -2,6 +2,8 @@ import Image from 'next/image'
 import cityscape from '../public/cityscape.jpg'
 
 export default function Background(){
+
+
     return (
             <div className="z[0]">
             
@@ -11,7 +13,7 @@ export default function Background(){
                 placeholder="blur"
                 quality={100}
                 fill
-                sizes="100vw"
+                sizes=""
             
 
                 style={{

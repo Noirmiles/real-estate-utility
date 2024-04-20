@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
 import { PrismaClient } from '@prisma/client';
 import { Button } from "@/components/ui/button";
-import Cardsv2 from '@/components/Cardsv2';
+import Card from '@/components/Card';
 import SearchBar from '@/components/searchBar';
 import Background from '@/components/background';
 import SearchMenu from '@/components/SearchMenu';
@@ -470,7 +470,7 @@ export default function Houses() {
       </div>
       <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3"></div>
       <div className="px-5 ">
-        <Cardsv2 />
+        <Card></Card>
       </div>
 
       {showNotifications && (
