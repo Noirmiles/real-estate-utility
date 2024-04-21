@@ -30,6 +30,8 @@ interface Listing {
   updatedAt: string;
 }
 
+
+
 const prisma = new PrismaClient();
 
 const Card = () => {
@@ -104,7 +106,7 @@ const Card = () => {
         </div>
 
 
-      
+
 
         {/*Price*/}
         <div>
@@ -114,34 +116,40 @@ const Card = () => {
           </span>
 
           {/*Product Title*/}
-        <h2 className="product-address" title="Jamaican Condo">
-          7871 Moores Mill Rd, Meridianville, AL, 34659
-        </h2>
+          <h2 className="product-address" title="Jamaican Condo">
+            7871 Moores Mill Rd, Meridianville, AL, 34659
+          </h2>
           {/*More Info*/}
 
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-sm  opacity-50">
-              Status:
-            </span>
-            <span className="discount-percent">
-              For Sale
-            </span>
-          </div>
-        </div>
-
-        {/*Agent Review*/}
-        <div>
-          <span className="flex items-center mt-1 font-extralight">
-            Agent Rating:
-            <Image src={star1} alt=""/>
-            <Image src={star1} alt=""/>
-            <Image src={star1} alt=""/>
-            <Image src={star2} alt=""/>
-            <Image src={star3} alt=""/>
+          {listings.length > 0 && (
+            <div className="flex items-center gap-2 mt-1">
+          <span className="text-sm opacity-50">
+            {listings.map((listing) => (
+              <span key={listing.id}>
+                {listing.numberOfRooms} Rooms | {listing.numberOfBathrooms} Bathrooms | {listing.squareFootage} sqFt.
+              </span>
+            ))}
+          </span>
+          <span className="discount-percent">
+            For Sale
           </span>
         </div>
+    )}
       </div>
-    </div>
+
+      {/*Agent Review*/}
+      <div>
+        <span className="flex items-center mt-1 font-extralight">
+          Agent Rating:
+          <Image src={star1} alt="" />
+          <Image src={star1} alt="" />
+          <Image src={star1} alt="" />
+          <Image src={star2} alt="" />
+          <Image src={star3} alt="" />
+        </span>
+      </div>
+    </div >
+    </div >
 
   )
 };

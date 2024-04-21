@@ -73,12 +73,9 @@ export default function Nav() {
                                 About
                             </a>
                             <a href="/about-agents" className="text-black text-xl hover:drop-shadow-lg p-4 hover:opacity-75  rounded-lg ">
-                                Our Agents
+                                Agents
                             </a>
-                            <a href="/" className="text-black text-xl hover:drop-shadow-lg p-4 hover:opacity-75  rounded-lg ">
-                                Help
                             
-                            </a>
                             
                         {currentUser ? (
                             <>

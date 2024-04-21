@@ -1,6 +1,7 @@
 "use client"
 import './styles.css';
 import { Button } from "@/components/ui/button"
+import Card from '@/components/Card';
 import SearchBar from '@/components/searchBar';
 import Background from '@/components/background';
 import { Input } from "@/components/ui/input"
@@ -122,8 +123,8 @@ export default function About() {
           <Calendar className="text-white" size={48} />
         </div>
         <div className="mt-4">
-          <h2 className="text-2xl font-bold mb-2">Appointments</h2>
-          <p className="font-subtitle text-xl font-bold text-black">Current Date: {new Date().toLocaleDateString()}</p>
+          <h2 className="text-2xl font-bold mb-2 text-gray-500">Appointments</h2>
+          <p className="font-subtitle text-xl font-bold text-white">Current Date: {new Date().toLocaleDateString()}</p>
         </div>
         <form className="mt-4 space-y-4">
           <div className="flex space-x-4">
