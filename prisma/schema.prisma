@@ -17,19 +17,21 @@ model User {
 }
 
 model Property {
-  id                Int      @id @default(autoincrement())
-  listPrice         Decimal  @db.Decimal(10, 2)
+  id                Int       @id @default(autoincrement())
+  listPrice         Decimal   @db.Decimal(10, 2)
   state             String
   city              String
   address           String
-  squareFootage     Decimal  @db.Decimal(10, 2)
+  squareFootage     Decimal   @db.Decimal(10, 2)
   numberOfRooms     Int
   numberOfBathrooms Int
   propertyType      String
   images            Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
   Showing           Showing[]
+  agentName         String    @db.VarChar(255)
+  agencyName        String    @db.VarChar(255)
 }
 
 model Agent {
