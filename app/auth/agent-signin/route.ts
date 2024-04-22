@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import prisma from '@/lib/Prisma';  
 import jwt from 'jsonwebtoken';
 
+
 export async function POST(req: Request) {
   try {
     const { username, password } = await req.json();
@@ -12,7 +13,7 @@ export async function POST(req: Request) {
 
     const agent = await prisma.agent.findUnique({
       where: { username },
-      select: { id: true, username: true, password: true, firstName: true, lastName: true, email:true }
+      select: { id: true, username: true, password: true, firstName: true, lastName: true, email:true,isManager:false }
     });
 
     if (!agent) {
@@ -32,11 +33,13 @@ export async function POST(req: Request) {
 
     const refreshToken = jwt.sign(
       {userId: agent.id, username: agent.username},
-      process.env.JWT_SECRET || 'defatult_secret',
+      process.env.JWT_SECRET || 'default_secret',
       {expiresIn: '7d'}
     )
 
     const { password: _, ...userWithoutPassword } = agent; 
+    
+    
     return new Response(JSON.stringify({
       message: "Login successful",
       user: userWithoutPassword,

@@ -3,6 +3,7 @@ import React, { useState, FormEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import Background from '@/components/background';
 import { agent } from '../services/auth.service';
+import axios, { AxiosResponse } from 'axios';
 
 interface User {
   username: string;
@@ -15,7 +16,7 @@ interface FormData {
 }
 
 interface LoginResponse {
-  user?: User;  // Defined more specifically
+  user?: User;  
   accessToken: string;
 }
 
@@ -44,15 +45,32 @@ const AgentForm: React.FC = () => {
     setLoading(true);
     setMessage('');
 
+    // added error checking to handle axios/login responses 
     try {
-      const data = await agent(formData.username, formData.password);
-      handleLoginSuccess(data);
-    } catch (error) {
-      setMessage('An error occurred during login.');
-    } finally {
+      const data = await agent(formData.username, formData.password);  // Assuming `agent` is correctly typed to return a promise
+      handleLoginSuccess(data);  
+  } catch (error: unknown) {  
+      if (axios.isAxiosError(error)) {
+          // Properly handle the error as an AxiosError
+          if (error.response) {
+              console.log("Data:", error.response.data);
+              console.log("Status:", error.response.status);
+              console.log("Headers:", error.response.headers);
+              setMessage(error.response.data.message || "An error occurred.");  
+          } else {
+              // The request was made but no response was received
+              console.log("Request was made but no response received:", error.request);
+              setMessage("The server did not respond.");
+          }
+      } else {
+          // The error is not an AxiosError (could be network issue, timeout, etc.)
+          console.error("An unexpected error occurred:", error);
+          setMessage("An unexpected error occurred.");
+      }
+  } finally {
       setLoading(false);
-    }
-  };
+  }
+};
 
   const handleLoginSuccess = (data: LoginResponse) => {
     setLoginSuccess(true);
@@ -80,14 +98,15 @@ const AgentForm: React.FC = () => {
   };
 
   return (
+    <div>
+      {loginSuccess ? (
+      <div></div> // Placeholder while redirection is in progress
+    ) : (
     <div style={formStyle}>
       <h2 style={{ fontSize: '24px', textAlign: 'center', margin: '20px 0' }}>
         <b style={{ color: 'black', fontWeight: 'bold' }}>Agent Login</b>
       </h2>
-      {loginSuccess ? (
-        <div>Loading...</div> // Placeholder while redirection is in progress
-      ) : (
-        <>
+
           <form onSubmit={handleSignIn}>
             <div style={{ marginBottom: '20px' }}>
               <label htmlFor="username" style={{ display: 'block', marginBottom: '2px' }}>Username</label>
@@ -134,7 +153,7 @@ const AgentForm: React.FC = () => {
               Continue as guest
             </a>
           </div>
-        </>
+          </div>
       )}
     </div>
   );

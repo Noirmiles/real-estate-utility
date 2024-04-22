@@ -47,13 +47,10 @@ const CreateAccountForm: React.FC = () => {
     setErrorMessage('');
 
     try {
-      const response = await fetch('/auth/login', {
+      const response = await fetch('/auth/account', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',  // Necessary for including cookies in requests
-        body: JSON.stringify({ username: 'example', password: 'password' })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
       
 

@@ -24,11 +24,11 @@ export async function POST(req: Request) {
                  firstName,  
                  lastName,    
                 password: hashedPassword,
-                //isManager: Boolean(isManager), //change in schema 
+                isManager: Boolean(isManager), //change in schema 
             },
         });
 
-        
+        const { password: _, ...userWithoutPassword } = agent;  // Exclude password from the user data returned
         return new Response(JSON.stringify({ message: 'Agent registered successfully' }), { status: 201 });
 
     } catch (error) {

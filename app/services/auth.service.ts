@@ -11,14 +11,14 @@ export const register = (username: string, password: string) => {
 };
 
 export const agent = (username: string, password: string): Promise<LoginResponse> => {
-  return axios.post<LoginResponse>(API_URL + "agent-signin", { username, password })
-    .then((response: AxiosResponse<LoginResponse>) => {
+  return axios.post<LoginResponse>(`${API_URL}agent-signin`, { username, password })
+    .then(response => {
       if (response.data.accessToken) {
-        localStorage.setItem('user', JSON.stringify(response.data));  // Storing full response under 'user'
+        localStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
       }
       throw new Error('AccessToken not found');
-    });
+    }).catch();
 };
 
 export const login = (username: string, password: string): Promise<LoginResponse> => {

@@ -3,14 +3,14 @@ import prisma from '@/lib/Prisma';
 
 export async function POST(req: Request) {
   try {
-    const { email, password, firstName, lastName, username } = await req.json(); 
+    const { email, password, firstName, lastName, username } = await req.json();
 
-    // Check if the user already exists using findUnique to ensure both email and username are unique
+    // Validate email and username uniqueness
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
-          { email },
-          { username }  
+          { username },
+          { email }
         ],
       },
     });
@@ -32,13 +32,11 @@ export async function POST(req: Request) {
     });
 
     const { password: _, ...userWithoutPassword } = user;  // Exclude password from the user data returned
-    return new Response(JSON.stringify(userWithoutPassword), {
-      status: 201,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    return new Response (JSON.stringify({message: 'User account created'}),{status:201});
   } catch (error) {
     console.error('Failed to register user:', error);
     return new Response(JSON.stringify({ message: 'Failed to create account' }), { status: 500 });
   }
 }
+
 

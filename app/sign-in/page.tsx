@@ -78,14 +78,15 @@ const SignInForm: React.FC = () => {
   };
 
   return (
+    <div>
+      {loginSuccess ? (
+      <div></div> // Placeholder while redirection is in progress
+    ) : (
+    
     <div style={formStyle}>
       <h2 style={{ fontSize: '24px', textAlign: 'center', margin: '20px 0' }}>
         <b style={{ color: 'black', fontWeight: 'bold' }}>Welcome to the Z Project</b>
       </h2>
-      {loginSuccess ? (
-        <div>Loading...</div> // Placeholder while redirection is in progress
-      ) : (
-        <>
           <form onSubmit={handleSignIn}>
             <div style={{ marginBottom: '20px' }}>
               <label htmlFor="username" style={{ display: 'block', marginBottom: '2px' }}>Username</label>
@@ -132,7 +133,7 @@ const SignInForm: React.FC = () => {
               Continue as guest
             </a>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
@@ -153,5 +154,3 @@ export default function SignIn() {
     </div>
   );
 }
-
-
