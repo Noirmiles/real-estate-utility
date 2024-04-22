@@ -1,16 +1,18 @@
 "use client";
 
-import React, { useState, ReactElement, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ReactElement, useEffect, useRef, ChangeEvent, FormEvent, lazy } from 'react';
 import { PrismaClient } from '@prisma/client';
 import { Button } from "@/components/ui/button";
 import Card from '@/components/Card';
 import SearchBar from '@/components/searchBar';
-import Background from '@/components/background';
 import SearchMenu from '@/components/SearchMenu';
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import Map from '@/components/map'
 
+
 export default function Houses() {
+
+
   //State Variables
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -41,6 +43,19 @@ export default function Houses() {
     return <></>;
   };
 
+  //Map constants
+  const [searchTerm, setSearchTerm] = useState(''); // State to hold search term in main page
+  const [mapCenter, setMapCenter] = useState({ lat: 34.7287, lng: -86.5879 });
+
+  const handleSearch = async () => {
+    // ... Geocoding logic to update map center based on searchTerm
+  };
+
+  useEffect(() => {
+    if (searchTerm) {
+      handleSearch();
+    }
+  }, [searchTerm]); // Trigger search on searchTerm change
 
   const validateSquareFootage = (value: string) => {
     const footage = parseFloat(value);
@@ -449,7 +464,7 @@ export default function Houses() {
 
 
   return (
-      <div className="absolute top-0 z-[-2] h-200vh w-screen bg-gradient-to-r from-gray-900 to-black">
+    <div className="absolute top-0 z-[-2] h-200vh w-screen bg-gradient-to-r from-gray-900 to-black">
       {/*<Background/> */}
       <div className=""></div>
 
@@ -490,34 +505,22 @@ export default function Houses() {
           </Wrapper>
         </div>
 
-        <div className='flex flex-wrap relative ml-5'>
-          <div className='mr-5 mb-5'><Card />
+        <div className='flex flex-wrap justify-between relative ml-5'>
+          <div className='mr-5 mb-5'>
+            <Card />
           </div>
           <div className='mr-5 mb-5 '>
             <Card />
           </div>
-          <div className='mr-5 mb-5 hidden'>
+          <div className='mr-5 mb-5 '>
             <Card />
           </div>
-          <div className='mr-5 mb-5 hidden'>
+          <div className='mr-5 mb-5 '>
             <Card />
           </div>
-          <div className='mr-5 mb-5 hidden'>
-            <Card />
-          </div>
-          <button className="absolute top-1/2 right-2 transform -translate-y-1/2 px-3 py-2 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-              </path>
-            </svg>
-          </button>
 
-          <button className="absolute top-1/2 left-2 transform -translate-y-1/2 px-3 py-2 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none hidden">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
-              </path>
-            </svg>
-          </button>
+
+
         </div>
       </div>
 

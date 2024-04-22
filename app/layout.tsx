@@ -21,7 +21,12 @@ export default function RootLayout({
       <div>
         <Navbar/>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          
+                  <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          ></ThemeProvider>
           {children}
         </ThemeProvider>
         </div>

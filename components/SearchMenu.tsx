@@ -7,63 +7,185 @@ import {
     MenubarSeparator,
     MenubarShortcut,
     MenubarTrigger,
-  } from "@/components/ui/menubar"
+} from "@/components/ui/menubar"
+import { useState } from 'react'; // Import useState hook
 
-export default function SearchMenu(){
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuLabel } from "@/components/ui/dropdown-menu"; // Assuming this is the path to your Shadcn UI components
+import { Slider } from "@/components/ui/slider"
+
+
+
+
+
+
+export default function SearchMenu() {
+
+    interface SliderChangeEvent {
+        newValue: number[]; // Assuming the slider returns an array of numbers
+    }
+   const [currentSliderValue, setCurrentSliderValue] = useState(5);
+
+  const handleSliderChange = (newValue: SliderChangeEvent) => {
+    setCurrentSliderValue(newValue.newValue[0]);
+    };
+
     return (
         <div className="flex">
-        <Menubar>
-            <MenubarMenu>
-              <MenubarTrigger>Availability</MenubarTrigger>
-                <MenubarContent>
-                  <MenubarItem>
-                    For Sale 
-                  </MenubarItem>
-                  <MenubarItem>
-                    For Rent
-                  </MenubarItem>
-                  <MenubarItem>
-                    Sold
-                  </MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-          </Menubar>
-
-        <Menubar>
-            <MenubarMenu>
-                <MenubarTrigger>Price</MenubarTrigger>
+            <Menubar>
+                <MenubarMenu>
+                    <MenubarTrigger>Availability</MenubarTrigger>
                     <MenubarContent>
-                        <MenubarItem>
-                            $0 - $50,000 
-                        </MenubarItem>
-                        <MenubarItem>
-                            $50,00 - $200,000
-                        </MenubarItem>
-                        <MenubarItem>
-                            $200,000 - $400,000
-                        </MenubarItem>
-                        <MenubarItem>
-                            $400,000+
-                        </MenubarItem>
+                        <RadioGroup defaultValue="option-one">
+                            <MenubarItem>
+
+                                <div className="flex items-center space-x-4">
+                                    <RadioGroupItem value="option-one " id="option-one" />
+                                    <Label htmlFor="option-one">For Sale</Label>
+                                </div>
+                            </MenubarItem>
+                            <MenubarItem>
+                                <div className="flex items-center space-x-4">
+                                    <RadioGroupItem value="option-two" id="option-two" />
+                                    <Label htmlFor="option-two">For Rent</Label>
+                                </div>
+                            </MenubarItem>
+                            <MenubarItem>
+                                <div className="flex items-center space-x-4">
+                                    <RadioGroupItem value="option-three" id="option-three" />
+                                    <Label htmlFor="option-three">Sold</Label>
+                                </div>
+                            </MenubarItem>
+                        </RadioGroup>
                     </MenubarContent>
                 </MenubarMenu>
             </Menubar>
 
             <Menubar>
-            <MenubarMenu>
-                <MenubarTrigger>More</MenubarTrigger>
+                <MenubarMenu>
+                    <MenubarTrigger>Price</MenubarTrigger>
                     <MenubarContent>
-                        <MenubarItem>
-                            Beds
-                        </MenubarItem>
-                        <MenubarItem>
-                            Bathrooms
-                        </MenubarItem>
+                        <RadioGroup defaultValue="option-one">
+                            <MenubarItem>
+                                <div className="flex items-center space-x-4">
+                                    <RadioGroupItem value="option-one " id="option-one" />
+                                    <Label htmlFor="option-one">$0 - $50,000</Label>
+                                </div>
+                            </MenubarItem>
+
+                            <MenubarItem>
+                                <div className="flex items-center space-x-4">
+                                    <RadioGroupItem value="option-two" id="option-two" />
+                                    <Label htmlFor="option-two">$50,000 - $200,000</Label>
+                                </div>
+                            </MenubarItem>
+
+                            <MenubarItem>
+                                <div className="flex items-center space-x-4">
+                                    <RadioGroupItem value="option-three" id="option-three" />
+                                    <Label htmlFor="option-three">$200,000 - $400,000</Label>
+                                </div>
+                            </MenubarItem>
+
+                            <MenubarItem>
+                                <div className="flex items-center space-x-4">
+                                    <RadioGroupItem value="option-three" id="option-three" />
+                                    <Label htmlFor="option-three">$400,000+</Label>
+                                </div>
+                            </MenubarItem>
+                        </RadioGroup>
                     </MenubarContent>
                 </MenubarMenu>
             </Menubar>
 
-            
-            </div>
+
+            <Menubar>
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        More Filters
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuLabel className="py-2">
+                            <span className="mr-2">Sq. Ft: {currentSliderValue}</span>
+                            <Slider defaultValue={[5]} max={100} step={10} onChange={handleSliderChange} />
+                        </DropdownMenuLabel>
+
+                        <DropdownMenuGroup>
+                            <DropdownMenuLabel>Beds
+                                <RadioGroup defaultValue="option-one">
+                                    <DropdownMenuItem>
+                                        <div className="flex items-center space-x-4">
+                                            <RadioGroupItem value="option-one " id="option-one" />
+                                            <Label htmlFor="option-one">Any</Label>
+                                        </div>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem>
+                                        <div className="flex items-center space-x-4">
+                                            <RadioGroupItem value="option-two" id="option-two" />
+                                            <Label htmlFor="option-two">1+</Label>
+                                        </div>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem>
+                                        <div className="flex items-center space-x-4">
+                                            <RadioGroupItem value="option-three" id="option-three" />
+                                            <Label htmlFor="option-three">2+</Label>
+                                        </div>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem>
+                                        <div className="flex items-center space-x-4">
+                                            <RadioGroupItem value="option-three" id="option-three" />
+                                            <Label htmlFor="option-three">3+</Label>
+                                        </div>
+                                    </DropdownMenuItem>
+                                </RadioGroup>
+                            </DropdownMenuLabel>
+                        </DropdownMenuGroup>
+                        <DropdownMenuGroup>
+                            <DropdownMenuLabel>Bathrooms
+                                <RadioGroup defaultValue="option-one">
+                                    <DropdownMenuItem>
+                                        <div className="flex items-center space-x-4">
+                                            <RadioGroupItem value="option-one " id="option-one" />
+                                            <Label htmlFor="option-one">$0 - $50,000</Label>
+                                        </div>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem>
+                                        <div className="flex items-center space-x-4">
+                                            <RadioGroupItem value="option-two" id="option-two" />
+                                            <Label htmlFor="option-two">$50,000 - $200,000</Label>
+                                        </div>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem>
+                                        <div className="flex items-center space-x-4">
+                                            <RadioGroupItem value="option-three" id="option-three" />
+                                            <Label htmlFor="option-three">$200,000 - $400,000</Label>
+                                        </div>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem>
+                                        <div className="flex items-center space-x-4">
+                                            <RadioGroupItem value="option-three" id="option-three" />
+                                            <Label htmlFor="option-three">$400,000+</Label>
+                                        </div>
+                                    </DropdownMenuItem>
+                                </RadioGroup>
+                            </DropdownMenuLabel>
+
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </Menubar>
+
+
+
+
+        </div>
     )
 }

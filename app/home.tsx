@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button"
 import Card from '@/components/Card';
 import SearchBar from '@/components/searchBar';
 
+import React, { useState, ReactElement, useEffect, useRef, ChangeEvent, FormEvent, lazy } from 'react';
+
 import Background from '@/components/background';
 import Wave from '@/components/Wave';
 import { Parallax, ParallaxLayer } from '@react-spring/parallax'
@@ -12,10 +14,13 @@ export default function Home() {
 
   const formStyle = {
     margin: 'auto',
-    backgroundColor: 'rgba(255, 255, 255, 1)', 
+    backgroundColor: 'rgba(255, 255, 255, 1)',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0)',
     marginTop: '650px',
   };
+
+  const [searchTerm, setSearchTerm] = useState(''); // State to hold search term in main page
+
 
 
 
@@ -36,11 +41,10 @@ export default function Home() {
               Agents. Tours. Homes.
             </div>
 
-
-
-
-            <div className="m-2 p-8 px-36 items-center flex-grow">
-              <SearchBar />
+            <div className="m-2 p-8 px-36 items-center flex-grow relative">
+              <div className="z-10"> 
+                <SearchBar/>
+              </div>
             </div>
 
 
@@ -62,15 +66,12 @@ export default function Home() {
                     Viewed and saved the most in the area over the last 24 hours
                   </div>
                 </div>
-
-
               </section>
 
               <div className="flex flex-wrap justify-between m-4 mb-24">
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>   
+                <Card />
+                <Card />
+         
               </div>
 
               <footer className="text-center p-3">
