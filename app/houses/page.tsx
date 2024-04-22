@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ReactElement, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
 import { PrismaClient } from '@prisma/client';
 import { Button } from "@/components/ui/button";
 import Card from '@/components/Card';
 import SearchBar from '@/components/searchBar';
 import Background from '@/components/background';
 import SearchMenu from '@/components/SearchMenu';
-//import '@fortawesome/fontawesome-free/css/all.css';
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import Map from '@/components/map'
 
 export default function Houses() {
   //State Variables
@@ -32,6 +33,14 @@ export default function Houses() {
       setListPriceError('');
     }
   };
+
+  //For Map loading
+  const render = (status: Status): ReactElement => {
+    if (status === Status.LOADING) return <h3>{status} ..</h3>;
+    if (status === Status.FAILURE) return <h3>{status} ...</h3>;
+    return <></>;
+  };
+
 
   const validateSquareFootage = (value: string) => {
     const footage = parseFloat(value);
@@ -434,10 +443,15 @@ export default function Houses() {
     );
   };
 
+
+  //Checks Google API Map Key 
+
+
+
   return (
-    <div>
+      <div className="absolute top-0 z-[-2] h-200vh w-screen bg-gradient-to-r from-gray-900 to-black">
       {/*<Background/> */}
-      <div className="absolute top-0 z-[-2] h-screen w-screen bg-gradient-to-r from-gray-900 to-black"></div>
+      <div className=""></div>
 
       <div className="flex items-center h-16 p-6">
         <div className="flex-shrink-0">
@@ -469,10 +483,45 @@ export default function Houses() {
         <SearchMenu />
       </div>
 
-      <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3"></div>
-      <div className="px-5 ">
-        <Card></Card>
+      <div className='main-contents flex p-5 flex-auto'>
+        <div className=''>
+          <Wrapper apiKey={'AIzaSyA3hodoDpLt7mDpN1fL8d9RnrW8i8jaJSA'} render={render}>
+            <Map center={{ lat: 34.7287, lng: -86.5879 }} zoom={10} />
+          </Wrapper>
+        </div>
+
+        <div className='flex flex-wrap relative ml-5'>
+          <div className='mr-5 mb-5'><Card />
+          </div>
+          <div className='mr-5 mb-5 '>
+            <Card />
+          </div>
+          <div className='mr-5 mb-5 hidden'>
+            <Card />
+          </div>
+          <div className='mr-5 mb-5 hidden'>
+            <Card />
+          </div>
+          <div className='mr-5 mb-5 hidden'>
+            <Card />
+          </div>
+          <button className="absolute top-1/2 right-2 transform -translate-y-1/2 px-3 py-2 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+              </path>
+            </svg>
+          </button>
+
+          <button className="absolute top-1/2 left-2 transform -translate-y-1/2 px-3 py-2 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none hidden">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+              </path>
+            </svg>
+          </button>
+        </div>
       </div>
+
+
 
       {showNotifications && (
         <div
@@ -529,5 +578,7 @@ export default function Houses() {
 
       {isPopupOpen && <Popup />}
     </div>
+
+
   );
 }

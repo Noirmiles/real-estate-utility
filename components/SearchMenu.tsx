@@ -34,13 +34,16 @@ export default function SearchMenu(){
                 <MenubarTrigger>Price</MenubarTrigger>
                     <MenubarContent>
                         <MenubarItem>
-                            $0-$50,000 
+                            $0 - $50,000 
                         </MenubarItem>
                         <MenubarItem>
-                            $0-$100,000
+                            $50,00 - $200,000
                         </MenubarItem>
                         <MenubarItem>
-                            $150,$200,000
+                            $200,000 - $400,000
+                        </MenubarItem>
+                        <MenubarItem>
+                            $400,000+
                         </MenubarItem>
                     </MenubarContent>
                 </MenubarMenu>

@@ -85,6 +85,7 @@ const Card = () => {
 
 
   return (
+    <a href="/" className= "">
 
     <div className="card">
       <Image className="object-cover"
@@ -150,6 +151,7 @@ const Card = () => {
       </div>
     </div >
     </div >
+    </a>
 
   )
 };
