@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import prisma from '@/lib/Prisma';  
+import prisma from '@/lib/Prisma';
 
 export async function POST(req: Request) {
   try {
@@ -21,22 +21,35 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Check if the default role exists, create if not
+    let defaultRole = await prisma.role.findUnique({
+      where: { name: 'user' }
+    });
+
+    if (!defaultRole) {
+      defaultRole = await prisma.role.create({
+        data: { name: 'user' }
+      });
+    }
+
     const user = await prisma.user.create({
       data: {
         email,
-        username,  
+        username,
         password: hashedPassword,
         firstName,
         lastName,
+        roleId: defaultRole.id  // Use the ensured 'user' role ID
       },
     });
 
     const { password: _, ...userWithoutPassword } = user;  // Exclude password from the user data returned
-    return new Response (JSON.stringify({message: 'User account created'}),{status:201});
+    return new Response(JSON.stringify(userWithoutPassword), { status: 201, headers: { 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('Failed to register user:', error);
-    return new Response(JSON.stringify({ message: 'Failed to create account' }), { status: 500 });
+    return new Response(JSON.stringify({ message: 'Failed to create account'}), { status: 500 });
   }
 }
+
 
 

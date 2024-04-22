@@ -9,30 +9,32 @@ datasource db {
 
 model Permission {
   id          Int    @id @default(autoincrement())
-  name        String @unique @db.VarChar(255)  
+  name        String @unique @db.VarChar(255)
   description String @db.VarChar(255)
   roles       Role[] @relation("RolePermissions")
 }
 
 model Role {
-  id           Int          @id @default(autoincrement())
-  name         String       @unique @db.VarChar(255)  // Explicit roles: "USER", "AGENT", "MANAGER"
-  permissions  Permission[] @relation("RolePermissions")
-  users        User[]
-  agents       Agent[]
+  id          Int          @id @default(autoincrement())
+  name        String       @unique @db.VarChar(255)
+  agents      Agent[]
+  users       User[]
+  permissions Permission[] @relation("RolePermissions")
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  email     String @unique @db.VarChar(255)
-  password  String @db.VarChar(255)
-  firstName String @map("first_name") @db.VarChar(255)
-  lastName  String @map("last_name") @db.VarChar(255)
-  username  String @unique @db.VarChar(255)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  role      Role   @relation(fields: [roleId], references: [id])
-  roleId    Int
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  firstName String   @map("first_name") @db.VarChar(255)
+  lastName  String   @map("last_name") @db.VarChar(255)
+  username  String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  roleId    Int      @default(1)
+  updatedAt DateTime @updatedAt
+  role      Role     @relation(fields: [roleId], references: [id])
+
+  @@index([roleId], map: "User_roleId_fkey")
 }
 
 model Property {
@@ -48,9 +50,9 @@ model Property {
   images            Json?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  Showing           Showing[]
-  agentName         String    @db.VarChar(255)
   agencyName        String    @db.VarChar(255)
+  agentName         String    @db.VarChar(255)
+  Showing           Showing[]
 }
 
 model Agent {
@@ -62,17 +64,21 @@ model Agent {
   lastName  String   @map("last_name") @db.VarChar(255)
   username  String   @unique @db.VarChar(255)
   password  String   @db.VarChar(255)
+  roleId    Int      @default(2) //default role ID for 'Agent'
   role      Role     @relation(fields: [roleId], references: [id])
-  roleId    Int
+
+  @@index([roleId], map: "Agent_roleId_fkey")
 }
 
 model Showing {
   id           Int      @id @default(autoincrement())
-  property     Property @relation(fields: [propertyId], references: [id])
   propertyId   Int
   scheduledAt  DateTime
   agentName    String   @db.VarChar(255)
   agentCompany String   @db.VarChar(255)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  property     Property @relation(fields: [propertyId], references: [id])
+
+  @@index([propertyId], map: "Showing_propertyId_fkey")
 }
