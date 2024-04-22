@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import SearchBar from '@/components/searchBar'; 
 import Background from '@/components/background';
-import Profile from '@/components/profile/page';
+import Profile from '@/components/profile/client';
 import Image from 'next/image';
 
 interface TabPanelProps {
@@ -65,6 +65,9 @@ export default function Portal() {
           <Button onClick={() => handleTabClick('passcodes')}>
             Passcodes
           </Button>
+          <Button onClick={() => handleTabClick('showings')}>
+            Showings
+          </Button>
         </div>
 
         <TabPanel value={activeTab} index="profile">
@@ -109,6 +112,12 @@ export default function Portal() {
         <TabPanel value={activeTab} index="passcodes">
           <div className="tab-content">
             <h2>Passcodes</h2>
+            {/* Content for account settings */}
+          </div>
+        </TabPanel>
+        <TabPanel value={activeTab} index="showings">
+          <div className="tab-content">
+            <h2>Showings</h2>
             {/* Content for account settings */}
           </div>
         </TabPanel>

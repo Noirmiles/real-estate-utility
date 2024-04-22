@@ -125,7 +125,7 @@ const SignInForm: React.FC = () => {
             <b style={{ color: 'blue', fontWeight: 'bold' }}>Forgot your password?</b>
           </a>
           <a href="/create-account" style={{ display: 'block', marginTop: '15px' }}>
-            Don't have an account? <b style={{ color: 'blue', fontWeight: 'bold' }}>Create One</b>
+            Don&apos;t have an account? <b style={{ color: 'blue', fontWeight: 'bold' }}>Create One</b>
           </a>
           <div style={{ textAlign: 'center', padding: '10px' }}>
             <div style={{ borderTop: '1px solid #000', paddingTop: '10px' }}></div>
