@@ -1,5 +1,5 @@
 "use client"
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { ModeToggle } from "./ui/toggle-mode"
 import {
     NavigationMenu,
@@ -26,8 +26,8 @@ export default function Nav() {
     const [isClick, setisClick] = useState(false);
     const [isSignInDropdownVisible, setIsSignInDropdownVisibile] = useState(false);
     const [currentUser, setCurrentUser] = useState<IUser | null>(null);
-    
-    
+
+
     useEffect(() => {
         const user = AuthService.getCurrentUser();
         setCurrentUser(user);
@@ -37,11 +37,11 @@ export default function Nav() {
         setIsSignInDropdownVisibile((prev) => !prev);
     };
 
-        const logOut = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const logOut = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault();
         AuthService.logout();
         setCurrentUser(null);
-        window.location.href ='/';
+        window.location.href = '/';
     };
     const formStyle = {
         margin: 'auto',
@@ -57,26 +57,27 @@ export default function Nav() {
         <nav className="navbar-container ">
             <div className="p-1" style={formStyle}>
                 <div className="flex items-center justify-center">
-                    <a href="/" className="">
-                        <Image
-                            className=""
-                            src={logo}
-                            alt="Zest Logo"
-                            style={{ width: '60px', height: 'auto' }}
-                        />
-                    </a>
-                        <div className=" ml-4 flex  space-x-4 justify-center items-center">
-                            <a href="/houses" className="text-black text-xl hover:drop-shadow-lg p-4 rounded-lg ">
-                                Buy
-                            </a>
-                            <a href="/about" className="text-black text-xl hover:drop-shadow-lg p-4 hover:opacity-75  rounded-lg ">
-                                About
-                            </a>
-                            <a href="/about-agents" className="text-black text-xl hover:drop-shadow-lg p-4 hover:opacity-75  rounded-lg ">
-                                Agents
-                            </a>
-                            
-                            
+
+                    <div className=" ml-4 flex  space-x-4 justify-center items-center">
+                        <a href="/houses" className="text-black text-xl hover:drop-shadow-lg p-4 rounded-lg ">
+                            Buy
+                        </a>
+                        <a href="/about" className="text-black text-xl hover:drop-shadow-lg p-4 hover:opacity-75  rounded-lg ">
+                            About
+                        </a>
+                        <a href="/" className="">
+                            <Image
+                                className=""
+                                src={logo}
+                                alt="Zest Logo"
+                                style={{ width: '60px', height: 'auto' }}
+                            />
+                        </a>
+                        <a href="/about-agents" className="text-black text-xl hover:drop-shadow-lg p-4 hover:opacity-75  rounded-lg ">
+                            Agents
+                        </a>
+
+
                         {currentUser ? (
                             <>
                                 <a href="/portal" className="text-black text-2xl hover:shadow-lg p-4 rounded-lg">Profile</a>
@@ -100,15 +101,13 @@ export default function Nav() {
                                 )}
                             </button>
                         )}
-                            <div className="flex">
-                                <ModeToggle />
-                            </div>
+                        {/*<div className="flex"> <ModeToggle /></div>*/}
 
-                        </div>
                     </div>
-                    </div>
+                </div>
+            </div>
         </nav>
     )
-    }
+}
 
 

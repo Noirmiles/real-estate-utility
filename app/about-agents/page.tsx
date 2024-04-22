@@ -5,9 +5,9 @@ import EmailLink from "./EmailLink";
 export default function Home() {
 
   return (
-    <div className="bg-gradient-to-r from-gray-900 to-black py-20">
-      <div className="bg-gradient-to-r from-gray-900 to-black py-20">
-        <div className="text-white text-4xl font-bold text-center font-serif mb-10">
+    <div className="bg-gradient-to-r from-gray-900 to-black">
+      <div className="bg-gradient-to-r from-gray-900 to-black ">
+        <div className="text-white text-4xl font-bold text-center font-serif p-24">
           Our Agents
         </div>
 
@@ -16,6 +16,7 @@ export default function Home() {
           <div className="text-center bg-white rounded-lg shadow-md p-6 relative">
             <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-r from-gray-400 to-gray-600 rounded-t-lg"></div>
             <h2 className="text-2xl font-bold mb-4">Premier Homes</h2>
+            
             {/* Bio of First Agent (Cady Harris) */}
             <div className="profile-container mb-8">
               <div className="relative w-40 h-40 mx-auto mb-4">

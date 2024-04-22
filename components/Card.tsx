@@ -94,7 +94,7 @@ const Card = () => {
         placeholder="blur"
         quality={100}
         width={300}
-        height={100}
+        height={300}
         style={{
           marginBottom: "-5px",
         }}
