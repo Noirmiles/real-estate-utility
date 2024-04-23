@@ -33,7 +33,7 @@ model User {
   roleId    Int      @default(1)
   updatedAt DateTime @updatedAt
   role      Role     @relation(fields: [roleId], references: [id])
-
+ messagesSent Message[] @relation("UserToAgentMessages")
   @@index([roleId], map: "User_roleId_fkey")
 }
 
@@ -53,6 +53,7 @@ model Property {
   agencyName        String    @db.VarChar(255)
   agentName         String    @db.VarChar(255)
   Showing           Showing[]
+  Messages          Message[] @relation("MessagesRelatedToProperty")
 }
 
 model Agent {
@@ -66,7 +67,7 @@ model Agent {
   password  String   @db.VarChar(255)
   roleId    Int      @default(2) //default role ID for 'Agent'
   role      Role     @relation(fields: [roleId], references: [id])
-
+messagesReceived Message[] @relation("UserToAgentMessages")
   @@index([roleId], map: "Agent_roleId_fkey")
 }
 
@@ -81,4 +82,22 @@ model Showing {
   property     Property @relation(fields: [propertyId], references: [id])
 
   @@index([propertyId], map: "Showing_propertyId_fkey")
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  senderId    Int
+  receiverId  Int
+  content     String
+  propertyId  Int?     // Optional
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sender      User     @relation(name: "UserToAgentMessages", fields: [senderId], references: [id])
+  receiver    Agent    @relation(name: "UserToAgentMessages", fields: [receiverId], references: [id])
+  property    Property? @relation(name: "MessagesRelatedToProperty", fields: [propertyId], references: [id])
+
+  @@index([senderId], name: "idx_message_sender")
+  @@index([receiverId], name: "idx_message_receiver")
+  @@index([propertyId], name: "idx_message_property")
 }
