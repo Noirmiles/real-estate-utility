@@ -43,6 +43,7 @@ model Property {
   state             String
   city              String
   address           String
+  zipcode           Int
   squareFootage     Decimal   @db.Decimal(10, 2)
   numberOfRooms     Int
   numberOfBathrooms Int
