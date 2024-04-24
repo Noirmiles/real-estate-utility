@@ -3,7 +3,7 @@
 import React, { useState, ReactElement, useEffect, useRef, ChangeEvent, FormEvent, lazy } from 'react';
 import { PrismaClient } from '@prisma/client';
 import { Button } from "@/components/ui/button";
-import Card from '@/components/Card';
+import CardList from '@/components/CardList';
 import SearchBar from '@/components/searchBar';
 import SearchMenu from '@/components/SearchMenu';
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
@@ -47,7 +47,7 @@ export default function Houses() {
   const [searchTerm, setSearchTerm] = useState(''); // State to hold search term in main page
   const [mapCenter, setMapCenter] = useState({ lat: 34.7287, lng: -86.5879 });
 
-  const handleSearch = async () => {
+ const handleSearch = async () => {
     // ... Geocoding logic to update map center based on searchTerm
   };
 
@@ -464,7 +464,7 @@ export default function Houses() {
 
 
   return (
-    <div className="absolute top-0 z-[-2] h-200vh w-screen bg-gradient-to-r from-gray-900 to-black">
+      <div className="absolute top-0 z-[-2] h-200vh w-screen bg-gradient-to-r from-gray-900 to-black">
       {/*<Background/> */}
       <div className=""></div>
 
@@ -493,7 +493,7 @@ export default function Houses() {
           </Button>
         </div>
       </div>
-      <div className="p-5 flex">
+      <div className="p-4 flex">
         <SearchBar />
         <SearchMenu />
       </div>
@@ -507,20 +507,9 @@ export default function Houses() {
 
         <div className='flex flex-wrap justify-between relative ml-5'>
           <div className='mr-5 mb-5'>
-            <Card />
+          <CardList/>
           </div>
-          <div className='mr-5 mb-5 '>
-            <Card />
-          </div>
-          <div className='mr-5 mb-5 '>
-            <Card />
-          </div>
-          <div className='mr-5 mb-5 '>
-            <Card />
-          </div>
-
-
-
+          
         </div>
       </div>
 

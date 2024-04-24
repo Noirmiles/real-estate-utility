@@ -15,6 +15,8 @@ import PropertyDetailsModal from './PropertyDetailsModal';
 import Image from 'next/image';
 import { PrismaClient } from '@prisma/client';
 
+
+
 interface Listing {
   id: number;
   listPrice: number;
@@ -29,8 +31,6 @@ interface Listing {
   createdAt: string;
   updatedAt: string;
 }
-
-
 
 const prisma = new PrismaClient();
 
@@ -84,76 +84,88 @@ const Card = () => {
   };
 
 
+
   return (
-    <a href="/" className= "">
+    <div className="">
+      {listings?.map((listing) => (
+        <div
+          key={listing.id}
+          className="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer"
+          onClick={() => handleOpenModal(listing)}
+        >
+          {listing.images.length > 0 && (
+            <a href="/" className="">
 
-    <div className="card">
-      <Image className="object-cover"
-        alt="home1"
-        src={home1}
-        placeholder="blur"
-        quality={100}
-        width={300}
-        height={300}
-        style={{
-          marginBottom: "-5px",
-        }}
-      />
-      {/*Badges*/}
-      <div className="p-5 flex flex-col gap-3">
-        <div className="flex items-center gap-2">
-          <span className="badge">For Sale</span>
-          <span className="badge">Mansion</span>
+              <div className="card">
+                <Image className="object-cover"
+                  alt="home1"
+                  src={home1}
+                  placeholder="blur"
+                  quality={100}
+                  width={300}
+                  height={300}
+                  style={{
+                    marginBottom: "-5px",
+                  }}
+                />
+                {/*Badges*/}
+                <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="badge">For Sale</span>
+                  </div>
+
+
+
+
+                  {/*Price*/}
+                  <div>
+                    <span className="text-xl font-bold">
+                      ${listing.listPrice}
+
+                    </span>
+
+                    {/*Product Title*/}
+                    <h2 className="product-address" title="Jamaican Condo">
+                      {listing.address}, {listing.city}, {listing.state}, ZIPCODE
+                    </h2>
+                    {/*More Info*/}
+
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-sm opacity-50">
+                        {listing.numberOfRooms} Rooms | {listing.numberOfBathrooms} Bathrooms | {listing.squareFootage} sqFt.
+                      </span>
+                      <span className="badge-details">
+                        For Sale
+                      </span>
+                      <span className="badge-details">
+                        {listing.propertyType}
+                      </span>
+                    </div>
+
+                  </div>
+
+                  {/*Agent Review*/}
+
+                </div >
+              </div >
+            </a>
+
+          )}
+          {selectedProperty && (
+            <PropertyDetailsModal
+              property={selectedProperty}
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+              onDelete={handleDeleteProperty}
+            />
+          )}
         </div>
+      ))
+};
+</div>
 
-
-
-
-        {/*Price*/}
-        <div>
-          <span className="text-xl font-bold">
-            $720,00
-
-          </span>
-
-          {/*Product Title*/}
-          <h2 className="product-address" title="Jamaican Condo">
-            7871 Moores Mill Rd, Meridianville, AL, 34659
-          </h2>
-          {/*More Info*/}
-
-          {listings.length > 0 && (
-            <div className="flex items-center gap-2 mt-1">
-          <span className="text-sm opacity-50">
-            {listings.map((listing) => (
-              <span key={listing.id}>
-                {listing.numberOfRooms} Rooms | {listing.numberOfBathrooms} Bathrooms | {listing.squareFootage} sqFt.
-              </span>
-            ))}
-          </span>
-          <span className="discount-percent">
-            For Sale
-          </span>
-        </div>
-    )}
-      </div>
-
-      {/*Agent Review*/}
-      <div>
-        <span className="flex items-center mt-1 font-extralight">
-          Agent Rating:
-          <Image src={star1} alt="" />
-          <Image src={star1} alt="" />
-          <Image src={star1} alt="" />
-          <Image src={star2} alt="" />
-          <Image src={star3} alt="" />
-        </span>
-      </div>
-    </div >
-    </div >
-    </a>
 
   )
-};
-
+}
 export default Card;
+
