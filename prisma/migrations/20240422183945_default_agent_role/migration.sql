@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Agent` MODIFY `roleId` INTEGER NOT NULL DEFAULT 2;

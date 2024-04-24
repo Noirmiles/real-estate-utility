@@ -10,7 +10,7 @@ interface FormData {
   email: string;
   username: string;
   password: string;
-  manager: boolean;
+  role: string;
 }
 
 const RegisterForm: React.FC = () => {
@@ -20,20 +20,15 @@ const RegisterForm: React.FC = () => {
     email: '',
     username: '',
     password: '',
-    manager: false,
+    role: 'agent', //Default role
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value === 'true' }));
   };
 
   const validateForm = (): boolean => {
@@ -143,14 +138,14 @@ const RegisterForm: React.FC = () => {
         placeholder="Password" 
         required style={inputStyle} 
         />
-        <select name="manager" 
-        value={String(formData.manager)} 
-        onChange={handleSelectChange} 
+        <select name="role" 
+        value={(formData.role)} 
+        onChange={handleChange} 
         style={inputStyle}>
-          <option value="true">Manager</option>
-          <option value="false">Not a Manager
-          </option>
+          <option value="agent">Agent</option>
+          <option value="manager">Manager</option>
         </select>
+        
         <Button type="submit" disabled={isSubmitted} style={{ marginTop: '20px', width: '100%' }}>Register</Button>
         {isSubmitted && <p style={{ color: 'green' }}>Account registered successfully! <Link href="/agent-login">Go to Sign In</Link></p>}
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
