@@ -23,10 +23,13 @@ interface Listing {
   state: string;
   city: string;
   address: string;
+  zipcode: number;
   squareFootage:  Decimal;
   numberOfRooms: number;
   numberOfBathrooms: number;
   propertyType: string;
+  agentName: string;
+  agencyName: string;
   images:  JsonValue;
 
 }
@@ -37,16 +40,16 @@ const CardList = () => {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const properties = await prisma.property.findMany();
-        setListings(properties);
+        const response = await fetch('/houses/listings');
+        const data: Listing[] = await response.json();
+        setListings(data);
       } catch (error) {
-        console.error('Error fetching properties:', error);
+        console.error('Error fetching listings:', error);
       }
     };
-
     fetchListings();
   }, []);
-
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {listings &&
@@ -69,6 +72,7 @@ const CardList = () => {
       <div className="p-5 flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <span className="badge">For Sale</span>
+          <span className="badge">{property.propertyType}</span>
         </div>
 
 
@@ -83,20 +87,15 @@ const CardList = () => {
 
           {/*Product Title*/}
           <h2 className="product-address" title="Jamaican Condo">
-            {property.address}, {property.city}, {property.state}, ZIPCODE
+            {property.address}, {property.city}, {property.state}, {property.zipcode}
           </h2>
           {/*More Info*/}
 
           <div className="flex items-center gap-2 mt-1">
           <span className="text-sm opacity-50">
-                {property.numberOfRooms} Rooms | {property.numberOfBathrooms} Bathrooms | {property.squareFootage.toString()} sqFt.
+                {property.numberOfRooms} Rooms | {property.numberOfBathrooms} Bathrooms | {property.squareFootage.toString()} SqFt.
           </span>
-          <span className="badge-details">
-            For Sale
-          </span>
-          <span className="badge-details">
-            {property.propertyType}
-          </span>
+         
         </div>
     
       </div>
@@ -104,7 +103,7 @@ const CardList = () => {
       {/*Agent Review*/}
       <div>
         <span className="flex items-center mt-1 font-extralight">
-          {/*property.agencyName} Rating:*/}
+          {property.agencyName} Rating:
           <Image src={star1} alt="" />
           <Image src={star1} alt="" />
           <Image src={star1} alt="" />

@@ -46,6 +46,25 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   const [selectedTime, setSelectedTime] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showingFormOpen, setShowingFormOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleOpenShowingRequest = () => {
+    setShowingRequestOpen(true);
+  };
+
+  const handleCloseShowingForm = () => {
+    setShowingFormOpen(false);
+    setName('');
+    setEmail('');
+  };
+
+  const handleOpenShowingForm = () => {
+    if (selectedDate && selectedTime) {
+      setShowingFormOpen(true);
+    }
+  };
 
   const handleRequestShowing = () => {
     setShowingRequestOpen(true);
@@ -55,6 +74,22 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
     setShowingRequestOpen(false);
     setSelectedDate(null);
     setSelectedTime('');
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubmitShowingForm = () => {
+    // Handle the submission of the showing form here
+    // You can send the name, email, selected date, and time to the server or update the user's dashboard
+    console.log('Showing Form:', name, email, selectedDate, selectedTime);
+    handleCloseShowingForm();
+    onClose();
   };
 
   const handleDateChange = (value: Date | null) => {
@@ -247,7 +282,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 </button>
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-4"
-                  onClick={handleRequestShowing}
+                  onClick={handleOpenShowingRequest}
                 >
                   Schedule a Showing
                 </button>
@@ -264,54 +299,96 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
       </Modal>
   
       {showingRequestOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md">
-            {showConfirmation && (
-              <div className="mb-4">
-                <p className="text-lg font-semibold">Your showing request has been sent to the listing agent.</p>
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md">
+          {!showingFormOpen ? (
+            <>
+              <h2 className="text-2xl font-bold mb-4">Schedule a Showing</h2>
+              <div>
+                <Calendar
+                  onChange={(value) => handleDateChange(value instanceof Date ? value : null)}
+                  value={selectedDate || null}
+                  minDate={new Date()}
+                  calendarType="US"
+                />
               </div>
-            )}
-            <h2 className="text-2xl font-bold mb-4">Schedule a Showing</h2>
-            <div>
-              <Calendar
-                onChange={(value) => handleDateChange(value instanceof Date ? value : null)}
-                value={selectedDate || null}
-                minDate={new Date()}
-                calendarType="US"
-              />
-            </div>
-            <div className="mt-4">
-              <label htmlFor="showingTime" className="block font-medium mb-1">
-                Showing Time
-              </label>
-              <input
-                type="time"
-                id="showingTime"
-                value={selectedTime}
-                onChange={handleTimeChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="flex justify-end mt-4">
-              <button
-                className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 mr-2"
-                onClick={handleCloseShowingRequest}
-              >
-                Close
-              </button>
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                onClick={handleSubmitRequest}
-                disabled={!selectedDate || !selectedTime}
-              >
-                Submit Request
-              </button>
-            </div>
-          </div>
+              <div className="mt-4">
+                <label htmlFor="showingTime" className="block font-medium mb-1">
+                  Showing Time
+                </label>
+                <input
+                  type="time"
+                  id="showingTime"
+                  value={selectedTime}
+                  onChange={handleTimeChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex justify-end mt-4">
+                <button
+                  className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 mr-2"
+                  onClick={handleCloseShowingRequest}
+                >
+                  Close
+                </button>
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                  onClick={handleOpenShowingForm}
+                  disabled={!selectedDate || !selectedTime}
+                >
+                  Next
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className="text-2xl font-bold mb-4">How can we reach out to confirm your tour?</h2>
+              <div className="mb-4">
+                <label htmlFor="name" className="block font-medium mb-1">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={handleNameChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block font-medium mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 mr-2"
+                  onClick={handleCloseShowingForm}
+                >
+                  Back
+                </button>
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                  onClick={handleSubmitShowingForm}
+                  disabled={!name || !email}
+                >
+                  Submit
+                </button>
+              </div>
+            </>
+          )}
         </div>
-      )}
-    </>
-  );
+      </div>
+    )}
+  </>
+);
 };
 
 export default PropertyDetailsModal;
