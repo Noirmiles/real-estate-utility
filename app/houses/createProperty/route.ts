@@ -14,11 +14,14 @@ export async function POST(request: NextRequest) {
     const state = formData.get('state') as string;
     const city = formData.get('city') as string;
     const address = formData.get('address') as string;
+    const zipcode = formData.get('zipcode') as string;
     const squareFootage = formData.get('squareFootage') as string;
     const numberOfRooms = formData.get('numberOfRooms') as string;
     const numberOfBathrooms = formData.get('numberOfBathrooms') as string;
     const propertyType = formData.get('propertyType') as string;
     const images = formData.getAll('images') as File[];
+    const agencyName = formData.get('agencyName') as string;
+    const agentName = formData.get('agentName') as string;
 
     const imageNames: string[] = [];
 
@@ -36,11 +39,14 @@ export async function POST(request: NextRequest) {
         state,
         city,
         address,
+        zipcode: parseInt(zipcode),
         squareFootage: parseFloat(squareFootage),
         numberOfRooms: parseInt(numberOfRooms),
         numberOfBathrooms: parseInt(numberOfBathrooms),
         propertyType,
         images: imageNames,
+        agencyName,
+        agentName,
       },
     });
 

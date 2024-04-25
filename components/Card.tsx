@@ -15,18 +15,19 @@ import PropertyDetailsModal from './PropertyDetailsModal';
 import Image from 'next/image';
 import { PrismaClient } from '@prisma/client';
 
-
-
 interface Listing {
   id: number;
   listPrice: number;
   state: string;
   city: string;
   address: string;
+  zipcode: number;
   squareFootage: number;
   numberOfRooms: number;
   numberOfBathrooms: number;
   propertyType: string;
+  agentName: string;
+  agencyName: string;
   images: string[];
   createdAt: string;
   updatedAt: string;
@@ -83,8 +84,6 @@ const Card = () => {
     }
   };
 
-
-
   return (
     <div className="">
       {listings?.map((listing) => (
@@ -93,11 +92,11 @@ const Card = () => {
           className="bg-white shadow-md rounded-lg overflow-hidden cursor-pointer"
           onClick={() => handleOpenModal(listing)}
         >
-          {listing.images.length > 0 && (
+          {listing.images && listing.images.length > 0 ? (
             <a href="/" className="">
-
               <div className="card">
-                <Image className="object-cover"
+                <Image
+                  className="object-cover"
                   alt="home1"
                   src={home1}
                   placeholder="blur"
@@ -108,48 +107,55 @@ const Card = () => {
                     marginBottom: "-5px",
                   }}
                 />
-                {/*Badges*/}
+                {/* Badges */}
                 <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div className="flex items-center gap-2">
                     <span className="badge">For Sale</span>
                   </div>
 
-
-
-
-                  {/*Price*/}
+                  {/* Price */}
                   <div>
-                    <span className="text-xl font-bold">
-                      ${listing.listPrice}
+                    <span className="text-xl font-bold">${listing.listPrice}</span>
 
-                    </span>
-
-                    {/*Product Title*/}
+                    {/* Product Title */}
                     <h2 className="product-address" title="Jamaican Condo">
                       {listing.address}, {listing.city}, {listing.state}, ZIPCODE
                     </h2>
-                    {/*More Info*/}
+                    {/* More Info */}
 
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-sm opacity-50">
-                        {listing.numberOfRooms} Rooms | {listing.numberOfBathrooms} Bathrooms | {listing.squareFootage} sqFt.
+                        {listing.numberOfRooms} Rooms | {listing.numberOfBathrooms} Bathrooms |{" "}
+                        {listing.squareFootage} sqFt.
                       </span>
-                      <span className="badge-details">
-                        For Sale
-                      </span>
-                      <span className="badge-details">
-                        {listing.propertyType}
-                      </span>
+                      <span className="badge-details">For Sale</span>
+                      <span className="badge-details">{listing.propertyType}</span>
                     </div>
-
                   </div>
 
-                  {/*Agent Review*/}
-
-                </div >
-              </div >
+                  {/* Agent Review */}
+                </div>
+              </div>
             </a>
+          ) : (
+            <div className="p-5">
+              <div>
+                <span className="text-xl font-bold">${listing.listPrice}</span>
 
+                <h2 className="product-address" title="Jamaican Condo">
+                  {listing.address}, {listing.city}, {listing.state}, {listing.zipcode}
+                </h2>
+
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-sm opacity-50">
+                    {listing.numberOfRooms} Rooms | {listing.numberOfBathrooms} Bathrooms |{" "}
+                    {listing.squareFootage} sqFt.
+                  </span>
+                  <span className="badge-details">For Sale</span>
+                  <span className="badge-details">{listing.propertyType}</span>
+                </div>
+              </div>
+            </div>
           )}
           {selectedProperty && (
             <PropertyDetailsModal
@@ -160,12 +166,9 @@ const Card = () => {
             />
           )}
         </div>
-      ))
+      ))}
+    </div>
+  );
 };
-</div>
 
-
-  )
-}
 export default Card;
-

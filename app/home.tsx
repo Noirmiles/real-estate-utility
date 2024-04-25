@@ -1,6 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import Card from '@/components/Card';
+import CardList from '@/components/CardList';
 import SearchBar from '@/components/searchBar';
 
 import React, { useState, ReactElement, useEffect, useRef, ChangeEvent, FormEvent, lazy } from 'react';
@@ -61,7 +61,7 @@ export default function Home() {
             <div className=" flex flex-col  min-h-screen">
               <section className=" flex flex-col items-left text-left gap-8 p-10">
                 <div className="font-bold text-xl ">
-                  Trending Homes on Project Z
+                  Trending Homes on Z Real Estate
                   <div className="text-sm font-thin ">
                     Viewed and saved the most in the area over the last 24 hours
                   </div>
@@ -69,8 +69,8 @@ export default function Home() {
               </section>
 
               <div className="flex flex-wrap justify-between m-4 mb-24">
-                <Card />
-                <Card />
+                <CardList />
+            
          
               </div>
 
