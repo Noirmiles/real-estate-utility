@@ -1,8 +1,8 @@
 'use client'
 import React, { useState, FormEvent, useEffect } from 'react';
 import Background from '@/components/background';
-import { Button } from "@/components/ui/button";  
-import { login } from "../services/auth.service"; 
+import { Button } from "@/components/ui/button";
+import { login } from "../services/auth.service";
 
 interface User {
   username: string;
@@ -50,7 +50,7 @@ const SignInForm: React.FC = () => {
       handleLoginSuccess(data);
     } catch (error) {
       setMessage('An error occurred during login.');
-      console.error(error);  
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -69,8 +69,9 @@ const SignInForm: React.FC = () => {
 
   const formStyle = {
     maxWidth: '500px',
+    minWidth: '375px',
     margin: 'auto',
-    padding: '40px',
+    padding: '70px',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: '30px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -80,15 +81,17 @@ const SignInForm: React.FC = () => {
   return (
     <div>
       {loginSuccess ? (
-      <div></div> // Placeholder while redirection is in progress
-    ) : (
-    
-    <div style={formStyle}>
-      <h2 style={{ fontSize: '24px', textAlign: 'center', margin: '20px 0' }}>
-        <b style={{ color: 'black', fontWeight: 'bold' }}>Welcome to the Z Project</b>
-      </h2>
+        <div></div> // Placeholder while redirection is in progress
+      ) : (
+
+        <div style={formStyle} >
+          <h2 className="flex flex-col items-center" style={{ textAlign: 'center', margin: '20px 0' }}>
+            <b style={{ fontSize: '24px', color: 'black', fontWeight: 'bold' }}>Welcome to the Zest</b>
+            <b style={{ fontSize: '18px', color: 'black', fontWeight: 'bold' }}>Login</b>
+
+          </h2>
           <form onSubmit={handleSignIn}>
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '10px' }}>
               <label htmlFor="username" style={{ display: 'block', marginBottom: '2px' }}>Username</label>
               <input
                 type='text'
@@ -102,7 +105,7 @@ const SignInForm: React.FC = () => {
                 disabled={loading}
               />
             </div>
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '10px' }}>
               <label htmlFor="password" style={{ display: 'block', marginBottom: '2px' }}>Password</label>
               <input
                 type='password'
@@ -140,15 +143,17 @@ const SignInForm: React.FC = () => {
 }
 
 export default function SignIn() {
+
   return (
     <div>
       <Background />
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh', 
-        transform: 'transformY(-10%)'}}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        transform: 'transformY(-10%)'
+      }}>
         <SignInForm />
       </div>
     </div>

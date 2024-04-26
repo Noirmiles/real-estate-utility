@@ -18,6 +18,13 @@
     shadow-lg rounded-md overflow-hidden
   }
 
+    .card-large{
+    @apply
+    bg-white text-gray-700
+    w-80 min-h-[10rem]
+    shadow-lg rounded-md overflow-hidden
+  }
+
   .badge {
     @apply
     px-3 py-1 rounded-full text-xs bg-gray-100
@@ -29,7 +36,7 @@
     overflow-ellipsis overflow-hidden whitespace-nowrap
   }
 
-  .discount-percent{
+  .badge-details{
     @apply
     bg-green-400
     px-1.5 py-0.5 rounded-md

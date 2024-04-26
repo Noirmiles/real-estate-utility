@@ -11,11 +11,7 @@ type MapProps = {
   zoom: number
 }
 
-// map wrapper styles
-const StyledMap = styled.div`
-  height: 100vh;
-  width: 50vw;
-`;
+
 
 const apiKey = 'AIzaSyA3hodoDpLt7mDpN1fL8d9RnrW8i8jaJSA'
 
@@ -42,7 +38,7 @@ function Map({ center, zoom }: MapProps) {
 
   // map will be connect to this div block
   
-  return <div className="map-container rounded-lg" ref={ref} style={{height: '100vh', width:'50vw'}}id="map" />;
+  return <div className="map-container rounded-lg" ref={ref} style={{height: '100vh', width:'60vw'}}id="map" />;
 }
 
 export default Map
