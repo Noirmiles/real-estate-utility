@@ -89,12 +89,13 @@ const AgentForm: React.FC = () => {
   // Transparent box for the AgentIn form
   const formStyle = {
     maxWidth: '500px',
+    minWidth: '375px',
     margin: 'auto',
     padding: '40px',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', 
-    borderRadius: '30px', 
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
-    backdropFilter: 'blur(5px)'
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: '30px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    backdropFilter: 'blur(5px)',
   };
 
   return (
@@ -102,9 +103,11 @@ const AgentForm: React.FC = () => {
       {loginSuccess ? (
       <div></div> // Placeholder while redirection is in progress
     ) : (
-    <div style={formStyle}>
-      <h2 style={{ fontSize: '24px', textAlign: 'center', margin: '20px 0' }}>
-        <b style={{ color: 'black', fontWeight: 'bold' }}>Agent Login</b>
+    <div style={formStyle} >
+      <h2 className="flex flex-col items-center" style={{textAlign: 'center', margin: '20px 0' }}>
+        <b style={{ fontSize: '24px', color: 'black', fontWeight: 'bold' }}>Welcome to the Zest</b>
+        <b style={{ fontSize: '18px',color: 'black', fontWeight: 'bold' }}>Agent Login</b>
+
       </h2>
 
           <form onSubmit={handleSignIn}>
@@ -163,7 +166,7 @@ const AgentForm: React.FC = () => {
 export default function SignIn() {
   return (
     <div>
-      <Background />
+    <div className="fixed top-0 left-0 w-full h-screen z-[-1] bg-gradient-to-r from-gray-900 to-black"/>
       <div style={{ 
         display: 'flex', 
         justifyContent: 'center', 

@@ -3,7 +3,7 @@
 import React, { useState, ReactElement, useEffect, useRef, ChangeEvent, FormEvent, lazy } from 'react';
 import { PrismaClient } from '@prisma/client';
 import { Button } from "@/components/ui/button";
-import CardList from '@/components/CardList';
+import BuyColumn from '@/components/BuyColumn';
 import SearchBar from '@/components/searchBar';
 import SearchMenu from '@/components/SearchMenu';
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
@@ -42,7 +42,7 @@ export default function Houses() {
   const [searchTerm, setSearchTerm] = useState(''); // State to hold search term in main page
   const [mapCenter, setMapCenter] = useState({ lat: 34.7287, lng: -86.5879 });
 
- const handleSearch = async () => {
+  const handleSearch = async () => {
     // ... Geocoding logic to update map center based on searchTerm
   };
 
@@ -108,7 +108,7 @@ export default function Houses() {
       setSelectedPropertyType(event.target.value);
     };
 
-     // Function to handle agency selection change
+    // Function to handle agency selection change
     const handleAgencyChange = (event: ChangeEvent<HTMLSelectElement>) => {
       setSelectedAgency(event.target.value);
     };
@@ -322,7 +322,7 @@ export default function Houses() {
                   />
                 </div>
               </div>
-    
+
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label htmlFor="square-footage" className="block font-medium mb-1">Square Footage</label>
@@ -367,7 +367,7 @@ export default function Houses() {
                   />
                 </div>
               </div>
-    
+
               <div>
                 <label htmlFor="property-type" className="block font-medium mb-1">Property Type</label>
                 <select
@@ -383,7 +383,7 @@ export default function Houses() {
                   <option value="Duplex">Duplex</option>
                 </select>
               </div>
-    
+
               <div>
                 <label htmlFor="agency" className="block font-medium mb-1">Agency</label>
                 <select
@@ -398,7 +398,7 @@ export default function Houses() {
                   <option value="Prestige Properties">Prestige Properties</option>
                 </select>
               </div>
-    
+
               <div>
                 <label htmlFor="agent-name" className="block font-medium mb-1">Listing Agent Name</label>
                 <input
@@ -410,7 +410,7 @@ export default function Houses() {
                   onChange={(e) => setAgentName(e.target.value)}
                 />
               </div>
-    
+
               <div>
                 <label htmlFor="image-upload" className="block font-medium mb-1">Upload Images</label>
                 <div className="flex items-center">
@@ -425,7 +425,7 @@ export default function Houses() {
                   {images && images.length > 0 && <span className="ml-2">{images.length} file(s) selected</span>}
                 </div>
               </div>
-    
+
               <div className="text-right">
                 <Button
                   type="submit"
@@ -447,52 +447,49 @@ export default function Houses() {
 
 
   return (
-      <div className="relative top-0 h-200vh w-screen bg-gradient-to-r from-gray-900 to-black">
+    <div className="relative top-0 h-full w-full bg-gradient-to-r from-gray-900 to-black">
       {/*<Background/> */}
-      <div className=""></div>
 
-      <div className="flex items-center h-16 p-6 relative z-10">
-        <div className="flex-shrink-0">
-          <a className="text-white text-xl font-bold text-center drop-shadow-lg">
-            Real Estate & Homes For Sale
-          </a>
-        </div>
-        <div className="ml-auto relative z-20">
-          <i
-            className="fas fa-bell text-white text-2xl cursor-pointer relative"
-          >
-          </i>
-          <Button
-            className="ml-4 bg-primary text-primary-foreground px-4 py-2 rounded-md"
-            onClick={togglePopup}
-          >
-            Add Listing
-          </Button>
-        </div>
-      </div>
-      <div className="p-4 flex">
-        <SearchBar />
-        <SearchMenu />
-      </div>
-
-      <div className='main-contents flex p-5 flex-auto'>
-        <div className=''>
-          <Wrapper apiKey={'AIzaSyA3hodoDpLt7mDpN1fL8d9RnrW8i8jaJSA'} render={render}>
-            <Map center={{ lat: 34.7287, lng: -86.5879 }} zoom={10} />
-          </Wrapper>
-        </div>
-
-        <div className='flex flex-wrap justify-between relative ml-5'>
-          <div className='mr-5 mb-5'>
-          <CardList/>
+      <div className="main">
+        <div className="add-bar flex items-center h-16 p-6 relative z-10 ">
+          <div className="flex-shrink-0">
+            <a className="text-white text-xl font-bold text-center drop-shadow-lg">
+              Real Estate & Homes For Sale
+            </a>
           </div>
-          
+          <div className="ml-auto relative z-20">
+            <i
+              className="fas fa-bell text-white text-2xl cursor-pointer relative"
+            >
+            </i>
+            <Button
+              className="ml-4 bg-primary text-primary-foreground px-4 py-2 rounded-md"
+              onClick={togglePopup}
+            >
+              Add Listing
+            </Button>
+          </div>
         </div>
+        <div className="options-bar p-4 flex ">
+          <SearchBar />
+          <SearchMenu />
+        </div>
+
+        <div className='objects-bar flex'>
+          <div className='map-container'>
+            <Wrapper apiKey={'AIzaSyA3hodoDpLt7mDpN1fL8d9RnrW8i8jaJSA'} render={render}>
+              <Map center={{ lat: 34.7287, lng: -86.5879 }} zoom={10} />
+            </Wrapper>
+          </div>
+
+          <div className='ml-36'>
+            <BuyColumn />
+          </div>
+        </div>
+        {isPopupOpen && <Popup />}
       </div>
-      {isPopupOpen && <Popup />}
     </div>
 
 
   );
 }
-                    

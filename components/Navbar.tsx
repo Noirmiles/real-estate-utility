@@ -54,7 +54,7 @@ export default function Nav() {
     return (
 
 
-        <nav className="navbar-container ">
+        <nav className="navbar-container z-50">
             <div className="p-1" style={formStyle}>
                 <div className="flex items-center justify-center">
 
@@ -80,26 +80,27 @@ export default function Nav() {
 
                         {currentUser ? (
                             <>
-                                <a href="/portal" className="text-black text-2xl hover:shadow-lg p-4 rounded-lg">Profile</a>
-                                <a href="/" onClick={logOut} className="text-black text-2xl hover:shadow-lg p-4 rounded-lg">Log Out</a>
+                                <a href="/portal" className="text-black text-2xl hover:shadow-lg  rounded-lg">Profile</a>
+                                <a href="/" onClick={logOut} className="text-black text-2xl hover:shadow-lg rounded-lg">Log Out</a>
                             </>
                         ) : (
-                            <button onClick={toogleSignInDropdown} className=" text-black text-xl hover:drop-shadow-lg p-4 hover:opacity-75 rounded-lg">
+                            <button onClick={toogleSignInDropdown} className=" text-black text-xl hover:drop-shadow-lg rounded-lg">
                                 Sign in
 
                                 {isSignInDropdownVisible && (
-                                    <div className="aboslute left-0 right-0 z-0 w-25 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
-                                        <div className="py-1" role="menu" aria-orientation="horizontal" aria-labelledby="options-menu">
-                                            <a href="/sign-in" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                                                Client Login
+                                    <div className="fixed left-0 right-0 top-full z-50  shadow-lg ring-1 "> {/* Added overflow and box-sizing */}
+                                        <div className="py-1 " role="menu" aria-orientation="horizontal" aria-labelledby="options-menu">
+                                            <a href="/sign-in" className="block  text-sm text-blue-700 bg-white" role="menuitem">
+                                                Client
                                             </a>
-                                            <a href="/agent-login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                                                Agent Login
+                                            <a href="/agent-login" className="block   text-sm text-red-700 bg-white" role="menuitem">
+                                                Agent
                                             </a>
                                         </div>
                                     </div>
                                 )}
                             </button>
+
                         )}
                         {/*<div className="flex"> <ModeToggle /></div>*/}
 

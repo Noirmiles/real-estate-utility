@@ -18,17 +18,19 @@ export default function RootLayout({
     <html lang="en">
       <body className="">
 
-      <div>
-        <Navbar/>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                  <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          ></ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <div>
+          <div className="z-50">
+            <Navbar />
+          </div>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            ></ThemeProvider>
+            {children}
+          </ThemeProvider>
         </div>
       </body>
     </html>

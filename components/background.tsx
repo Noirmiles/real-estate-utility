@@ -5,7 +5,7 @@ export default function Background(){
 
 
     return (
-            <div className="z[0]">
+            <div className="">
             
             <Image
                 alt="cityscape"
@@ -13,9 +13,6 @@ export default function Background(){
                 placeholder="blur"
                 quality={100}
                 fill
-                sizes=""
-            
-
                 style={{
                 aspectRatio: "16/9",
                 objectFit: 'cover',
