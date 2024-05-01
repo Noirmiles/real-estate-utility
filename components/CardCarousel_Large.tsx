@@ -123,14 +123,10 @@ const CardList = () => {
     <div className="">
       <div>
         <div className="grid grid-cols-2 grid-flow-rows "> {/* Set 2 columns */}
-          {/*{listings &&
-            listings.map((property, index) => (*/}
-              //This is new code here
-              
-
-              //
-              <div {/*key={index}*/} className="pb-6">
-                <a href={"/" + {/*property.id*/}} className="">
+          {listings &&
+            listings.map((property, index) => (
+              <div key={index} className="pb-6">
+                <a href={"/" + property.id} className="">
                   <div className="card-large drop-shadow-md">
                     <Image
                       className="object-cover"

@@ -18,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="">
 
+<<<<<<< Updated upstream
         <div>
           <div className="z-5">
             <Navbar />
@@ -31,6 +32,12 @@ export default function RootLayout({
             ></ThemeProvider>
             {children}
           </ThemeProvider>
+=======
+      <div>
+        <Navbar/>
+          {children}
+
+>>>>>>> Stashed changes
         </div>
       </body>
     </html>

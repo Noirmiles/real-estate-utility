@@ -129,66 +129,71 @@ const CardList = () => {
             listings.map((property) => (
               <CarouselItem className="p-8">
                 {/*Need this to open up a card with all the info like on zillow*/}
-                <div className="" onClick={() => { console.log('Span clicked!') }}>
-                  <div className="card drop-shadow-md">
-                    <Image
-                      className="object-cover"
-                      alt=""
-                      src={`/houses/${property.id}/${property.id}-1.webp`}
-                      quality={100}
-                      width={300}
-                      height={300}
+                <div className="card drop-shadow-md">
+                  <Image
+                    className="object-cover"
+                    alt="{"
+                    src={`/houses/${property.id}/${property.id}-1.webp`}
+                    quality={100}
+                    width={320}
+                    height={300}
 
-                    />
-                    {/*Badges*/}
-                    <div className="p-5 flex flex-col gap-3">
-                      <div className="flex items-center gap-2">
-                        <span className="badge">{property.propertyType}</span>
-                        <span className="badge">{property.subdivision}</span>
+                  />
+                  {/*Badges*/}
+                  <div className="p-5 flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="badge">{property.propertyType}</span>
+                      <span className="badge">{property.state}</span>
 
-                      </div>
-
+                    </div>
 
 
 
-                      {/*Price*/}
-                      <div>
-                        <span className="text-xl font-bold">
-                          ${numberWithCommas(property.listPrice)}
+
+                    {/*Price*/}
+                    <div>
+                      <span className="text-xl font-bold">
+                        ${numberWithCommas(property.listPrice)}
+                      </span>
+
+                      {/*Product Title*/}
+                      <h2 className="product-address" title="Jamaican Condo">
+                        {property.address}, {property.city}, {property.state}, {property.zipcode}
+                      </h2>
+                      {/*More Info*/}
+
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-sm opacity-50">
+                          {property.numberOfRooms} Rooms | {property.numberOfBathrooms} Bathrooms | {property.squareFootage.toString()} SqFt.
                         </span>
 
-                        {/*Product Title*/}
-                        <h2 className="product-address" >
-                          {property.address}, {property.city}, {property.state}, {property.zipcode}
-                        </h2>
-                        
-                        {/*More Info*/}
-
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-sm opacity-50">
-                            {property.numberOfRooms} Rooms | {property.numberOfBathrooms} Bathrooms | {property.squareFootage.toString()} SqFt.
-                          </span>
-
-                        </div>
-
                       </div>
-                      <Label onClick={() => handleOpenModal(property.id)} className="cursor-pointer rounded bg-black p-2 text-white active:bg-slate-400">
-                        View
-                      </Label>
 
+                    </div>
 
-                    </div >
-                  </div >
+                    {/*Agent Review
+                <div>
+                  <span className="flex items-center mt-1 font-extralight">
+                    {property.agencyName} Rating:
+                    <Image src={star1} alt="" />
+                    <Image src={star1} alt="" />
+                    <Image src={star1} alt="" />
+                    <Image src={star2} alt="" />
+                    <Image src={star3} alt="" />
+                  </span>
                 </div>
+                */}
+                  </div >
+                </div >
               </CarouselItem>
-            )
-            )
+        )
+        )
           }  </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
 
-    </div>
+    </div >
 
 
   );
