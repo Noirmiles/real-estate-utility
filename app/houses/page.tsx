@@ -8,6 +8,8 @@ import SearchBar from '@/components/searchBar';
 import SearchMenu from '@/components/SearchMenu';
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import Map from '@/components/map'
+import { getCurrentUser } from '@/app/services/auth.service';  
+import { IUser } from '../types/user-types';
 
 
 export default function Houses() {
@@ -443,9 +445,12 @@ export default function Houses() {
 
 
   //Checks Google API Map Key 
+  const [user, setUser] = useState<IUser | null>(null);
+  useEffect(() => {
+    setUser(getCurrentUser()); //  getCurrentUser() fetches the logged-in user's details
+}, []);
 
-
-
+const isAgent = user && user.role.name === 'agent';
   return (
     <div className="relative top-0 h-full w-full bg-gradient-to-r from-gray-900 to-black">
       {/*<Background/> */}
@@ -462,12 +467,14 @@ export default function Houses() {
               className="fas fa-bell text-white text-2xl cursor-pointer relative"
             >
             </i>
+            {isAgent && (
             <Button
               className="ml-4 bg-primary text-primary-foreground px-4 py-2 rounded-md"
               onClick={togglePopup}
             >
               Add Listing
             </Button>
+            )}
           </div>
         </div>
         <div className="options-bar p-4 flex ">
