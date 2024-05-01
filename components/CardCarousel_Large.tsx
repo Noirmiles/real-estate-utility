@@ -43,6 +43,10 @@ interface Listing {
   agentName: string;
   agencyName: string;
   images: JsonValue;
+  description: string;
+  viewCount: number;
+  subdivision: string;
+  alarmCode: number;
 
 }
 
@@ -169,18 +173,6 @@ const CardList = () => {
 
                       </div>
 
-                      {/*Agent Review
-                <div>
-                  <span className="flex items-center mt-1 font-extralight">
-                    {property.agencyName} Rating:
-                    <Image src={star1} alt="" />
-                    <Image src={star1} alt="" />
-                    <Image src={star1} alt="" />
-                    <Image src={star2} alt="" />
-                    <Image src={star3} alt="" />
-                  </span>
-                </div>
-                */}
                     </div >
                   </div >
                 </a>

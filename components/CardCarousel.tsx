@@ -49,6 +49,9 @@ interface Listing {
   description: string;
   viewCount: number;
   subdivision: string;
+  alarmCode: number;
+
+
 
 }
 const console = global.console
@@ -143,7 +146,7 @@ const CardList = () => {
                   <div className="p-5 flex flex-col gap-3">
                     <div className="flex items-center gap-2">
                       <span className="badge">{property.propertyType}</span>
-                      <span className="badge">{property.state}</span>
+                      <span className="badge">{property.subdivision}</span>
 
                     </div>
 
@@ -171,27 +174,25 @@ const CardList = () => {
 
                     </div>
 
-                    {/*Agent Review
-                <div>
-                  <span className="flex items-center mt-1 font-extralight">
-                    {property.agencyName} Rating:
-                    <Image src={star1} alt="" />
-                    <Image src={star1} alt="" />
-                    <Image src={star1} alt="" />
-                    <Image src={star2} alt="" />
-                    <Image src={star3} alt="" />
-                  </span>
-                </div>
-                */}
+                    <Label className="bg-slate-700 rounded-lg p-3 text-white hover:bg-slate-500">
+                      <span className="flex justify-between">
+                      View
+                      <svg width="12" height="12" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L5 3L1 5" stroke="white" />
+                      </svg>
+                      </span>
+                    </Label>
                   </div >
+
                 </div >
+
               </CarouselItem>
-        )
-        )
+            )
+            )
           }  </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
 
     </div >
 

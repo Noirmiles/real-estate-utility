@@ -17,27 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="">
-
-<<<<<<< Updated upstream
         <div>
           <div className="z-5">
             <Navbar />
           </div>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            ></ThemeProvider>
-            {children}
-          </ThemeProvider>
-=======
-      <div>
-        <Navbar/>
           {children}
 
->>>>>>> Stashed changes
         </div>
       </body>
     </html>
