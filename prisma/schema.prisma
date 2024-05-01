@@ -7,85 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Permission {
-  id          Int    @id @default(autoincrement())
-  name        String @unique @db.VarChar(255)
-  description String @db.VarChar(255)
-  roles       Role[] @relation("RolePermissions")
-}
-
-model Role {
-  id          Int          @id @default(autoincrement())
-  name        String       @unique @db.VarChar(255)
-  agents      Agent[]
-  users       User[]
-  permissions Permission[] @relation("RolePermissions")
-}
-
-model User {
-  id           Int       @id @default(autoincrement())
-  email        String    @unique @db.VarChar(255)
-  password     String    @db.VarChar(255)
-  firstName    String    @map("first_name") @db.VarChar(255)
-  lastName     String    @map("last_name") @db.VarChar(255)
-  username     String    @unique @db.VarChar(255)
-  createdAt    DateTime  @default(now())
-  roleId       Int       @default(1)
-  updatedAt    DateTime  @updatedAt
-  messagesSent Message[] @relation("UserToAgentMessages")
-  role         Role      @relation(fields: [roleId], references: [id])
-
-  @@index([roleId], map: "User_roleId_fkey")
-}
-
-model Property {
-  id                Int       @id @default(autoincrement())
-  listPrice         Decimal   @db.Decimal(10, 2)
-  state             String
-  city              String
-  address           String
-  zipcode           Int
-  squareFootage     Decimal   @db.Decimal(10, 2)
-  numberOfRooms     Int
-  numberOfBathrooms Int
-  propertyType      String
-  images            Json?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  agencyName        String    @db.VarChar(255)
-  agentName         String    @db.VarChar(255)
-  zipcode           Int
-  Messages          Message[] @relation("MessagesRelatedToProperty")
-  Showing           Showing[]
-}
-
 model Agent {
-  id               Int       @id @default(autoincrement())
-  email            String    @unique @db.VarChar(255)
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  firstName        String    @map("first_name") @db.VarChar(255)
-  lastName         String    @map("last_name") @db.VarChar(255)
-  username         String    @unique @db.VarChar(255)
-  password         String    @db.VarChar(255)
-  roleId           Int       @default(2)
-  role             Role      @relation(fields: [roleId], references: [id])
-  messagesReceived Message[] @relation("UserToAgentMessages")
+  id         Int       @id @default(autoincrement())
+  email      String    @unique @db.VarChar(255)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime
+  first_name String    @db.VarChar(255)
+  last_name  String    @db.VarChar(255)
+  username   String    @unique @db.VarChar(255)
+  password   String    @db.VarChar(255)
+  roleId     Int       @default(2)
+  Role       Role      @relation(fields: [roleId], references: [id])
+  Message    Message[]
 
   @@index([roleId], map: "Agent_roleId_fkey")
-}
-
-model Showing {
-  id           Int      @id @default(autoincrement())
-  propertyId   Int
-  scheduledAt  DateTime
-  agentName    String   @db.VarChar(255)
-  agentCompany String   @db.VarChar(255)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  property     Property @relation(fields: [propertyId], references: [id])
-
-  @@index([propertyId], map: "Showing_propertyId_fkey")
 }
 
 model Message {
@@ -95,12 +30,82 @@ model Message {
   content    String
   propertyId Int?
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  property   Property? @relation("MessagesRelatedToProperty", fields: [propertyId], references: [id])
-  receiver   Agent     @relation("UserToAgentMessages", fields: [receiverId], references: [id])
-  sender     User      @relation("UserToAgentMessages", fields: [senderId], references: [id])
+  updatedAt  DateTime
+  Property   Property? @relation(fields: [propertyId], references: [id])
+  Agent      Agent     @relation(fields: [receiverId], references: [id])
+  User       User      @relation(fields: [senderId], references: [id])
 
-  @@index([senderId], map: "idx_message_sender")
-  @@index([receiverId], map: "idx_message_receiver")
   @@index([propertyId], map: "idx_message_property")
+  @@index([receiverId], map: "idx_message_receiver")
+  @@index([senderId], map: "idx_message_sender")
+}
+
+model Permission {
+  id          Int    @id @default(autoincrement())
+  name        String @unique @db.VarChar(255)
+  description String @db.VarChar(255)
+  Role        Role[] @relation("RolePermissions")
+}
+
+model Property {
+  id                Int       @id @default(autoincrement())
+  listPrice         Decimal   @db.Decimal(10, 2)
+  state             String
+  city              String
+  address           String
+  squareFootage     Decimal   @db.Decimal(10, 2)
+  numberOfRooms     Int
+  numberOfBathrooms Int
+  propertyType      String
+  images            Json?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime
+  agencyName        String    @db.VarChar(255)
+  agentName         String    @db.VarChar(255)
+  zipcode           Int
+  description       String?   @db.VarChar(512)
+  alarmCode         Int?
+  subdivision       String?   @db.VarChar(255)
+  viewCount         Int?
+  agentFee          Decimal?  @db.Decimal(10, 2)
+  closingDate       DateTime?
+  Message           Message[]
+  Showing           Showing[]
+}
+
+model Role {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique @db.VarChar(255)
+  Agent      Agent[]
+  User       User[]
+  Permission Permission[] @relation("RolePermissions")
+}
+
+model Showing {
+  id           Int      @id @default(autoincrement())
+  propertyId   Int
+  scheduledAt  DateTime
+  agentName    String   @db.VarChar(255)
+  agentCompany String   @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+  Property     Property @relation(fields: [propertyId], references: [id])
+
+  @@index([propertyId], map: "Showing_propertyId_fkey")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique @db.VarChar(255)
+  password   String    @db.VarChar(255)
+  first_name String    @db.VarChar(255)
+  last_name  String    @db.VarChar(255)
+  username   String    @unique @db.VarChar(255)
+  createdAt  DateTime  @default(now())
+  roleId     Int       @default(1)
+  updatedAt  DateTime
+  Message    Message[]
+  Role       Role      @relation(fields: [roleId], references: [id])
+
+  @@index([roleId], map: "User_roleId_fkey")
 }

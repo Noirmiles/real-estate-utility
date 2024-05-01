@@ -55,7 +55,7 @@ export default function Nav() {
 
 
         <nav className="navbar-container z-50">
-            <div className="p-1" style={formStyle}>
+            <div className="w-full" style={formStyle}>
                 <div className="flex items-center justify-center">
 
                     <div className=" ml-4 flex  space-x-4 justify-center items-center">

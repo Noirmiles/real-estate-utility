@@ -1,6 +1,8 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import CardList from '@/components/CardCarousel';
+import PropertyCard from '@/components/PropertyCard';
+
 import SearchBar from '@/components/searchBar';
 
 import React, { useState, ReactElement, useEffect, useRef, ChangeEvent, FormEvent, lazy } from 'react';
@@ -28,10 +30,10 @@ export default function Home() {
 
   return (
     <div className="">
+      <div className=""><Background /></div>
 
-      <Background />
 
-      <Parallax pages={2}>
+      <Parallax pages={3}>
         <ParallaxLayer speed={1} className="">
 
 
@@ -41,12 +43,12 @@ export default function Home() {
               Agents. Tours. Homes.
             </div>
 
+
             <div className="m-2 p-8 px-36 items-center flex-grow relative">
-              <div className="z-10"> 
-                <SearchBar/>
+              <div className="z-10">
+                <SearchBar />
               </div>
             </div>
-
 
           </section>
         </ParallaxLayer>
@@ -56,25 +58,28 @@ export default function Home() {
 
 
         <ParallaxLayer>
+
           <div style={formStyle} className=" text-black">
 
             <div className=" flex flex-col  min-h-screen">
               <section className=" container px-4 pb-8 flex flex-col items-left text-left gap-8 p-10">
+
                 <div className="font-bold text-xl ">
                   Trending Homes on Z Real Estate
                   <div className="text-sm font-thin ">
                     Viewed and saved the most in the area over the last 24 hours
                   </div>
                 </div>
-              </section> 
+
+              </section>
 
               <div className="">
-                <CardList/>
-            
-         
+                <CardList />
               </div>
+              
+              
 
-              <footer className="text-center mt-32 p-3">
+              <footer className="text-black text-center z-10">
                 <div className="text-xs ">
                   Project Z Group is committed to ensuring digital accessibility for individuals with disabilities.
                   We are continuously working to improve the accessibility of our web experience for everyone, and we welcome feedback and accommodation requests.
@@ -109,14 +114,15 @@ export default function Home() {
                   </a>
                 </div>
 
+
               </footer>
 
 
             </div>
+
+
           </div>
         </ParallaxLayer>
-
-
       </Parallax>
 
     </div>

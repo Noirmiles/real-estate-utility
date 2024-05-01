@@ -26,6 +26,7 @@ import {
 
 
 
+
 const prisma = new PrismaClient();
 
 interface Listing {
@@ -42,6 +43,10 @@ interface Listing {
   agentName: string;
   agencyName: string;
   images: JsonValue;
+  description: string;
+  viewCount: number;
+  subdivision: string;
+  alarmCode: number;
 
 }
 
@@ -119,12 +124,12 @@ const CardList = () => {
 
 
 
-    <div className="container">
+    <div className="">
       <div>
         <div className="grid grid-cols-2 grid-flow-rows "> {/* Set 2 columns */}
           {listings &&
             listings.map((property, index) => (
-              <div key={index} className="pb-6 pr-6">
+              <div key={index} className="pb-6">
                 <a href={"/" + property.id} className="">
                   <div className="card-large drop-shadow-md">
                     <Image
@@ -140,6 +145,8 @@ const CardList = () => {
                     <div className="p-5 flex flex-col gap-3">
                       <div className="flex items-center gap-2">
                         <span className="badge">{property.propertyType}</span>
+                        <span className="badge">{property.state}</span>
+
                       </div>
 
 
@@ -166,18 +173,6 @@ const CardList = () => {
 
                       </div>
 
-                      {/*Agent Review
-                <div>
-                  <span className="flex items-center mt-1 font-extralight">
-                    {property.agencyName} Rating:
-                    <Image src={star1} alt="" />
-                    <Image src={star1} alt="" />
-                    <Image src={star1} alt="" />
-                    <Image src={star2} alt="" />
-                    <Image src={star3} alt="" />
-                  </span>
-                </div>
-                */}
                     </div >
                   </div >
                 </a>
@@ -193,4 +188,3 @@ const CardList = () => {
 };
 
 export default CardList;
-
