@@ -9,7 +9,6 @@ import star1 from "@/public/utility-imgs/star.svg"
 import star2 from "@/public/utility-imgs/star-half-fill.svg"
 import star3 from "@/public/utility-imgs/star-no-fill.svg"
 
-import home1 from "@/public/houses/18/18-1.webp"
 
 import "./card.css"
 
@@ -24,6 +23,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+
+import { Label } from "@/components/ui/label"
+import PropertyCard from '@/components/PropertyCard';
+
 
 
 
@@ -43,30 +46,31 @@ interface Listing {
   agentName: string;
   agencyName: string;
   images: JsonValue;
+  description: string;
+  viewCount: number;
+  subdivision: string;
 
 }
 const console = global.console
 
 
 const CardList = () => {
-  const [listings, setListings] = useState<Listing[]>([]);
-  const [selectedProperty, setSelectedProperty] = useState<Listing | null>(null);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
+
+  const handleOpenModal = (propertyId: number) => {
+    setSelectedPropertyId(propertyId);
+    setIsModalOpen(true);
+  };
+  const [listings, setListings] = useState<Listing[]>([]);
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  function Popup() {
-    return (
-      <div
-        className={`fixed top-1/2 right-0 transform -translate-y-1/2 bg-white p-8 rounded-l-lg shadow-lg transition-all duration-300 ease-in-out ${!isPopupOpen && 'hidden'}`}
-      >
-        <h3 className="text-2xl font-bold mb-6">Add Listing</h3>
-        {/* Add other popup content here */}
-      </div>
-    );
-  }
+
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -81,15 +85,7 @@ const CardList = () => {
     fetchListings();
   }, []);
 
-  const handleOpenModal = (property: Listing) => {
-    setSelectedProperty(property);
-    setIsModalOpen(true);
-  };
 
-  const handleCloseModal = () => {
-    setSelectedProperty(null);
-    setIsModalOpen(false);
-  };
 
   const handleDeleteProperty = async (propertyId: number) => {
     try {
@@ -112,48 +108,28 @@ const CardList = () => {
     }
   };
 
+  const handleCloseModal = () => {
+    setSelectedPropertyId(null);
+    setIsModalOpen(false);
+  };
 
 
 
-  useEffect(() => {
-    const fetchListings = async () => {
-      try {
-        const response = await fetch('/houses/listings');
-        const data: Listing[] = await response.json();
-        setListings(data);
-      } catch (error) {
-        console.error('Error fetching listings:', error);
-      }
-    };
-    fetchListings();
-  }, []);
 
-
-
-  {
-    isPopupOpen && (
-      <div className="fixed top-1/2 right-0 transform -translate-y-1/2 bg-white p-8 rounded-l-lg shadow-lg transition-all duration-300 ease-in-out">
-        <h3 className="text-2xl font-bold mb-6">Add Listing</h3>
-      </div>
-    )
-  }
 
 
 
   return (
 
 
-
-
-
-    <div className="container px-4 pb-8">
+    <div className="container px-4">
       <Carousel>
         <CarouselContent className="grid grid-flow-col gap-x-72">
           {listings &&
             listings.map((property) => (
               <CarouselItem className="p-8">
-              {/*Need this to open up a card with all the info like on zillow*/}
-                <div className="" onClick={() => { console.log('Span clicked!'); setIsPopupOpen(!isPopupOpen); }}>
+                {/*Need this to open up a card with all the info like on zillow*/}
+                <div className="" onClick={() => { console.log('Span clicked!') }}>
                   <div className="card drop-shadow-md">
                     <Image
                       className="object-cover"
@@ -168,6 +144,8 @@ const CardList = () => {
                     <div className="p-5 flex flex-col gap-3">
                       <div className="flex items-center gap-2">
                         <span className="badge">{property.propertyType}</span>
+                        <span className="badge">{property.subdivision}</span>
+
                       </div>
 
 
@@ -180,9 +158,10 @@ const CardList = () => {
                         </span>
 
                         {/*Product Title*/}
-                        <h2 className="product-address" title="Jamaican Condo">
+                        <h2 className="product-address" >
                           {property.address}, {property.city}, {property.state}, {property.zipcode}
                         </h2>
+                        
                         {/*More Info*/}
 
                         <div className="flex items-center gap-2 mt-1">
@@ -193,29 +172,22 @@ const CardList = () => {
                         </div>
 
                       </div>
+                      <Label onClick={() => handleOpenModal(property.id)} className="cursor-pointer rounded bg-black p-2 text-white active:bg-slate-400">
+                        View
+                      </Label>
 
-                      {/*Agent Review
-                <div>
-                  <span className="flex items-center mt-1 font-extralight">
-                    {property.agencyName} Rating:
-                    <Image src={star1} alt="" />
-                    <Image src={star1} alt="" />
-                    <Image src={star1} alt="" />
-                    <Image src={star2} alt="" />
-                    <Image src={star3} alt="" />
-                  </span>
-                </div>
-                */}
+
                     </div >
                   </div >
                 </div>
-              </CarouselItem> 
+              </CarouselItem>
             )
             )
           }  </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
+
     </div>
 
 

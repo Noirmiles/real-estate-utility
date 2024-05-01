@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className="">
 
         <div>
-          <div className="z-50">
+          <div className="z-5">
             <Navbar />
           </div>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>

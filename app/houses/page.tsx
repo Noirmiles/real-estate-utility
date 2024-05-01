@@ -482,7 +482,7 @@ export default function Houses() {
             </Wrapper>
           </div>
 
-          <div className='ml-36'>
+          <div className=''>
             <BuyColumn />
           </div>
         </div>
