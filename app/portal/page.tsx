@@ -14,6 +14,19 @@ interface TabPanelProps {
   value: string;
 }
 
+interface Property {
+  id: number;
+  address: string;
+  agentName: string;
+  agencyName: string;
+}
+
+interface Showing {
+  id: number;
+  scheduledAt: string;
+  property: Property;
+}
+
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -34,6 +47,23 @@ export default function Portal() {
   const [activeTab, setActiveTab] = useState('searches');
   const [showImage, setShowImage] = useState(true);
   const [user, setUser] = useState<IUser | null>(null);
+  const [showings, setShowings] = useState<Showing[]>([]);
+
+  const fetchShowings = async () => {
+    try {
+      const response = await fetch('/api/showings');
+      const data = await response.json();
+      setShowings(data);
+    } catch (error) {
+      console.error('Error fetching showings:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'showings') {
+      fetchShowings();
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     setUser(getCurrentUser());
@@ -95,10 +125,38 @@ export default function Portal() {
         )}
         {isAgent && (
         <TabPanel value={activeTab} index="showings">
-          <div className="tab-content">
-            <h2>Showings</h2>
+        <div className="tab-content">
+          <h2 className="text-2xl font-bold mb-4">Showings</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto border-collapse">
+              <thead>
+                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                  <th className="py-3 px-6 text-left">ID</th>
+                  <th className="py-3 px-6 text-left">Address</th>
+                  <th className="py-3 px-6 text-left">Start Time</th>
+                  <th className="py-3 px-6 text-left">End Time</th>
+                  <th className="py-3 px-6 text-left">Agent Name</th>
+                  <th className="py-3 px-6 text-left">Agency Name</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-600 text-sm">
+                {showings.map((showing) => (
+                  <tr key={showing.id} className="bg-white border-b border-gray-200 hover:bg-gray-100">
+                    <td className="py-4 px-6">{showing.property.id}</td>
+                    <td className="py-4 px-6">{showing.property.address}</td>
+                    <td className="py-4 px-6">{new Date(showing.scheduledAt).toLocaleString()}</td>
+                    <td className="py-4 px-6">
+                      {new Date(new Date(showing.scheduledAt).getTime() + 60 * 60 * 1000).toLocaleString()}
+                    </td>
+                    <td className="py-4 px-6">{showing.property.agentName}</td>
+                    <td className="py-4 px-6">{showing.property.agencyName}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </TabPanel>
+        </div>
+      </TabPanel>
         )}
         {isAgent && (
         <TabPanel value={activeTab} index="listing">
@@ -109,23 +167,77 @@ export default function Portal() {
         )}
         {isAgent && (
         <TabPanel value={activeTab} index="Statements/Contracts">
-          <div className="tab-content">
-            <h2>Statements/Contracts</h2>
-            <div>
-              <a href="/Request for Repair Statement.pdf" download>
-                Request for Repair Statement
-              </a>
-              <br />
-              <a href="/Sales Contract.pdf" download>
-                Sales Contract
-              </a>
-              <br />
-              <a href="/Closing Costs.pdf" download>
-                Closing Costs
-              </a>
-            </div>
+        <div className="tab-content">
+          <h2 className="text-2xl font-bold mb-4 text-white">Statements/Contracts</h2>
+          <div className="bg-white shadow-md rounded-lg p-6">
+            <ul className="space-y-4">
+              <li>
+                <a
+                  href="/Request for Repair Statement.pdf"
+                  download
+                  className="flex items-center text-blue-600 hover:text-blue-800 hover:underline"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Request for Repair Statement
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/Sales Contract.pdf"
+                  download
+                  className="flex items-center text-blue-600 hover:text-blue-800 hover:underline"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Sales Contract
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/Closing Costs.pdf"
+                  download
+                  className="flex items-center text-blue-600 hover:text-blue-800 hover:underline"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Closing Costs
+                </a>
+              </li>
+            </ul>
           </div>
-        </TabPanel>
+        </div>
+      </TabPanel>
       )}
 
         {isManager && (

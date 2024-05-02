@@ -11,25 +11,95 @@ import { useEffect } from 'react';
 
 const prisma = new PrismaClient();
 
+interface Property {
+  id: number;
+  address: string;
+  agentName: string;
+  agencyName: string;
+}
+
 export default function About() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [properties, setProperties] = useState<{ id: number; address: string }[]>([]);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [selectedProperty, setSelectedProperty] = useState('');
+  const [agentName, setAgentName] = useState('');
+  const [agentCompany, setAgentCompany] = useState('');
+  const [appointmentName, setAppointmentName] = useState('');
+  const [appointmentDate, setAppointmentDate] = useState('');
+  const [appointmentTime, setAppointmentTime] = useState('');
 
-  useEffect(() => {
+  const handlePropertyChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const selectedPropertyId = event.target.value;
+    setSelectedProperty(selectedPropertyId);
+  
+    // Find the selected property from the properties array
+    const property = properties.find((p) => p.id === parseInt(selectedPropertyId));
+    console.log('Selected Property:', property);
+  
+    if (property) {
+      setAgentName(property.agentName || '');
+      setAgentCompany(property.agencyName || '');
+      console.log('Agent Name:', property.agentName);
+      console.log('Agency Name:', property.agencyName);
+    } else {
+      setAgentName('');
+      setAgentCompany('');
+    }
+  };
+
+  const handleAppointmentSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+  const appointmentDate = event.currentTarget.date.value;
+  const appointmentTime = event.currentTarget.time.value;
+  const scheduledAt = `${appointmentDate}T${appointmentTime}:00`;
+
+  try {
+    const response = await fetch('/api/appointments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        propertyId: selectedProperty,
+        scheduledAt,
+        agentName,
+        agentCompany,
+      }),
+    });
+
+      if (response.ok) {
+        // Reset form fields after successful submission
+        setAppointmentName('');
+        setAppointmentDate('');
+        setAppointmentTime('');
+        setSelectedProperty('');
+        alert('Appointment added successfully!');
+      } else {
+        alert('Failed to add appointment. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error adding appointment:', error);
+      alert('An error occurred while adding the appointment. Please try again.');
+    }
+  };
+
+  
+
   const fetchProperties = async () => {
     try {
       const response = await fetch('/api/properties');
-      const fetchedProperties = await response.json();
+      const fetchedProperties: Property[] = await response.json();
       setProperties(fetchedProperties);
     } catch (error) {
       console.error('Error fetching properties:', error);
     }
   };
-
-  fetchProperties();
-}, []);
+  useEffect(() => {
+    fetchProperties();
+  }, []);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     // Handle form submission
@@ -143,7 +213,7 @@ export default function About() {
             <h2 className="text-2xl font-bold mb-2 text-gray-500">Appointments</h2>
             <p className="font-subtitle text-xl font-bold text-white">Current Date: {new Date().toLocaleDateString()}</p>
           </div>
-          <form className="mt-4 space-y-4">
+          <form onSubmit={handleAppointmentSubmit} className="mt-4 space-y-4">
             <div className="flex space-x-4">
               <input
                 type="text"
@@ -170,6 +240,8 @@ export default function About() {
                 id="propertyAddress"
                 name="propertyAddress"
                 className="w-full bg-gray-700 text-white px-4 py-2 rounded"
+                value={selectedProperty}
+                onChange={handlePropertyChange}
               >
                 <option value="">-- Select a Property --</option>
                 {properties.map((property) => (
