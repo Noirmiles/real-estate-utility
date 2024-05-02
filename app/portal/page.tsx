@@ -63,6 +63,7 @@ export default function Portal() {
         {isAgent && <Button onClick={() => handleTabClick('passcodes')}>Passcodes</Button>}
         {isAgent &&<Button onClick={() => handleTabClick('showings')}>Showings</Button>}
         {isAgent && <Button onClick={() => handleTabClick('listing')}>Listing</Button>}
+        {isAgent && <Button onClick={() => handleTabClick('Statements/Contracts')}>Contracts</Button>}
         {isManager && <Button onClick={() => handleTabClick('reports')}>Reports</Button>}
         </div>
 
@@ -106,6 +107,26 @@ export default function Portal() {
           </div>
         </TabPanel>
         )}
+        {isAgent && (
+        <TabPanel value={activeTab} index="Statements/Contracts">
+          <div className="tab-content">
+            <h2>Statements/Contracts</h2>
+            <div>
+              <a href="/Request for Repair Statement.pdf" download>
+                Request for Repair Statement
+              </a>
+              <br />
+              <a href="/Sales Contract.pdf" download>
+                Sales Contract
+              </a>
+              <br />
+              <a href="/Closing Costs.pdf" download>
+                Closing Costs
+              </a>
+            </div>
+          </div>
+        </TabPanel>
+      )}
 
         {isManager && (
           <TabPanel value={activeTab} index="reports">

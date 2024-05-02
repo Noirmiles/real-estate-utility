@@ -6,11 +6,30 @@ import Background from '@/components/background';
 import { Input } from "@/components/ui/input"
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Calendar } from 'lucide-react';
+import { PrismaClient } from '@prisma/client';
+import { useEffect } from 'react';
+
+const prisma = new PrismaClient();
 
 export default function About() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [properties, setProperties] = useState<{ id: number; address: string }[]>([]);
+
+  useEffect(() => {
+  const fetchProperties = async () => {
+    try {
+      const response = await fetch('/api/properties');
+      const fetchedProperties = await response.json();
+      setProperties(fetchedProperties);
+    } catch (error) {
+      console.error('Error fetching properties:', error);
+    }
+  };
+
+  fetchProperties();
+}, []);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     // Handle form submission
@@ -38,9 +57,8 @@ export default function About() {
   }
 
   return (
-<div className="top-0 left-0 w-full h-full z-[-1] bg-gradient-to-r from-gray-900 to-black">
+    <div className="top-0 left-0 w-full h-full z-[-1] bg-gradient-to-r from-gray-900 to-black">
       <div className="min-h-screen p-24">
-
         {/* About Title */}
         <div className="mb-8 text-center">
           <p className="font-heading text-3xl font-bold text-white font-serif">
@@ -143,6 +161,23 @@ export default function About() {
                 name="time"
                 className="w-full bg-gray-700 text-white px-4 py-2 rounded"
               />
+            </div>
+            <div>
+              <label htmlFor="propertyAddress" className="block text-white mb-1">
+                Select Property:
+              </label>
+              <select
+                id="propertyAddress"
+                name="propertyAddress"
+                className="w-full bg-gray-700 text-white px-4 py-2 rounded"
+              >
+                <option value="">-- Select a Property --</option>
+                {properties.map((property) => (
+                  <option key={property.id} value={property.id}>
+                    {property.address}
+                  </option>
+                ))}
+              </select>
             </div>
             <button
               type="submit"
