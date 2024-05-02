@@ -30,7 +30,9 @@ export default function Home() {
 
   return (
     <div className="">
-      <div className=""><Background /></div>
+      <div className="">
+        <Background />
+      </div>
 
 
       <Parallax pages={3}>
@@ -67,17 +69,17 @@ export default function Home() {
                 <div className="font-bold text-xl ">
                   Trending Homes on Z Real Estate
                   <div className="text-sm font-thin ">
-                    Viewed and saved the most in the area over the last 24 hours
+                    View the most recently posted homes from our agents
                   </div>
                 </div>
 
               </section>
 
-              <div className="">
+              <div className="mx-8">
                 <CardList />
               </div>
-              
-              
+
+
 
               <footer className="text-black text-center z-10">
                 <div className="text-xs ">

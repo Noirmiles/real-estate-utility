@@ -133,7 +133,7 @@ const CardList = () => {
                 <a href={"/" + property.id} className="">
                   <div className="card-large drop-shadow-md">
                     <Image
-                      className="object-cover"
+                      className="object-cover rounded-md"
                       alt="{"
                       src={`/houses/${property.id}/${property.id}-1.webp`}
                       quality={100}

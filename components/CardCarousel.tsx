@@ -26,6 +26,8 @@ import {
 
 import { Label } from "@/components/ui/label"
 import PropertyCard from '@/components/PropertyCard';
+import { Button } from "@/components/ui/button";
+
 
 
 
@@ -54,13 +56,21 @@ interface Listing {
 
 
 }
-const console = global.console
+
+
+
+
+
 
 
 const CardList = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
 
   const handleOpenModal = (propertyId: number) => {
     setSelectedPropertyId(propertyId);
@@ -68,10 +78,7 @@ const CardList = () => {
   };
   const [listings, setListings] = useState<Listing[]>([]);
 
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
-  };
+
 
 
 
@@ -111,11 +118,34 @@ const CardList = () => {
     }
   };
 
-  const handleCloseModal = () => {
-    setSelectedPropertyId(null);
-    setIsModalOpen(false);
+  const Modal = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
+
+  const handleOpenModal = (property) => {
+    setSelectedPropertyId(property);
+    setIsModalOpen(true);
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedPropertyId(null); // Reset selected ID
+  };
+
+  return (
+    <> 
+      {/* Inside your CarouselItem, add a button or element
+          to trigger the modal using handleOpenModal */}
+
+      {isModalOpen && (
+        <div className="fixed top-0 left-0 w-screen h-screen ..."> {/* Modal Styling */}
+          <PropertyCard listingID={selectedPropertyId} />
+          <button onClick={handleCloseModal}>Close</button>
+        </div>
+      )}
+    </>
+  );
+};
 
 
 
@@ -132,7 +162,7 @@ const CardList = () => {
             listings.map((property) => (
               <CarouselItem className="p-8">
                 {/*Need this to open up a card with all the info like on zillow*/}
-                <div className="card drop-shadow-md">
+                <div className="card w-72 min-h-[10rem] drop-shadow-md">
                   <Image
                     className="object-cover"
                     alt="{"
@@ -174,14 +204,12 @@ const CardList = () => {
 
                     </div>
 
-                    <Label className="bg-slate-700 rounded-lg p-3 text-white hover:bg-slate-500">
+                    <Button onClick={toggleModal} className="bg-slate-700 rounded-lg p-3 text-white hover:bg-slate-500">
                       <span className="flex justify-between">
-                      View
-                      <svg width="12" height="12" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1L5 3L1 5" stroke="white" />
-                      </svg>
+                        View
+
                       </span>
-                    </Label>
+                    </Button>
                   </div >
 
                 </div >
@@ -189,7 +217,28 @@ const CardList = () => {
               </CarouselItem>
             )
             )
-          }  </CarouselContent>
+          }
+          <CarouselItem className="p-8">
+            {/*Need this to open up a card with all the info like on zillow*/}
+            <a href="/houses">
+              <div className="card  min-w-[30rem] min-h-[25rem] drop-shadow-md">
+
+                {/*Badges*/}
+                <div className="flex justify-center">
+                  <Button onClick={toggleModal} className="bg-slate-700 rounded-lg p-3 text-white hover:bg-slate-500">
+                    <span className="flex justify-between">
+                      See More
+
+                    </span>
+                  </Button>
+                </div >
+              </div>
+            </a>
+
+          </CarouselItem>
+
+
+        </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>

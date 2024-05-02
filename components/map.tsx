@@ -38,7 +38,7 @@ function Map({ center, zoom }: MapProps) {
 
   // map will be connect to this div block
   
-  return <div className="map-container rounded-lg" ref={ref} style={{height: '100vh', width:'60vw'}}id="map" />;
+  return <div className="map-container rounded-lg mr-4 ml-4" ref={ref} style={{height: '100vh', width:'60vw'}}id="map" />;
 }
 
 export default Map
