@@ -20,3 +20,26 @@ export interface IRoles {
   manager: number;
 [key: string]: number;
 }
+
+export interface MessageData {
+  senderId: number;
+  receiverId: number;
+  content: string;
+  propertyId?: number;  // Optional property ID
+}
+
+interface Agent {
+  id: number;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  role:{ id: number;}
+}
+
+interface MessageInput {
+    senderId: number;
+    receiverId: number;
+    content: string;
+    propertyId?: number; // Optional field
+}

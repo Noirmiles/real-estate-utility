@@ -2,6 +2,10 @@ import axios, { AxiosResponse } from 'axios';
 import { IUser } from "../types/user-types";
 import { LoginResponse } from "../types/user-types";
 import eventBus from "@/components/common/EventBus";
+import { Agent } from '@prisma/client';
+import { Omit } from '@prisma/client/runtime/library';
+
+type SafeAgent = Omit<Agent, 'password'>;
 
 // API route for authnenticating user 
 const API_URL = "http://localhost:3000/auth/";
@@ -49,3 +53,19 @@ export const getCurrentUser = (): IUser | null => {
     return null;
   }
 };
+
+// Adjusting the interface to handle errors more gracefully
+interface FetchAgentsResponse {
+  agents?: SafeAgent[]; // Making `agents` optional
+  error?: string; // Optional field for handling errors
+}
+
+export const fetchAgentsByRole = (roleId: number): Promise<FetchAgentsResponse> => {
+  return axios.get<FetchAgentsResponse>(`${API_URL}/agents-by-role`, { params: { roleId } })
+    .then(response => response.data)
+    .catch(error => {
+        console.error('Error fetching agents:', error);
+        return { error: error.message };
+    });
+};
+
