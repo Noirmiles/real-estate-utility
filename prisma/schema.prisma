@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -89,10 +87,10 @@ model Showing {
   scheduledAt  DateTime
   agentName    String   @db.VarChar(255)
   agentCompany String   @db.VarChar(255)
-  clientName   String?
-  clientEmail  String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime
+  clientEmail  String?
+  clientName   String?
   Property     Property @relation(fields: [propertyId], references: [id])
 
   @@index([propertyId], map: "Showing_propertyId_fkey")

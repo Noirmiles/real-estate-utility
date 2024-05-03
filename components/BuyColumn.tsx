@@ -14,9 +14,7 @@ const BuyColumn = () => {
 
   return (
     <div className="mb-20">
-     <div className=" text-white text-4xl font-bold text-center font-serif mb-10 ">
-        Current Catalog
-      </div>
+
       {/* White rectangle */}
       <div className="" style={formStyle} >
         <ScrollArea className="h-screen w-50vw">

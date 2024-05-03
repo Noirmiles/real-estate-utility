@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, FormEvent, useEffect } from 'react';
 import Background from '@/components/background';
-import { Button } from "@/components/ui/button";
 import { login } from "../services/auth.service";
 
 interface User {
@@ -119,9 +118,9 @@ const SignInForm: React.FC = () => {
                 disabled={loading}
               />
             </div>
-            <Button type="submit" disabled={loading}>
+            <button className="rounded-md bg-white p-2" type="submit" disabled={loading}>
               {loading ? 'Loading...' : 'Sign in'}
-            </Button>
+            </button>
             {message && <div className="message" style={{ color: 'red', marginTop: '10px' }}>{message}</div>}
           </form>
           <a href="#" style={{ display: 'block', marginTop: '10px' }}>
@@ -146,7 +145,7 @@ export default function SignIn() {
 
   return (
     <div>
-      <Background />
+      <div className="fixed top-0 left-0 w-full h-screen z-[-1] bg-gradient-to-r from-gray-900 to-black" />
       <div style={{
         display: 'flex',
         justifyContent: 'center',
