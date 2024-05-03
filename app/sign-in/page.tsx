@@ -48,6 +48,7 @@ const SignInForm: React.FC = () => {
       const data = await login(formData.username, formData.password);
       handleLoginSuccess(data);
     } catch (error) {
+      
       setMessage('An error occurred during login.');
       console.error(error);
     } finally {
@@ -118,9 +119,9 @@ const SignInForm: React.FC = () => {
                 disabled={loading}
               />
             </div>
-            <button className="rounded-md bg-white p-2" type="submit" disabled={loading}>
+            <Button className="rounded-md bg-white p-2" type="submit" disabled={loading}>
               {loading ? 'Loading...' : 'Sign in'}
-            </button>
+            </Button>
             {message && <div className="message" style={{ color: 'red', marginTop: '10px' }}>{message}</div>}
           </form>
           <a href="#" style={{ display: 'block', marginTop: '10px' }}>
