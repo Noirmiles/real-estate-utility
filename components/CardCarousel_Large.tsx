@@ -306,13 +306,6 @@ const CardList = () => {
                                     </div>
                                   </div>
 
-
-                                  <Button
-                                    className="flex mr-9 flex-row-auto bg-primary text-primary-foreground p-2 rounded-md"
-                                    onClick={toggleEdit}
-                                  >
-                                    Edit
-                                  </Button>
                                 </>
 
                               )}

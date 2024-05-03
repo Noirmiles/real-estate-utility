@@ -15,7 +15,7 @@ export async function GET(req: Request) {
   
         const agents = await prisma.agent.findMany({
           where: { roleId },
-          select: { id: true, firstName: true, lastName: true, username: true, email: true }
+          select: { id: true, first_name: true, last_name: true, username: true, email: true, updatedAt: true}
         });
   
         return new Response(JSON.stringify({ agents }), {

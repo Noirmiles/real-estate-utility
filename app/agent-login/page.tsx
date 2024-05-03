@@ -7,7 +7,7 @@ import axios, { AxiosResponse } from 'axios';
 
 interface User {
   username: string;
-  email?: string;
+  email?: string; 
 }
 
 interface FormData {
@@ -16,7 +16,7 @@ interface FormData {
 }
 
 interface LoginResponse {
-  user?: User;
+  user?: User;  
   accessToken: string;
 }
 
@@ -26,7 +26,7 @@ const AgentForm: React.FC = () => {
   const [message, setMessage] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     if (loginSuccess) {
       // Redirect to '/' automatically on login success
       window.location.href = '/';
@@ -48,29 +48,29 @@ const AgentForm: React.FC = () => {
     // added error checking to handle axios/login responses 
     try {
       const data = await agent(formData.username, formData.password);  // Assuming `agent` is correctly typed to return a promise
-      handleLoginSuccess(data);
-    } catch (error: unknown) {
+      handleLoginSuccess(data);  
+  } catch (error: unknown) {  
       if (axios.isAxiosError(error)) {
-        // Properly handle the error as an AxiosError
-        if (error.response) {
-          console.log("Data:", error.response.data);
-          console.log("Status:", error.response.status);
-          console.log("Headers:", error.response.headers);
-          setMessage(error.response.data.message || "An error occurred.");
-        } else {
-          // The request was made but no response was received
-          console.log("Request was made but no response received:", error.request);
-          setMessage("The server did not respond.");
-        }
+          // Properly handle the error as an AxiosError
+          if (error.response) {
+              console.log("Data:", error.response.data);
+              console.log("Status:", error.response.status);
+              console.log("Headers:", error.response.headers);
+              setMessage(error.response.data.message || "An error occurred.");  
+          } else {
+              // The request was made but no response was received
+              console.log("Request was made but no response received:", error.request);
+              setMessage("The server did not respond.");
+          }
       } else {
-        // The error is not an AxiosError (could be network issue, timeout, etc.)
-        console.error("An unexpected error occurred:", error);
-        setMessage("An unexpected error occurred.");
+          // The error is not an AxiosError (could be network issue, timeout, etc.)
+          console.error("An unexpected error occurred:", error);
+          setMessage("An unexpected error occurred.");
       }
-    } finally {
+  } finally {
       setLoading(false);
-    }
-  };
+  }
+};
 
   const handleLoginSuccess = (data: LoginResponse) => {
     setLoginSuccess(true);
@@ -84,8 +84,8 @@ const AgentForm: React.FC = () => {
     }
   };
 
-
-
+  
+  
   // Transparent box for the AgentIn form
   const formStyle = {
     maxWidth: '500px',
@@ -101,14 +101,14 @@ const AgentForm: React.FC = () => {
   return (
     <div>
       {loginSuccess ? (
-        <div></div> // Placeholder while redirection is in progress
-      ) : (
-        <div style={formStyle} >
-          <h2 className="flex flex-col items-center" style={{ textAlign: 'center', margin: '20px 0' }}>
-            <b style={{ fontSize: '24px', color: 'black', fontWeight: 'bold' }}>Welcome to the Zest</b>
-            <b style={{ fontSize: '18px', color: 'black', fontWeight: 'bold' }}>Agent Login</b>
+      <div></div> // Placeholder while redirection is in progress
+    ) : (
+    <div style={formStyle} >
+      <h2 className="flex flex-col items-center" style={{textAlign: 'center', margin: '20px 0' }}>
+        <b style={{ fontSize: '24px', color: 'black', fontWeight: 'bold' }}>Welcome to the Zest</b>
+        <b style={{ fontSize: '18px',color: 'black', fontWeight: 'bold' }}>Agent Login</b>
 
-          </h2>
+      </h2>
 
           <form onSubmit={handleSignIn}>
             <div style={{ marginBottom: '20px' }}>
@@ -139,7 +139,7 @@ const AgentForm: React.FC = () => {
                 disabled={loading}
               />
             </div>
-            <Button className="rounded-md bg-white p-2" type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading}>
               {loading ? 'Loading...' : 'Sign in'}
             </Button>
             {message && <div style={{ color: 'red', marginTop: '10px' }}>{message}</div>}
@@ -156,7 +156,7 @@ const AgentForm: React.FC = () => {
               Continue as guest
             </a>
           </div>
-        </div>
+          </div>
       )}
     </div>
   );
@@ -166,14 +166,13 @@ const AgentForm: React.FC = () => {
 export default function SignIn() {
   return (
     <div>
-      <div className="fixed top-0 left-0 w-full h-screen z-[-1] bg-gradient-to-r from-gray-900 to-black" />
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        transform: 'transformY(-10%)'
-      }}>
+    <div className="fixed top-0 left-0 w-full h-screen z-[-1] bg-gradient-to-r from-gray-900 to-black"/>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh', 
+        transform: 'transformY(-10%)'}}>
         <AgentForm />
       </div>
     </div>
