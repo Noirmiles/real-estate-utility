@@ -104,6 +104,9 @@ export default function Houses() {
     const [images, setImages] = useState<FileList | null>(null);
     const [selectedAgency, setSelectedAgency] = useState('');
     const [agentName, setAgentName] = useState('');
+    const [description, setDescription] = useState('');
+    const [subdivision, setSubdivision] = useState('');
+    const [alarmCode, setAlarmCode] = useState('');
 
     // Function to handle property type selection change
     const handlePropertyTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -162,6 +165,9 @@ export default function Houses() {
         formData.append('propertyType', selectedPropertyType);
         formData.append('agencyName', selectedAgency);
         formData.append('agentName', agentName);
+        formData.append('description', description);
+        formData.append('subdivision', subdivision);
+        formData.append('alarmCode', alarmCode);
 
         if (images) {
           Array.from(images).forEach((image) => {
@@ -212,32 +218,17 @@ export default function Houses() {
       <>
         {isPopupOpen && (
           <div className="fixed top-1/2 right-0 transform -translate-y-1/2 bg-white p-8 rounded-l-lg shadow-lg transition-all duration-300 ease-in-out">
-            <h3 className="text-2xl font-bold mb-6">Add Listing</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="list-price" className="block font-medium mb-1">List Price</label>
-                  <input
-                    type="number"
-                    id="list-price"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter list price"
-                    value={listPrice}
-                    onChange={(e) => {
-                      setListPrice(e.target.value);
-                      validateListPrice(e.target.value);
-                    }}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="state" className="block font-medium mb-1">State</label>
-                  <select
-                    id="state"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                  >
-                    <option value="">Select a state</option>
+          <h3 className="text-2xl font-bold mb-6">Add Listing</h3>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="list-price" className="block font-medium mb-1">List Price</label>
+                <input type="number" id="list-price" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter list price" value={listPrice} onChange={(e) => { setListPrice(e.target.value); validateListPrice(e.target.value); }} />
+              </div>
+              <div>
+                <label htmlFor="state" className="block font-medium mb-1">State</label>
+                <select id="state" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" value={state} onChange={(e) => setState(e.target.value)}>
+                  <option value="">Select a state</option>
                     <option value="AL">Alabama</option>
                     <option value="AK">Alaska</option>
                     <option value="AZ">Arizona</option>
@@ -288,96 +279,45 @@ export default function Houses() {
                     <option value="WV">West Virginia</option>
                     <option value="WI">Wisconsin</option>
                     <option value="WY">Wyoming</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="city" className="block font-medium mb-1">City/County</label>
-                  <input
-                    type="text"
-                    id="city"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter city/county"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="address" className="block font-medium mb-1">Address</label>
-                  <input
-                    type="text"
-                    id="address"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="zipcode" className="block font-medium mb-1">Zipcode</label>
-                  <input
-                    type="number"
-                    id="zipcode"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter zipcode"
-                    value={zipcode}
-                    onChange={(e) => setZipcode(e.target.value)}
-                  />
-                </div>
+                </select>
               </div>
-
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <label htmlFor="square-footage" className="block font-medium mb-1">Square Footage</label>
-                  <input
-                    type="number"
-                    id="square-footage"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter square footage"
-                    value={squareFootage}
-                    onChange={(e) => {
-                      setSquareFootage(e.target.value);
-                      validateSquareFootage(e.target.value);
-                    }}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="number-of-rooms" className="block font-medium mb-1">Number of Rooms</label>
-                  <input
-                    type="number"
-                    id="number-of-rooms"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter number of rooms"
-                    value={numberOfRooms}
-                    onChange={(e) => {
-                      setNumberOfRooms(e.target.value);
-                      validateNumberOfRooms(e.target.value);
-                    }}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="number-of-bathrooms" className="block font-medium mb-1">Number of Bathrooms</label>
-                  <input
-                    type="number"
-                    id="number-of-bathrooms"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter number of bathrooms"
-                    value={numberOfBathrooms}
-                    onChange={(e) => {
-                      setNumberOfBathrooms(e.target.value);
-                      validateNumberOfBathrooms(e.target.value);
-                    }}
-                  />
-                </div>
+              <div>
+                <label htmlFor="city" className="block font-medium mb-1">City/County</label>
+                <input type="text" id="city" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter city/county" value={city} onChange={(e) => setCity(e.target.value)} />
               </div>
-
+              <div>
+                <label htmlFor="address" className="block font-medium mb-1">Address</label>
+                <input type="text" id="address" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter address" value={address} onChange={(e) => setAddress(e.target.value)} />
+              </div>
+              <div>
+                <label htmlFor="zipcode" className="block font-medium mb-1">Zipcode</label>
+                <input type="number" id="zipcode" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter zipcode" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
+              </div>
+              <div>
+                <label htmlFor="subdivision" className="block font-medium mb-1">Subdivision</label>
+                <input type="text" id="subdivision" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter subdivision" value={subdivision} onChange={(e) => setSubdivision(e.target.value)} />
+              </div>
+            </div>
+        
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label htmlFor="square-footage" className="block font-medium mb-1">Square Footage</label>
+                <input type="number" id="square-footage" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter square footage" value={squareFootage} onChange={(e) => { setSquareFootage(e.target.value); validateSquareFootage(e.target.value); }} />
+              </div>
+              <div>
+                <label htmlFor="number-of-rooms" className="block font-medium mb-1">Number of Rooms</label>
+                <input type="number" id="number-of-rooms" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter number of rooms" value={numberOfRooms} onChange={(e) => { setNumberOfRooms(e.target.value); validateNumberOfRooms(e.target.value); }} />
+              </div>
+              <div>
+                <label htmlFor="number-of-bathrooms" className="block font-medium mb-1">Number of Bathrooms</label>
+                <input type="number" id="number-of-bathrooms" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter number of bathrooms" value={numberOfBathrooms} onChange={(e) => { setNumberOfBathrooms(e.target.value); validateNumberOfBathrooms(e.target.value); }} />
+              </div>
+            </div>
+        
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="property-type" className="block font-medium mb-1">Property Type</label>
-                <select
-                  id="property-type"
-                  value={selectedPropertyType}
-                  onChange={handlePropertyTypeChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
+                <select id="property-type" value={selectedPropertyType} onChange={handlePropertyTypeChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                   <option value="">Select Property Type</option>
                   <option value="Standalone House">Standalone House</option>
                   <option value="Townhouse">Townhouse</option>
@@ -385,59 +325,45 @@ export default function Houses() {
                   <option value="Duplex">Duplex</option>
                 </select>
               </div>
-
               <div>
                 <label htmlFor="agency" className="block font-medium mb-1">Agency</label>
-                <select
-                  id="agency"
-                  value={selectedAgency}
-                  onChange={handleAgencyChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
+                <select id="agency" value={selectedAgency} onChange={handleAgencyChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                   <option value="">Select Agency</option>
                   <option value="Premier Homes">Premier Homes</option>
                   <option value="Luxury Living">Luxury Living</option>
                   <option value="Prestige Properties">Prestige Properties</option>
                 </select>
               </div>
-
               <div>
                 <label htmlFor="agent-name" className="block font-medium mb-1">Listing Agent Name</label>
-                <input
-                  type="text"
-                  id="agent-name"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter agent name"
-                  value={agentName}
-                  onChange={(e) => setAgentName(e.target.value)}
-                />
+                <input type="text" id="agent-name" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter agent name" value={agentName} onChange={(e) => setAgentName(e.target.value)} />
               </div>
-
               <div>
-                <label htmlFor="image-upload" className="block font-medium mb-1">Upload Images</label>
-                <div className="flex items-center">
-                  <input
-                    type="file"
-                    id="image-upload"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageUpload}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  {images && images.length > 0 && <span className="ml-2">{images.length} file(s) selected</span>}
-                </div>
+                <label htmlFor="alarm-code" className="block font-medium mb-1">Alarm Code</label>
+                <input type="text" id="alarm-code" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter alarm code" value={alarmCode} onChange={(e) => setAlarmCode(e.target.value)} />
               </div>
-
-              <div className="text-right">
-                <Button
-                  type="submit"
-                  className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
-                >
-                  Submit
-                </Button>
+            </div>
+        
+            <div>
+              <label htmlFor="description" className="block font-medium mb-1">Description</label>
+              <textarea id="description" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter property description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+            </div>
+        
+            <div>
+              <label htmlFor="image-upload" className="block font-medium mb-1">Upload Images</label>
+              <div className="flex items-center">
+                <input type="file" id="image-upload" accept="image/*" multiple onChange={handleImageUpload} className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                {images && images.length > 0 && <span className="ml-2">{images.length} file(s) selected</span>}
               </div>
-            </form>
-          </div>
+            </div>
+        
+            <div className="text-right">
+              <Button type="submit" className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300">
+                Submit
+              </Button>
+            </div>
+          </form>
+        </div>
         )}
       </>
     );

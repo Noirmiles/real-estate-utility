@@ -22,12 +22,15 @@ export async function POST(request: NextRequest) {
     const images = formData.getAll('images') as File[];
     const agencyName = formData.get('agencyName') as string;
     const agentName = formData.get('agentName') as string;
+    const description = formData.get('description') as string;
+    const subdivision = formData.get('subdivision') as string;
+    const alarmCode = formData.get('alarmCode') as string;
 
     const imageNames: string[] = [];
 
     for (const image of images) {
       const imageName = image.name;
-      const imagePath = path.join(process.cwd(), 'public', 'images', imageName);
+      const imagePath = path.join(process.cwd(), 'public', 'houses', imageName);
       const buffer = Buffer.from(await image.arrayBuffer());
       await fs.writeFile(imagePath, buffer);
       imageNames.push(imageName);
@@ -47,6 +50,9 @@ export async function POST(request: NextRequest) {
         images: imageNames,
         agencyName,
         agentName,
+        description,
+        subdivision,
+        alarmCode: parseInt(alarmCode),
       },
     });
 
