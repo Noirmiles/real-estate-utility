@@ -53,8 +53,39 @@ async function POST(ctx: Context): Promise<void> {
         ctx.body = { message: 'Failed to process request' };
     }
 }
+async function GET(ctx: Context): Promise<void> {
+    try {
+        const agentId = parseInt(ctx.query.agentId as string);
+        if (!agentId) {
+            ctx.status = 400;
+            ctx.body = { message: 'Agent ID is required' };
+            return;
+        }
+
+        const messages = await prisma.message.findMany({
+            where: {
+                OR: [
+                    { senderId: agentId },
+                    { receiverId: agentId }
+                ]
+            },
+            include: {
+                sender: true,  // Assuming you want to include details about the agent
+                receiver: true   // Assuming you want to include details about the user
+            }
+        });
+
+        ctx.status = 200;
+        ctx.body = messages;
+    } catch (error) {
+        console.error('Failed to fetch messages:', error);
+        ctx.status = 500;
+        ctx.body = { message: 'Failed to process request' };
+    }
+}
 
 router.post('/message', POST);
+router.get('/messages', GET);
 
 app.use(router.routes());
 app.use(router.allowedMethods());

@@ -12,7 +12,7 @@ export const sendMessage = (messageData: MessageData) => {
 };
 
 export const getMessage = (agentId: number) => {
-    return axios.get(`${MESSAGE_API_URL}get`, {
+    return axios.get(`${MESSAGE_API_URL}`, {
         params: { agentId }
     }).then(response => response.data)
     .catch(error => {
