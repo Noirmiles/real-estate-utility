@@ -27,6 +27,8 @@ interface Showing {
   id: number;
   scheduledAt: string;
   property: Property;
+  clientName: string | null;
+  clientEmail: string | null;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -134,40 +136,44 @@ export default function Portal() {
         </TabPanel>
         )}
         {isAgent && (
-        <TabPanel value={activeTab} index="showings">
-        <div className="tab-content">
-          <h2 className="text-2xl font-bold mb-4">Showings</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full table-auto border-collapse">
-              <thead>
-                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 text-left">ID</th>
-                  <th className="py-3 px-6 text-left">Address</th>
-                  <th className="py-3 px-6 text-left">Start Time</th>
-                  <th className="py-3 px-6 text-left">End Time</th>
-                  <th className="py-3 px-6 text-left">Agent Name</th>
-                  <th className="py-3 px-6 text-left">Agency Name</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600 text-sm">
-                {showings.map((showing) => (
-                  <tr key={showing.id} className="bg-white border-b border-gray-200 hover:bg-gray-100">
-                    <td className="py-4 px-6">{showing.property.id}</td>
-                    <td className="py-4 px-6">{showing.property.address}</td>
-                    <td className="py-4 px-6">{new Date(showing.scheduledAt).toLocaleString()}</td>
-                    <td className="py-4 px-6">
-                      {new Date(new Date(showing.scheduledAt).getTime() + 60 * 60 * 1000).toLocaleString()}
-                    </td>
-                    <td className="py-4 px-6">{showing.property.agentName}</td>
-                    <td className="py-4 px-6">{showing.property.agencyName}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </TabPanel>
-        )}
+  <TabPanel value={activeTab} index="showings">
+    <div className="tab-content">
+      <h2 className="text-2xl font-bold mb-4">Showings</h2>
+      <div className="overflow-x-auto">
+        <table className="w-full table-auto border-collapse">
+          <thead>
+            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+              <th className="py-3 px-6 text-left">ID</th>
+              <th className="py-3 px-6 text-left">Address</th>
+              <th className="py-3 px-6 text-left">Start Time</th>
+              <th className="py-3 px-6 text-left">End Time</th>
+              <th className="py-3 px-6 text-left">Agent Name</th>
+              <th className="py-3 px-6 text-left">Agency Name</th>
+              <th className="py-3 px-6 text-left">Client Name</th>
+              <th className="py-3 px-6 text-left">Client Email</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-600 text-sm">
+            {showings.map((showing) => (
+              <tr key={showing.id} className="bg-white border-b border-gray-200 hover:bg-gray-100">
+                <td className="py-4 px-6">{showing.property?.id}</td>
+                <td className="py-4 px-6">{showing.property?.address}</td>
+                <td className="py-4 px-6">{new Date(showing.scheduledAt).toLocaleString()}</td>
+                <td className="py-4 px-6">
+                  {new Date(new Date(showing.scheduledAt).getTime() + 60 * 60 * 1000).toLocaleString()}
+                </td>
+                <td className="py-4 px-6">{showing.property?.agentName}</td>
+                <td className="py-4 px-6">{showing.property?.agencyName}</td>
+                <td className="py-4 px-6">{showing.clientName || '-'}</td>
+                <td className="py-4 px-6">{showing.clientEmail || '-'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </TabPanel>
+)}
         {isAgent && (
         <TabPanel value={activeTab} index="listing">
           <div className="tab-content">

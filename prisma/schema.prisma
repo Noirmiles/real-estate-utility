@@ -1,3 +1,5 @@
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -87,6 +89,8 @@ model Showing {
   scheduledAt  DateTime
   agentName    String   @db.VarChar(255)
   agentCompany String   @db.VarChar(255)
+  clientName   String?
+  clientEmail  String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime
   Property     Property @relation(fields: [propertyId], references: [id])

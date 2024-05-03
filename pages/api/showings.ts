@@ -1,3 +1,4 @@
+// pages/api/showings.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 
@@ -10,18 +11,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         select: {
           id: true,
           scheduledAt: true,
-          property: {
-            select: {
-              id: true,
-              address: true,
-              agentName: true,
-              agencyName: true,
-            },
-          },
+          propertyId: true,
+          agentName: true,
+          agentCompany: true,
+          clientName: true,
+          clientEmail: true,
         },
       });
 
-      res.status(200).json(showings);
+      const propertyIds = showings.map((showing) => showing.propertyId);
+
+      const properties = await prisma.property.findMany({
+        where: {
+          id: {
+            in: propertyIds,
+          },
+        },
+        select: {
+          id: true,
+          address: true,
+          agentName: true,
+          agencyName: true,
+        },
+      });
+
+      const showingsWithProperty = showings.map((showing) => {
+        const property = properties.find((prop) => prop.id === showing.propertyId);
+        return {
+          ...showing,
+          property: property || null,
+        };
+      });
+
+      res.status(200).json(showingsWithProperty);
     } catch (error) {
       console.error('Error fetching showings:', error);
       res.status(500).json({ error: 'An error occurred while fetching showings.' });

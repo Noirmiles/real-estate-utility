@@ -18,15 +18,18 @@ interface Property {
   agencyName: string;
 }
 
+interface Showing {
+  clientName: string;
+  clientEmail: string;
+}
+
 export default function About() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [properties, setProperties] = useState<Property[]>([]);
   const [selectedProperty, setSelectedProperty] = useState('');
   const [agentName, setAgentName] = useState('');
   const [agentCompany, setAgentCompany] = useState('');
   const [appointmentName, setAppointmentName] = useState('');
+  const [appointmentEmail, setAppointmentEmail] = useState('');
   const [appointmentDate, setAppointmentDate] = useState('');
   const [appointmentTime, setAppointmentTime] = useState('');
 
@@ -51,28 +54,31 @@ export default function About() {
 
   const handleAppointmentSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-  const appointmentDate = event.currentTarget.date.value;
-  const appointmentTime = event.currentTarget.time.value;
-  const scheduledAt = `${appointmentDate}T${appointmentTime}:00`;
-
-  try {
-    const response = await fetch('/api/appointments', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        propertyId: selectedProperty,
-        scheduledAt,
-        agentName,
-        agentCompany,
-      }),
-    });
-
+  
+    const appointmentDate = event.currentTarget.date.value;
+    const appointmentTime = event.currentTarget.time.value;
+    const scheduledAt = `${appointmentDate}T${appointmentTime}:00`;
+  
+    try {
+      const response = await fetch('/api/appointments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          propertyId: selectedProperty,
+          scheduledAt,
+          agentName,
+          agentCompany,
+          clientName: appointmentName,
+          clientEmail: appointmentEmail,
+        }),
+      });
+  
       if (response.ok) {
         // Reset form fields after successful submission
         setAppointmentName('');
+        setAppointmentEmail('');
         setAppointmentDate('');
         setAppointmentTime('');
         setSelectedProperty('');
@@ -86,8 +92,6 @@ export default function About() {
     }
   };
 
-  
-
   const fetchProperties = async () => {
     try {
       const response = await fetch('/api/properties');
@@ -97,34 +101,10 @@ export default function About() {
       console.error('Error fetching properties:', error);
     }
   };
+
   useEffect(() => {
     fetchProperties();
   }, []);
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
-    // Handle form submission
-    event.preventDefault();
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Phone Number:', phoneNumber);
-  }
-
-  function handleChange(event: ChangeEvent<HTMLInputElement>): void {
-    const { name, value } = event.target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'email':
-        setEmail(value);
-        break;
-      case 'phoneNumber':
-        setPhoneNumber(value);
-        break;
-      default:
-        break;
-    }
-  }
 
   return (
     <div className="top-0 left-0 w-full h-full z-[-1] bg-gradient-to-r from-gray-900 to-black">
@@ -148,63 +128,14 @@ export default function About() {
         {/* About Page Description */}
         <div className="mx-auto mt-8 max-w-lg bg-gray-800 p-6 text-white">
           <p>
-            At Real Estate Utilities, we specialize in providing luxurious housing solutions tailored to discerning clientele. Our unwavering commitment to excellence is reflected in our unparalleled service, cutting-edge technology, and enduring partnerships with clients and industry leaders. With integrity, transparency, and sustainability at the core of our operations, we strive to exceed expectations and empower individuals and families in their pursuit of their dream homes. To initiate an inquiry, please provide your name, email, and phone number in the form below.
+            At Real Estate Utilities, we specialize in providing luxurious housing solutions tailored to discerning clientele. Our unwavering commitment to excellence is reflected in our unparalleled service, cutting-edge technology, and enduring partnerships with clients and industry leaders. With integrity, transparency, and sustainability at the core of our operations, we strive to exceed expectations and empower individuals and families in their pursuit of their dream homes. To initiate an inquiry, please schedule an appointment in the section below.
           </p>
-        </div>
-
-        {/* Email Submission Box */}
-        <div className="mx-auto mt-8 max-w-md bg-gray-800 p-6 text-white">
-          <h2 className="text-center text-2xl font-bold mb-4">Contact Form</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block">Name:</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={name}
-                onChange={handleChange}
-                required
-                className="w-full bg-gray-700 text-white px-4 py-2 rounded"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block">Email:</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={handleChange}
-                required
-                className="w-full bg-gray-700 text-white px-4 py-2 rounded"
-              />
-            </div>
-            <div>
-              <label htmlFor="phoneNumber" className="block">Phone Number:</label>
-              <input
-                type="tel"
-                id="phoneNumber"
-                name="phoneNumber"
-                value={phoneNumber}
-                onChange={handleChange}
-                required
-                className="w-full bg-gray-700 text-white px-4 py-2 rounded"
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
-            >
-              Submit
-            </button>
-          </form>
         </div>
 
         {/* Scheduling Section */}
         <div className="mt-8 text-center">
           <p className="font-heading text-xl font-bold text-white">
-            Already submitted an inquiry? Schedule an appointment below!
+            Schedule an appointment below!
           </p>
           <div className="flex justify-center mt-4">
             <Calendar className="text-white" size={48} />
@@ -219,8 +150,20 @@ export default function About() {
                 type="text"
                 name="name"
                 placeholder="Name"
+                value={appointmentName}
+                onChange={(e) => setAppointmentName(e.target.value)}
                 className="w-full bg-gray-700 text-white px-4 py-2 rounded"
               />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={appointmentEmail}
+                onChange={(e) => setAppointmentEmail(e.target.value)}
+                className="w-full bg-gray-700 text-white px-4 py-2 rounded"
+              />
+            </div>
+            <div className="flex space-x-4">
               <input
                 type="date"
                 name="date"
