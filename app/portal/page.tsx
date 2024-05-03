@@ -9,6 +9,7 @@ import { getCurrentUser } from '@/app/services/auth.service';  // Import the get
 import { IUser } from '../types/user-types';
 import SendMessageComponent from '@/components/profile/messages';
 import Recieve from '@/components/profile/recieve.message';
+import EditListingModal from "@/components/EditListingModal"
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -18,11 +19,21 @@ interface TabPanelProps {
 
 interface Property {
   id: number;
+  listPrice: number;
+  state: string;
+  city: string;
   address: string;
-  agentName: string;
+  squareFootage: number;
+  numberOfRooms: number;
+  numberOfBathrooms: number;
+  propertyType: string;
   agencyName: string;
+  agentName: string;
+  zipcode: number;
+  description: string;
+  alarmCode: number | null;
+  subdivision: string | null;
 }
-
 interface Showing {
   id: number;
   scheduledAt: string;
@@ -52,7 +63,28 @@ export default function Portal() {
   const [showImage, setShowImage] = useState(true);
   const [user, setUser] = useState<IUser | null>(null);
   const [showings, setShowings] = useState<Showing[]>([]);
+  const [listings, setListings] = useState<Property[]>([]);
+  const [selectedListing, setSelectedListing] = useState<Property | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const handleListingUpdate = (updatedListing: Property) => {
+    setListings((prevListings) =>
+      prevListings.map((listing) => (listing.id === updatedListing.id ? updatedListing : listing))
+    );
+  };
+
+  const handleModalClose = () => {
+    setIsEditModalOpen(false);
+  };
+
+  const handleEditClick = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleListingClick = (listing: Property) => {
+    setSelectedListing(listing);
+  };
+  
   const fetchShowings = async () => {
     try {
       const response = await fetch('/api/showings');
@@ -62,6 +94,23 @@ export default function Portal() {
       console.error('Error fetching showings:', error);
     }
   };
+
+  const fetchListings = async () => {
+    try {
+      const response = await fetch('/api/listings');
+      const data = await response.json();
+      setListings(data);
+      console.log('Listings:', data); // Add this line to log the fetched data
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'listing') {
+      fetchListings();
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     if (activeTab === 'showings') {
@@ -136,50 +185,115 @@ export default function Portal() {
         </TabPanel>
         )}
         {isAgent && (
-  <TabPanel value={activeTab} index="showings">
-    <div className="tab-content">
-      <h2 className="text-2xl font-bold mb-4">Showings</h2>
-      <div className="overflow-x-auto">
-        <table className="w-full table-auto border-collapse">
-          <thead>
-            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6 text-left">ID</th>
-              <th className="py-3 px-6 text-left">Address</th>
-              <th className="py-3 px-6 text-left">Start Time</th>
-              <th className="py-3 px-6 text-left">End Time</th>
-              <th className="py-3 px-6 text-left">Agent Name</th>
-              <th className="py-3 px-6 text-left">Agency Name</th>
-              <th className="py-3 px-6 text-left">Client Name</th>
-              <th className="py-3 px-6 text-left">Client Email</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 text-sm">
-            {showings.map((showing) => (
-              <tr key={showing.id} className="bg-white border-b border-gray-200 hover:bg-gray-100">
-                <td className="py-4 px-6">{showing.property?.id}</td>
-                <td className="py-4 px-6">{showing.property?.address}</td>
-                <td className="py-4 px-6">{new Date(showing.scheduledAt).toLocaleString()}</td>
-                <td className="py-4 px-6">
-                  {new Date(new Date(showing.scheduledAt).getTime() + 60 * 60 * 1000).toLocaleString()}
-                </td>
-                <td className="py-4 px-6">{showing.property?.agentName}</td>
-                <td className="py-4 px-6">{showing.property?.agencyName}</td>
-                <td className="py-4 px-6">{showing.clientName || '-'}</td>
-                <td className="py-4 px-6">{showing.clientEmail || '-'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </TabPanel>
-)}
-        {isAgent && (
+          <TabPanel value={activeTab} index="showings">
+            <div className="tab-content">
+              <h2 className="text-2xl font-bold mb-4">Showings</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full table-auto border-collapse">
+                  <thead>
+                    <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                      <th className="py-3 px-6 text-left">ID</th>
+                      <th className="py-3 px-6 text-left">Address</th>
+                      <th className="py-3 px-6 text-left">Start Time</th>
+                      <th className="py-3 px-6 text-left">End Time</th>
+                      <th className="py-3 px-6 text-left">Agent Name</th>
+                      <th className="py-3 px-6 text-left">Agency Name</th>
+                      <th className="py-3 px-6 text-left">Client Name</th>
+                      <th className="py-3 px-6 text-left">Client Email</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-gray-600 text-sm">
+                    {showings.map((showing) => (
+                      <tr key={showing.id} className="bg-white border-b border-gray-200 hover:bg-gray-100">
+                        <td className="py-4 px-6">{showing.property?.id}</td>
+                        <td className="py-4 px-6">{showing.property?.address}</td>
+                        <td className="py-4 px-6">{new Date(showing.scheduledAt).toLocaleString()}</td>
+                        <td className="py-4 px-6">
+                          {new Date(new Date(showing.scheduledAt).getTime() + 60 * 60 * 1000).toLocaleString()}
+                        </td>
+                        <td className="py-4 px-6">{showing.property?.agentName}</td>
+                        <td className="py-4 px-6">{showing.property?.agencyName}</td>
+                        <td className="py-4 px-6">{showing.clientName || '-'}</td>
+                        <td className="py-4 px-6">{showing.clientEmail || '-'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabPanel>
+        )}
+         {isAgent && (
         <TabPanel value={activeTab} index="listing">
-          <div className="tab-content">
-            <h2>Listing</h2>
+        <div className="tab-content">
+          <h2 className="text-2xl font-bold mb-4">Listings</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto border-collapse">
+              <thead>
+                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                  <th className="py-3 px-6 text-left">ID</th>
+                  <th className="py-3 px-6 text-left">Address</th>
+                  <th className="py-3 px-6 text-left">City</th>
+                  <th className="py-3 px-6 text-left">State</th>
+                  <th className="py-3 px-6 text-left">Zipcode</th>
+                  <th className="py-3 px-6 text-left">List Price</th>
+                  <th className="py-3 px-6 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-600 text-sm">
+                {listings.map((listing) => (
+                  <tr
+                    key={listing.id}
+                    className={`bg-white border-b border-gray-200 hover:bg-gray-100 ${
+                      selectedListing?.id === listing.id ? 'bg-gray-200' : ''
+                    }`}
+                    onClick={() => handleListingClick(listing)}
+                  >
+                    <td className="py-4 px-6">{listing.id}</td>
+                    <td className="py-4 px-6">{listing.address}</td>
+                    <td className="py-4 px-6">{listing.city}</td>
+                    <td className="py-4 px-6">{listing.state}</td>
+                    <td className="py-4 px-6">{listing.zipcode}</td>
+                    <td className="py-4 px-6">${listing.listPrice.toLocaleString()}</td>
+                    {selectedListing?.id === listing.id && (
+                      <td className="py-4 px-6">
+                        <button
+                          className="px-4 py-2 mr-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditClick();
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                          onClick={async (e) => {
+                            e.stopPropagation();
+                            const confirmDelete = window.confirm('Are you sure you want to delete this listing?');
+                            if (confirmDelete) {
+                              try {
+                                await fetch(`/api/listings?id=${listing.id}`, { method: 'DELETE' });
+                                setListings(listings.filter((l) => l.id !== listing.id));
+                                setSelectedListing(null);
+                              } catch (error) {
+                                console.error('Error deleting listing:', error);
+                                // Handle error state or show an error message
+                              }
+                            }
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </TabPanel>
+        </div>
+      </TabPanel>
         )}
         {isAgent && (
         <TabPanel value={activeTab} index="Statements/Contracts">
@@ -255,7 +369,7 @@ export default function Portal() {
         </div>
       </TabPanel>
       )}
-
+      
         {isManager && (
           <TabPanel value={activeTab} index="reports">
             <div className="tab-content">
@@ -275,7 +389,13 @@ export default function Portal() {
             />
           </div>
         )}
-
+        {isEditModalOpen && selectedListing && (
+      <EditListingModal
+        listing={selectedListing}
+        onClose={handleModalClose}
+        onUpdate={handleListingUpdate}
+      />
+    )}
         <div style={{width: '30%', margin: 'auto', marginTop: '50px'}}>
           <SearchBar />
         </div>
